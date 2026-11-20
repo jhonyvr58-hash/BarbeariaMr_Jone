@@ -341,8 +341,7 @@
             flex-shrink: 0;
             margin-top: 2px;
             transition: all 0.2s ease;
-            background: 
-        rgba(0, 0, 0, 0.35);
+            background: rgba(0, 0, 0, 0.35);
         }
 
         .service-card.selected .service-check {
@@ -350,8 +349,7 @@
             border-color: var(--gold-light);
             color: #0B0B0C;
         }
-
-        .service-info {
+                .service-info {
             flex: 1;
             display: flex;
             flex-direction: column;
@@ -673,8 +671,7 @@
             border-radius: var(--radius-md);
             padding: 18px;
             display: flex;
-
-           flex-direction: column;
+            flex-direction: column;
             gap: 14px;
         }
 
@@ -689,7 +686,7 @@
         }
 
         .field-group { display: flex; flex-direction: column; gap: 6px; }
-        .field-label { font-size: 0.8rem; font-weight: 600; color: var(--text-secondary); }
+                .field-label { font-size: 0.8rem; font-weight: 600; color: var(--text-secondary); }
 
         .field-input {
             width: 100%;
@@ -998,8 +995,7 @@
             font-weight: 700;
         }
 
-        .succes
-        s-btn {
+        .success-btn {
             padding: 6px 10px;
             border-radius: 7px;
             background: rgba(34, 197, 94, 0.16);
@@ -1018,7 +1014,7 @@
             font-size: 0.8rem;
             display: flex;
             flex-direction: column;
-            align-items: center;
+                        align-items: center;
             gap: 10px;
         }
 
@@ -1166,8 +1162,7 @@
                 <button type="button" class="cat-tab" data-cat="Química" onclick="setCategoryFilter('Química')">Química</button>
             </div>
 
-            <div id="services-gr
-                id" class="services-grid"></div>
+            <div id="services-grid" class="services-grid"></div>
         </section>
 
         <!-- PASSO 2: ESCOLHA DO PROFISSIONAL -->
@@ -1188,7 +1183,7 @@
         <!-- PASSO 3: DATA E HORÁRIO INTELIGENTE -->
         <section id="step-3" class="section-block">
             <div class="section-header">
-                <div class="step-title-group">
+                                <div class="step-title-group">
                     <div class="step-badge">3</div>
                     <div>
                         <h2 class="section-title">Escolha a Data e o Horário</h2>
@@ -1304,7 +1299,7 @@
                 <span id="sticky-meta" class="sticky-meta">0 serviço(s) • 0 min</span>
                 <span id="sticky-price" class="sticky-price">R$ 0,00</span>
             </div>
-            <button type="button" onclick="scrollToNextStep()" class="sticky-cta">Escolher Horário →</button>
+            <button type="button" onclick="confirmBooking()" class="sticky-cta">Confirmar e Finalizar</button>
         </div>
     </div>
 
@@ -1359,8 +1354,7 @@
                     <button type="button" class="admin-tab-btn" onclick="switchAdminTab('expediente', this)">Expediente &amp; Pausas</button>
                     <button type="button" class="admin-tab-btn" onclick="switchAdminTab('servicos', this)">Serviços &amp; Tempos</button>
                     <button type="button" class="admin-tab-btn" onclick="switchAdminTab('equipe', this)">Barbeiros</button>
-                    <button type="button" class="admin-tab-bt
-                        n" onclick="switchAdminTab('config', this)">Logo &amp; Senha</button>
+                    <button type="button" class="admin-tab-btn" onclick="switchAdminTab('config', this)">Logo &amp; Senha</button>
                 </div>
 
                 <!-- ABA 1: CONTABILIDADE, FATURAMENTO & COMISSÕES (50% INCLUINDO PLANOS) -->
@@ -1383,8 +1377,7 @@
             </div>
         </div>
     </div>
-
-    <!-- ======================================================================
+        <!-- ======================================================================
          JAVASCRIPT COMPLETO (DURAÇÃO INTELIGENTE, EXPEDIENTE & CONTABILIDADE)
          ====================================================================== -->
     <script>
@@ -1599,8 +1592,7 @@
                 const raw = localStorage.getItem(STORAGE_KEY);
                 if (!raw) return;
                 const parsed = JSON.parse(raw);
-                if (parsed.adminPassword) appState.adminPassword 
-            = parsed.adminPassword;
+                if (parsed.adminPassword) appState.adminPassword = parsed.adminPassword;
                 if (parsed.slotStepMinutes) appState.slotStepMinutes = Number(parsed.slotStepMinutes);
                 if (parsed.expediente) appState.expediente = { ...DEFAULT_EXPEDIENTE, ...parsed.expediente };
                 if (Array.isArray(parsed.services) && parsed.services.length) appState.services = parsed.services;
@@ -1735,15 +1727,26 @@
 
         function toggleService(serviceId) {
             const idx = appState.selectedServiceIds.indexOf(serviceId);
-            if (idx >= 0) {
-                appState.selectedServiceIds.splice(idx, 1);
-            } else {
+            const isAdding = idx < 0;
+            if (isAdding) {
                 appState.selectedServiceIds.push(serviceId);
+            } else {
+                appState.selectedServiceIds.splice(idx, 1);
             }
             appState.selectedStartMin = null;
             renderServices();
             renderTimeSlots();
             updateSummaries();
+
+            if (isAdding) {
+                clearTimeout(window._autoScrollStepTimer);
+                window._autoScrollStepTimer = setTimeout(() => {
+                    const targetEl = document.getElementById('step-3');
+                    if (targetEl) {
+                        targetEl.scrollIntoView({ behavior: 'smooth', block: 'start' });
+                    }
+                }, 400);
+            }
         }
 
         function getSelectedServicesObjects() {
@@ -1787,6 +1790,11 @@
             renderBarbers();
             renderTimeSlots();
             updateSummaries();
+            if (appState.selectedServiceIds.length > 0) {
+                setTimeout(() => {
+                    document.getElementById('step-3')?.scrollIntoView({ behavior: 'smooth', block: 'start' });
+                }, 250);
+            }
         }
 
         // ======================================================================
@@ -1807,7 +1815,7 @@
                     dayOfWeek: d.getDay(),
                     weekday: i === 0 ? 'Hoje' : weekDays[d.getDay()],
                     day: String(d.getDate()).padStart(2, '0'),
-                            month: months[d.getMonth()],
+                    month: months[d.getMonth()],
                     fullLabel: `${String(d.getDate()).padStart(2, '0')}/${String(d.getMonth() + 1).padStart(2, '0')}/${d.getFullYear()} (${weekDays[d.getDay()]})`
                 });
             }
@@ -1823,7 +1831,7 @@
             const scroller = document.getElementById('dates-scroller');
             scroller.innerHTML = dates.map(d => {
                 const isSelected = appState.selectedDateISO === d.iso;
-                const cfgDia = appState.expediente[d.dayOfWeek];
+                                const cfgDia = appState.expediente[d.dayOfWeek];
                 const fechado = !cfgDia || !cfgDia.ativo;
                 return `
                     <div class="date-card ${isSelected ? 'selected' : ''}" style="${fechado ? 'opacity:0.45;' : ''}" onclick="selectDate('${d.iso}')">
@@ -1944,6 +1952,20 @@
             appState.selectedStartMin = startMin;
             renderTimeSlots();
             updateSummaries();
+
+            clearTimeout(window._autoScrollStepTimer);
+            window._autoScrollStepTimer = setTimeout(() => {
+                const step4 = document.getElementById('step-4');
+                if (step4) {
+                    step4.scrollIntoView({ behavior: 'smooth', block: 'start' });
+                    setTimeout(() => {
+                        const nameInput = document.getElementById('client-name');
+                        if (nameInput && !nameInput.value.trim()) {
+                            nameInput.focus({ preventScroll: true });
+                        }
+                    }, 480);
+                }
+            }, 300);
         }
 
         function selectPayment(method) {
@@ -2016,9 +2038,138 @@
         // ======================================================================
         // CONFIRMAÇÃO DE AGENDAMENTO (BLOQUEIA O INTERVALO NA HORA!)
         // ======================================================================
+        
+        // ======================================================================
+        // NOTIFICAÇÕES NO APARELHO / SOM / VIBRAÇÃO QUANDO CLIENTE AGENDA
+        // ======================================================================
+        function requestDeviceNotificationPermission() {
+                    if (!('Notification' in window)) {
+                showToast('Este navegador não suporta notificação nativa do sistema.');
+                return;
+            }
+            Notification.requestPermission().then(perm => {
+                if (perm === 'granted') {
+                    showToast('Notificações do celular/navegador ativadas!');
+                    playBookingAlertSound();
+                } else {
+                    showToast('Permissão de notificação negada ou bloqueada no aparelho.');
+                }
+            }).catch(() => {
+                showToast('Não foi possível solicitar permissão de notificação.');
+            });
+        }
+
+        function playBookingAlertSound() {
+            try {
+                if (navigator.vibrate) {
+                    navigator.vibrate([180, 90, 180]);
+                }
+            } catch (e) {}
+
+            try {
+                const AudioCtx = window.AudioContext || window.webkitAudioContext;
+                if (!AudioCtx) return;
+                const ctx = new AudioCtx();
+                const now = ctx.currentTime;
+                [587.33, 880].forEach((freq, idx) => {
+                    const osc = ctx.createOscillator();
+                    const gain = ctx.createGain();
+                    osc.type = 'triangle';
+                    osc.frequency.setValueAtTime(freq, now + idx * 0.14);
+                    gain.gain.setValueAtTime(0.08, now + idx * 0.14);
+                    gain.gain.exponentialRampToValueAtTime(0.001, now + idx * 0.14 + 0.25);
+                    osc.connect(gain);
+                    gain.connect(ctx.destination);
+                    osc.start(now + idx * 0.14);
+                    osc.stop(now + idx * 0.14 + 0.26);
+                });
+            } catch (e) {}
+        }
+
+        function triggerBookingNotification(booking) {
+            playBookingAlertSound();
+            const servicesText = (booking.items || []).map(s => s.name).join(' + ');
+            const title = `Novo Agendamento: ${booking.clientName}`;
+            const body = `${booking.barberName} • ${booking.dateLabel} às ${booking.time} (${servicesText})`;
+
+            showToast(`🔔 ${title} — ${booking.time}`);
+
+            if ('Notification' in window && Notification.permission === 'granted') {
+                try {
+                    const n = new Notification(title, {
+                        body,
+                        tag: booking.id,
+                        renotify: true
+                    });
+                    setTimeout(() => n.close(), 8000);
+                } catch (e) {}
+            }
+        }
+
+        
+        function sendBookingEmailNotification(booking) {
+            const fin = calcularFinanceiroAgendamento(booking);
+            const servicesText = booking.items.map(s => s.name).join(' + ');
+            const subjectStr = `Novo Agendamento ${booking.id} - ${booking.clientName} (${booking.time})`;
+            const plainLines = [
+                `BARBEARIA MR JONE - NOVO AGENDAMENTO`,
+                `Código: ${booking.id}`,
+                `Cliente: ${booking.clientName}`,
+                `WhatsApp Cliente: ${booking.clientPhone}`,
+                `Serviços: ${servicesText}`,
+                `Profissional: ${booking.barberName}`,
+                `Data: ${booking.dateLabel}`,
+                `Horário: ${booking.time} às ${booking.endTime} (${formatDuration(booking.duration)})`,
+                `Pagamento: ${booking.payment}`,
+                booking.notes ? `Observação: ${booking.notes}` : '',
+                `Total no dia: ${formatBRL(fin.valorCobradoClienteNoDia)}`
+            ].filter(Boolean).join('\n');
+
+            const subject = encodeURIComponent(subjectStr);
+            const body = encodeURIComponent(plainLines);
+
+            const payload = {
+                _subject: subjectStr,
+                _template: 'box',
+                _captcha: 'false',
+                codigo: booking.id,
+                cliente: booking.clientName,
+                whatsapp_cliente: booking.clientPhone,
+                servicos: servicesText,
+                profissional: booking.barberName,
+                data: booking.dateLabel,
+                horario: `${booking.time} às ${booking.endTime}`,
+                duracao: formatDuration(booking.duration),
+                pagamento: booking.payment,
+                observacao: booking.notes || '-',
+                total_no_dia: formatBRL(fin.valorCobradoClienteNoDia),
+                resumo_completo: plainLines
+            };
+
+            // Disparo imediato via AJAX para jhonyvr58@gmail.com assim que o cliente finaliza
+            fetch('https://formsubmit.co/ajax/jhonyvr58@gmail.com', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Accept': 'application/json'
+                },
+                body: JSON.stringify(payload)
+            })
+            .then(r => r.json())
+            .then(data => {
+                if (data && (data.success === 'true' || data.success === true)) {
+                    showToast('E-mail de notificação enviado para jhonyvr58@gmail.com!');
+                }
+            })
+            .catch(() => {});
+
+            const mailtoUrl = `mailto:jhonyvr58@gmail.com?subject=${subject}&body=${body}`;
+            booking._mailtoUrl = mailtoUrl;
+            return mailtoUrl;
+        }
+
         function confirmBooking() {
-            co
-        nst selectedSrvs = getSelectedServicesObjects();
+            const selectedSrvs = getSelectedServicesObjects();
             if (selectedSrvs.length === 0) {
                 showToast('Selecione pelo menos 1 serviço ou plano no Passo 1.');
                 document.getElementById('step-1').scrollIntoView({ behavior: 'smooth' });
@@ -2091,21 +2242,78 @@
 
             appState.bookings.unshift(booking);
             saveData();
+            triggerBookingNotification(booking);
+            sendBookingEmailNotification(booking);
+
+            const waUrl = buildWhatsAppBookingUrl(booking);
 
             // Atualiza imediatamente a grade de horários para refletir o novo bloqueio
             appState.selectedStartMin = null;
             renderTimeSlots();
             updateSummaries();
-            openReceiptModal(booking);
+            openReceiptModal(booking, waUrl);
         }
 
-        function openReceiptModal(booking) {
+        function buildWhatsAppBookingMessage(booking) {
+            const fin = calcularFinanceiroAgendamento(booking);
+            const servicesText = booking.items.map(s => s.name).join(' + ');
+            return [
+                `✂️ *NOVO AGENDAMENTO - BARBEARIA MR JONE* ✂️`,
+                ``,
+                `*Código:* ${booking.id}`,
+                `*Cliente:* ${booking.clientName}`,
+                `*WhatsApp Cliente:* ${booking.clientPhone}`,
+                `*Serviços:* ${servicesText}`,
+                `*Profissional:* ${booking.barberName}`,
+                `*Data:* ${booking.dateLabel}`,
+                `*Horário:* ${booking.time} às ${booking.endTime} (${formatDuration(booking.duration)})`,
+                `*Pagamento:* ${booking.payment}`,
+                booking.notes ? `*Obs:* ${booking.notes}` : '',
+                `*Total no dia:* ${formatBRL(fin.valorCobradoClienteNoDia)}`
+            ].filter(Boolean).join('\n');
+        }
+
+        function buildWhatsAppBookingUrl(booking) {
+            const waMessage = buildWhatsAppBookingMessage(booking);
+            return `https://api.whatsapp.com/send?phone=${BARBERSHOP_WHATSAPP}&text=${encodeURIComponent(waMessage)}`;
+        }
+
+        function copyBookingWhatsAppMessage(bookingId) {
+            const b = appState.bookings.find(item => item.id === bookingId);
+            if (!b) return;
+            const txt = buildWhatsAppBookingMessage(b);
+            if (navigator.clipboard && navigator.clipboard.writeText) {
+                navigator.clipboard.writeText(txt).then(() => {
+                    showToast('Mensagem copiada! Cole no WhatsApp (21) 98962-2789.');
+                }).catch(() => {
+                                        fallbackCopyText(txt);
+                });
+            } else {
+                fallbackCopyText(txt);
+            }
+        }
+
+        function fallbackCopyText(text) {
+            const ta = document.createElement('textarea');
+            ta.value = text;
+            document.body.appendChild(ta);
+            ta.select();
+            try {
+                document.execCommand('copy');
+                showToast('Mensagem copiada! Cole no WhatsApp (21) 98962-2789.');
+            } catch (e) {
+                showToast('Não foi possível copiar automaticamente.');
+            }
+            document.body.removeChild(ta);
+        }
+
+        function openReceiptModal(booking, prebuiltWaUrl) {
             const fin = calcularFinanceiroAgendamento(booking);
             const servicesText = booking.items.map(s => s.name).join(' + ');
 
             document.getElementById('receipt-content').innerHTML = `
                 <div class="ticket-header">
-                    <div class="ticket-badge">✓ Horário Reservado</div>
+                    <div class="ticket-badge">✓ Horário Reservado na Agenda</div>
                     <div style="font-weight:800; font-size:1.05rem; color:var(--text-primary); margin-bottom:2px;">BARBEARIA MR JONE</div>
                     <div class="ticket-code">CÓDIGO: ${booking.id}</div>
                 </div>
@@ -2125,21 +2333,22 @@
                 </div>
             `;
 
-            const waMessage = [
-                `✂️ *NOVO AGENDAMENTO - BARBEARIA MR JONE* ✂️`,
-                ``,
-                `*Código:* ${booking.id}`,
-                `*Cliente:* ${booking.clientName}`,
-                `*Serviços:* ${servicesText}`,
-                `*Profissional:* ${booking.barberName}`,
-                `*Data:* ${booking.dateLabel}`,
-                `*Horário:* ${booking.time} às ${booking.endTime} (${formatDuration(booking.duration)})`,
-                `*Pagamento:* ${booking.payment}`,
-                booking.notes ? `*Obs:* ${booking.notes}` : '',
-                `*Total no dia:* ${formatBRL(fin.valorCobradoClienteNoDia)}`
-            ].filter(Boolean).join('\n');
-
-            document.getElementById('whatsapp-receipt-link').href = `https://wa.me/${BARBERSHOP_WHATSAPP}?text=${encodeURIComponent(waMessage)}`;
+            const linkEl = document.getElementById('whatsapp-receipt-link');
+            linkEl.href = prebuiltWaUrl || buildWhatsAppBookingUrl(booking);
+            linkEl.setAttribute('target', '_blank');
+            linkEl.setAttribute('rel', 'noopener noreferrer');
+            let copyBtn = document.getElementById('copy-wa-msg-btn');
+            if (!copyBtn) {
+                copyBtn = document.createElement('button');
+                copyBtn.type = 'button';
+                copyBtn.id = 'copy-wa-msg-btn';
+                copyBtn.className = 'btn-secondary';
+                copyBtn.style.borderColor = 'var(--border-gold)';
+                copyBtn.style.color = 'var(--gold-light)';
+                linkEl.insertAdjacentElement('afterend', copyBtn);
+            }
+            copyBtn.textContent = 'Copiar Mensagem Pronta p/ WhatsApp (21) 98962-2789';
+            copyBtn.onclick = () => copyBookingWhatsAppMessage(booking.id);
             document.getElementById('receipt-modal').classList.add('open');
         }
 
@@ -2227,8 +2436,7 @@
             renderAdminConfig();
         }
 
-        f
-        unction switchAdminTab(tabName, btnEl) {
+        function switchAdminTab(tabName, btnEl) {
             document.querySelectorAll('.admin-tab-btn').forEach(b => b.classList.remove('active'));
             btnEl.classList.add('active');
 
@@ -2288,8 +2496,8 @@
 
                 if (!porBarbeiro[b.barberId]) {
                     porBarbeiro[b.barberId] = { name: b.barberName, atendimentos: 0, atendimentosPlano: 0, receitaGerada: 0, comissaoPagar: 0 };
-                }
-                porBarbeiro[b.barberId].atendimentos += 1;
+        }
+                        porBarbeiro[b.barberId].atendimentos += 1;
                 if (temPlano) porBarbeiro[b.barberId].atendimentosPlano += 1;
                 porBarbeiro[b.barberId].receitaGerada += fin.receitaSessao;
                 porBarbeiro[b.barberId].comissaoPagar += fin.comissaoBarbeiro;
@@ -2395,8 +2603,7 @@
             const todayISO = `${now.getFullYear()}-${String(now.getMonth() + 1).padStart(2, '0')}-${String(now.getDate()).padStart(2, '0')}`;
             const startMin = (now.getHours() * 60) + now.getMinutes();
 
-            appState.bookings.unshi
-        ft({
+            appState.bookings.unshift({
                 id: 'BAL-' + Math.floor(1000 + Math.random() * 9000),
                 clientName,
                 clientPhone: 'Balcão',
@@ -2449,7 +2656,7 @@
                         </div>
                         <div style="display:flex; gap:8px; flex-wrap:wrap;">
                             ${b.status !== 'concluído' ? `<button type="button" class="success-btn" onclick="updateBookingStatus('${b.id}', 'concluído')">Concluir</button>` : ''}
-                            ${b.status !== 'cancelado' ? `<button type="button" class="danger-btn" onclick="updateBookingStatus('${b.id}', 'cancelado')">Cancelar (Libera Horário)</button>` : ''}
+                                    ${b.status !== 'cancelado' ? `<button type="button" class="danger-btn" onclick="updateBookingStatus('${b.id}', 'cancelado')">Cancelar (Libera Horário)</button>` : ''}
                         </div>
                     </div>
                 `;
@@ -2564,8 +2771,7 @@
                 appState.expediente[d].t2Ativo = el.checked;
             });
             document.querySelectorAll('.exp-t1-ini').forEach(el => {
-                appS
-                tate.expediente[Number(el.dataset.dia)].t1Inicio = el.value;
+                appState.expediente[Number(el.dataset.dia)].t1Inicio = el.value;
             });
             document.querySelectorAll('.exp-t1-fim').forEach(el => {
                 appState.expediente[Number(el.dataset.dia)].t1Fim = el.value;
@@ -2589,7 +2795,7 @@
             const barberId = document.getElementById('pause-barber').value;
             const startMin = horaParaMin(document.getElementById('pause-ini').value);
             const endMin = horaParaMin(document.getElementById('pause-fim').value);
-            const reason = document.getElementById('pause-reason').value.trim();
+                        const reason = document.getElementById('pause-reason').value.trim();
 
             if (!dateISO || endMin <= startMin) {
                 showToast('Informe data e intervalo válido.');
@@ -2720,7 +2926,16 @@
         // --- ABA 6: LOGO E SENHA DO PROPRIETÁRIO ---
         function renderAdminConfig() {
             const container = document.getElementById('admin-tab-config');
+            const notifStatus = ('Notification' in window) ? Notification.permission : 'indisponível';
             container.innerHTML = `
+                <div class="admin-item-card" style="display:flex; flex-direction:column; gap:10px;">
+                    <label class="field-label">Alerta na Hora que o Cliente Agendar (Som, Vibração &amp; Notificação)</label>
+                    <div style="font-size:0.78rem; color:var(--text-secondary);">Status da notificação do aparelho: <strong>${notifStatus}</strong>. Em sites estáticos sem servidor push em segundo plano, a notificação do sistema aparece quando a página está aberta no navegador/celular após permitir o aviso.</div>
+                    <div style="display:flex; gap:8px; flex-wrap:wrap;">
+                        <button type="button" class="btn-gold-primary" style="width:auto; padding:9px 14px;" onclick="requestDeviceNotificationPermission()">Ativar Notificação no Celular</button>
+                        <button type="button" class="btn-secondary" style="margin-top:0; width:auto; padding:9px 14px;" onclick="playBookingAlertSound()">Testar Som e Vibração</button>
+                    </div>
+                </div>
                 <div class="admin-item-card" style="display:flex; flex-direction:column; gap:10px;">
                     <label class="field-label">Alterar Senha de Acesso do Proprietário</label>
                     <div style="display:flex; gap:8px;">
