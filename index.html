@@ -137,8 +137,7 @@
             color: var(--gold-light);
             font-weight: 600;
         }
-
-        .quick-actions {
+                .quick-actions {
             display: flex;
             flex-wrap: wrap;
             justify-content: center;
@@ -324,8 +323,7 @@
                 padding: 18px 20px;
             }
         }
-
-        .service-card:hover {
+                .service-card:hover {
             background: var(--bg-surface-hover);
             border-color: rgba(212, 175, 55, 0.45);
             transform: translateY(-1px);
@@ -502,8 +500,7 @@
             cursor: pointer;
             transition: all 0.2s ease;
         }
-
-        .barber-card:hover {
+                .barber-card:hover {
             border-color: rgba(212, 175, 55, 0.45);
             background: var(--bg-surface-hover);
         }
@@ -701,8 +698,7 @@
             cursor: not-allowed;
             opacity: 0.55;
         }
-
-        /* ==========================================================================
+                /* ==========================================================================
            PASSO 4: DADOS DO CLIENTE & CONFIRMAÇÃO
            ========================================================================== */
         .form-card {
@@ -901,9 +897,8 @@
             font-weight: 800;
             box-shadow: var(--shadow-gold);
             white-space: nowrap;
-        }
-
-        /* ==========================================================================
+            }
+                    /* ==========================================================================
            MODAIS (COMPROVANTE DIGITAL, MEUS AGENDAMENTOS & ADMIN)
            ========================================================================== */
         .modal-backdrop {
@@ -1260,12 +1255,11 @@
 
             <div class="address-banner">
                 <span class="status-dot"></span>
-                <span>Aberto • Seg a Sáb: 09h às 20h • Av. Raul de Oliveira Rodrigues (Av. 7), Qd 178, Lt 4, Lojas 1 e 2 - Piratininga, Niterói</span>
+                <span>Seg–Qui: 09h–12h e 14h–19h30 (Seg até 18h30) • Sex: 08h–12h e 14h–20h • Sáb: 08h–12h e 15h–20h • Dom: 09h–14h • Av. Raul de Oliveira Rodrigues (Av. 7), Qd 178, Lt 4, Lojas 1 e 2 - Piratininga, Niterói</span>
             </div>
         </div>
     </header>
-
-    <!-- ======================================================================
+        <!-- ======================================================================
          CONTEÚDO PRINCIPAL: FLUXO DE AGENDAMENTO EM 4 PASSOS
          ====================================================================== -->
     <main class="container">
@@ -1518,13 +1512,53 @@
             </div>
         </div>
     </div>
-
-    <!-- ======================================================================
+        <!-- ======================================================================
          JAVASCRIPT COMPLETO E AUTOCONTIDO
          ====================================================================== -->
     <script>
         const STORAGE_KEY = 'mr_jone_barbearia_app_v1';
         const BARBERSHOP_WHATSAPP = '5521989622789';
+
+        // Expediente oficial por dia da semana (0 = Dom, 1 = Seg ... 6 = Sáb)
+        const EXPEDIENTE_SEMANAL = {
+            1: [['09:00', '12:00'], ['14:00', '18:30']],
+            2: [['09:00', '12:00'], ['14:00', '19:30']],
+            3: [['09:00', '12:00'], ['14:00', '19:30']],
+            4: [['09:00', '12:00'], ['14:00', '19:30']],
+            5: [['08:00', '12:00'], ['14:00', '20:00']],
+            6: [['08:00', '12:00'], ['15:00', '20:00']],
+            0: [['09:00', '14:00']]
+        };
+
+        function horaParaMinutos(horaStr) {
+            const [h, m] = horaStr.split(':').map(Number);
+            return (h * 60) + m;
+        }
+
+        function minutosParaHora(totalMin) {
+            const h = String(Math.floor(totalMin / 60)).padStart(2, '0');
+            const m = String(totalMin % 60).padStart(2, '0');
+            return `${h}:${m}`;
+        }
+
+        function getTimeSlotsForDateISO(dateISO, stepMinutes = 30) {
+            if (!dateISO) return [];
+            const [y, m, d] = dateISO.split('-').map(Number);
+            const dt = new Date(y, m - 1, d);
+            const dayOfWeek = dt.getDay();
+            const turnos = EXPEDIENTE_SEMANAL[dayOfWeek] || [];
+            const slotsSet = new Set();
+
+            turnos.forEach(([startStr, endStr]) => {
+                const startMin = horaParaMinutos(startStr);
+                const endMin = horaParaMinutos(endStr);
+                for (let curr = startMin; curr <= endMin; curr += stepMinutes) {
+                    slotsSet.add(minutosParaHora(curr));
+                }
+            });
+
+            return Array.from(slotsSet).sort();
+        }
 
         // Catálogo Exato de Serviços e Combos com Preços Definidos pelo Cliente
         const INITIAL_SERVICES = [
@@ -1617,13 +1651,6 @@
                 initials: '★',
                 rating: '★ 5.0 (Agilidade Máxima)'
             }
-        ];
-
-        const ALL_TIME_SLOTS = [
-            '09:00', '09:30', '10:00', '10:30', '11:00', '11:30',
-            '12:00', '13:00', '13:30', '14:00', '14:30', '15:00',
-            '15:30', '16:00', '16:30', '17:00', '17:30', '18:00',
-            '18:30', '19:00', '19:30', '20:00'
         ];
 
         // Estado Global da Aplicação
@@ -1792,8 +1819,7 @@
             renderTimeSlots();
             updateSummaries();
         }
-
-        function generateUpcomingDates(daysCount = 14) {
+                function generateUpcomingDates(daysCount = 14) {
             const weekDays = ['Dom', 'Seg', 'Ter', 'Qua', 'Qui', 'Sex', 'Sáb'];
             const months = ['Jan', 'Fev', 'Mar', 'Abr', 'Mai', 'Jun', 'Jul', 'Ago', 'Set', 'Out', 'Nov', 'Dez'];
             const dates = [];
@@ -1802,7 +1828,6 @@
             for (let i = 0; i < daysCount; i++) {
                 const d = new Date(today);
                 d.setDate(today.getDate() + i);
-                if (d.getDay() === 0) continue; // Pula domingo (barbearia abre Seg a Sáb)
                 const iso = d.toISOString().split('T')[0];
                 dates.push({
                     iso,
@@ -1840,6 +1865,9 @@
             renderDates();
             renderTimeSlots();
             updateSummaries();
+            if (appState.adminLoggedIn) {
+                renderAdminBlockSlots();
+            }
         }
 
         function isSlotOccupied(dateISO, timeStr) {
@@ -1862,8 +1890,15 @@
                 ? `Horários para ${currentDateObj.fullLabel}`
                 : 'Horários disponíveis';
 
+            const daySlots = getTimeSlotsForDateISO(appState.selectedDateISO, 30);
             const grid = document.getElementById('slots-grid');
-            grid.innerHTML = ALL_TIME_SLOTS.map(time => {
+
+            if (daySlots.length === 0) {
+                grid.innerHTML = `<p style="grid-column: 1 / -1; text-align:center; color:var(--text-secondary); font-size:0.85rem; padding:12px 0;">Sem horários cadastrados para este dia.</p>`;
+                return;
+            }
+
+            grid.innerHTML = daySlots.map(time => {
                 const occupied = isSlotOccupied(appState.selectedDateISO, time);
                 const selected = appState.selectedTime === time && !occupied;
                 return `
@@ -2179,8 +2214,9 @@
             const dateISO = appState.selectedDateISO;
             document.getElementById('admin-block-date-label').textContent = dateISO;
             const blockedForDay = appState.blockedSlots[dateISO] || [];
+            const daySlots = getTimeSlotsForDateISO(dateISO, 30);
 
-            document.getElementById('admin-block-slots').innerHTML = ALL_TIME_SLOTS.map(time => {
+            document.getElementById('admin-block-slots').innerHTML = daySlots.map(time => {
                 const isBlocked = blockedForDay.includes(time);
                 return `
                     <button type="button"
@@ -2268,7 +2304,7 @@
             renderBarbers();
             renderDates();
             renderTimeSlots();
-            updateSummaries();
+                    updateSummaries();
         });
     </script>
 </body>
