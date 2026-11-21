@@ -61,8 +61,7 @@
         a { color: inherit; text-decoration: none; }
         button, input, select, textarea { font-family: inherit; color: inherit; }
         button { cursor: pointer; border: none; background: none; }
-
-        /* ==========================================================================
+                /* ==========================================================================
            LAYOUT PRINCIPAL & CABEÇALHO
            ========================================================================== */
         .container {
@@ -243,8 +242,7 @@
             border-radius: 999px;
             white-space: nowrap;
         }
-
-        /* ==========================================================================
+                /* ==========================================================================
            FILTROS DE CATEGORIA & CARDS DE SERVIÇOS E PLANOS
            ========================================================================== */
         .category-tabs {
@@ -349,7 +347,8 @@
             border-color: var(--gold-light);
             color: #0B0B0C;
         }
-                .service-info {
+
+        .service-info {
             flex: 1;
             display: flex;
             flex-direction: column;
@@ -528,8 +527,7 @@
         .barber-card.selected .barber-name { color: var(--gold-light); }
         .barber-role { font-size: 0.78rem; color: var(--text-secondary); margin-top: 2px; }
         .barber-rating { font-size: 0.75rem; color: var(--gold-primary); font-weight: 700; margin-top: 4px; }
-
-        /* ==========================================================================
+                /* ==========================================================================
            PASSO 3: DATA E HORÁRIOS INTELIGENTES (COM INTERVALO INÍCIO → FIM)
            ========================================================================== */
         .dates-scroller {
@@ -686,7 +684,7 @@
         }
 
         .field-group { display: flex; flex-direction: column; gap: 6px; }
-                .field-label { font-size: 0.8rem; font-weight: 600; color: var(--text-secondary); }
+        .field-label { font-size: 0.8rem; font-weight: 600; color: var(--text-secondary); }
 
         .field-input {
             width: 100%;
@@ -1014,7 +1012,7 @@
             font-size: 0.8rem;
             display: flex;
             flex-direction: column;
-                        align-items: center;
+            align-items: center;
             gap: 10px;
         }
 
@@ -1051,8 +1049,7 @@
     </style>
 </head>
 <body>
-
-    <div id="toast" class="toast-msg"></div>
+        <div id="toast" class="toast-msg"></div>
 
     <!-- ======================================================================
          CABEÇALHO PRINCIPAL COM LOGO EXCLUSIVA MR JONE
@@ -1153,19 +1150,11 @@
                 <span id="selected-counter" class="counter-badge">0 selecionado(s)</span>
             </div>
 
-            <div class="category-tabs" id="category-tabs">
-                <button type="button" class="cat-tab active" data-cat="todos" onclick="setCategoryFilter('todos')">Todos</button>
-                <button type="button" class="cat-tab" data-cat="Cortes" onclick="setCategoryFilter('Cortes')">Cortes</button>
-                <button type="button" class="cat-tab" data-cat="Combos" onclick="setCategoryFilter('Combos')">Combos</button>
-                <button type="button" class="cat-tab" data-cat="Planos Mensais" onclick="setCategoryFilter('Planos Mensais')">Planos Mensais (4x/mês)</button>
-                <button type="button" class="cat-tab" data-cat="Barba & Acabamentos" onclick="setCategoryFilter('Barba & Acabamentos')">Barba &amp; Acabamentos</button>
-                <button type="button" class="cat-tab" data-cat="Química" onclick="setCategoryFilter('Química')">Química</button>
-            </div>
+            <div class="category-tabs" id="category-tabs"></div>
 
             <div id="services-grid" class="services-grid"></div>
         </section>
-
-        <!-- PASSO 2: ESCOLHA DO PROFISSIONAL -->
+                <!-- PASSO 2: ESCOLHA DO PROFISSIONAL -->
         <section id="step-2" class="section-block">
             <div class="section-header">
                 <div class="step-title-group">
@@ -1183,7 +1172,7 @@
         <!-- PASSO 3: DATA E HORÁRIO INTELIGENTE -->
         <section id="step-3" class="section-block">
             <div class="section-header">
-                                <div class="step-title-group">
+                <div class="step-title-group">
                     <div class="step-badge">3</div>
                     <div>
                         <h2 class="section-title">Escolha a Data e o Horário</h2>
@@ -1211,8 +1200,7 @@
                 <div id="slots-grid" class="slots-grid"></div>
             </div>
         </section>
-
-        <!-- PASSO 4: DADOS DO CLIENTE & CONFIRMAÇÃO -->
+                <!-- PASSO 4: DADOS DO CLIENTE & CONFIRMAÇÃO -->
         <section id="step-4" class="section-block">
             <div class="section-header">
                 <div class="step-title-group">
@@ -1288,7 +1276,7 @@
          ====================================================================== -->
     <footer class="site-footer">
         <div><strong>BARBEARIA MR JONE</strong> • Av. Raul de Oliveira Rodrigues (Av. 7), Piratininga, Niterói - RJ</div>
-        <div>Instagram: <a href="https://instagram.com/barbeariaMr_Jone" target="_blank" style="color:var(--gold-light);">@barbeariaMr_Jone</a> • WhatsApp: <a href="https://wa.me/5521989622789" target="_blank" style="color:var(--gold-light);">(21) 98962-2789</a></div>
+        <div>Instagram: <a href="https://instagram.com/barbeariaMr_Jone" target="_blank" rel="noopener" style="color:var(--gold-light);">@barbeariaMr_Jone</a> • WhatsApp: <a href="https://wa.me/5521989622789" target="_blank" rel="noopener" style="color:var(--gold-light);">(21) 98962-2789</a></div>
         <button type="button" onclick="openAdminAuth()" class="admin-trigger">Gestão do Proprietário (Agenda, Equipe &amp; Contabilidade)</button>
     </footer>
 
@@ -1302,8 +1290,7 @@
             <button type="button" onclick="confirmBooking()" class="sticky-cta">Confirmar e Finalizar</button>
         </div>
     </div>
-
-    <!-- MODAL 1: COMPROVANTE DIGITAL -->
+        <!-- MODAL 1: COMPROVANTE DIGITAL -->
     <div id="receipt-modal" class="modal-backdrop">
         <div class="modal-card" style="max-width:520px;">
             <div class="modal-top">
@@ -1384,7 +1371,15 @@
         const STORAGE_KEY = 'mr_jone_barbearia_full_v2';
         const BARBERSHOP_WHATSAPP = '5521989622789';
 
-        // Expediente inicial configurado conforme print do proprietário
+        const DEFAULT_CATEGORIES = [
+            'Cortes',
+            'Combos',
+            'Planos Mensais',
+            'Barba & Acabamentos',
+            'Química'
+        ];
+
+        // Expediente inicial configurado conforme horário da barbearia
         const DEFAULT_EXPEDIENTE = {
             1: { ativo: true, name: 'Segunda', t1Inicio: '09:00', t1Fim: '12:00', t2Ativo: true, t2Inicio: '14:00', t2Fim: '18:30' },
             2: { ativo: true, name: 'Terça',   t1Inicio: '09:00', t1Fim: '12:00', t2Ativo: true, t2Inicio: '14:00', t2Fim: '19:30' },
@@ -1395,7 +1390,7 @@
             0: { ativo: true, name: 'Domingo', t1Inicio: '09:00', t1Fim: '14:00', t2Ativo: false, t2Inicio: '14:00', t2Fim: '18:00' }
         };
 
-        // Serviços com durações exatas solicitadas + Planos Mensais (4 atendimentos/mês)
+        // Serviços com durações + Planos Mensais (4 atendimentos/mês) — sem % visível ao cliente
         const INITIAL_SERVICES = [
             {
                 id: 'srv-corte-barba',
@@ -1495,7 +1490,7 @@
                 tag: '4x NO MÊS',
                 isPlan: true,
                 sessionsPerMonth: 4,
-                desc: 'Assinatura mensal com direito a 1 corte + barba por semana (4 atendimentos/mês). Cada sessão feita repassa R$ 18,75 de comissão (50% de R$ 37,50/sessão) ao barbeiro.'
+                desc: 'Assinatura mensal com direito a 1 corte + barba por semana (4 atendimentos/mês) e agendamento prioritário.'
             },
             {
                 id: 'plan-so-cabelo',
@@ -1506,7 +1501,7 @@
                 tag: '4x NO MÊS',
                 isPlan: true,
                 sessionsPerMonth: 4,
-                desc: 'Assinatura mensal com direito a 1 corte de cabelo por semana (4 atendimentos/mês). Cada corte feito repassa R$ 13,75 de comissão (50% de R$ 27,50/sessão) ao barbeiro.'
+                desc: 'Assinatura mensal com direito a 1 corte de cabelo por semana (4 atendimentos/mês) e agendamento prioritário.'
             },
             {
                 id: 'plan-so-barba',
@@ -1517,7 +1512,7 @@
                 tag: '4x NO MÊS',
                 isPlan: true,
                 sessionsPerMonth: 4,
-                desc: 'Assinatura mensal com direito a 1 barba por semana (4 atendimentos/mês). Cada barba feita repassa R$ 9,38 de comissão (50% de R$ 18,75/sessão) ao barbeiro.'
+                desc: 'Assinatura mensal com direito a 1 barba por semana (4 atendimentos/mês) e agendamento prioritário.'
             }
         ];
 
@@ -1531,16 +1526,16 @@
                 commissionRate: 0.50
             }
         ];
-
-        // Estado Global
+                // Estado Global
         let appState = {
             adminPassword: '1234',
-            slotStepMinutes: 15, // Intervalo fino de 15 min para encaixar serviços de 10, 15, 20, 30, 40, 50, 60 min sem desperdício
+            slotStepMinutes: 15,
             expediente: JSON.parse(JSON.stringify(DEFAULT_EXPEDIENTE)),
+            categories: [...DEFAULT_CATEGORIES],
             services: JSON.parse(JSON.stringify(INITIAL_SERVICES)),
             barbers: JSON.parse(JSON.stringify(INITIAL_BARBERS)),
             bookings: [],
-            blockedRanges: [], // [{ id, dateISO, barberId, startMin, endMin, reason }]
+            blockedRanges: [],
             customLogo: null,
             activeCategory: 'todos',
             selectedServiceIds: [],
@@ -1596,6 +1591,12 @@
                 if (parsed.slotStepMinutes) appState.slotStepMinutes = Number(parsed.slotStepMinutes);
                 if (parsed.expediente) appState.expediente = { ...DEFAULT_EXPEDIENTE, ...parsed.expediente };
                 if (Array.isArray(parsed.services) && parsed.services.length) appState.services = parsed.services;
+                if (Array.isArray(parsed.categories) && parsed.categories.length) {
+                    appState.categories = parsed.categories;
+                } else {
+                    const fromServices = [...new Set(appState.services.map(s => s.category).filter(Boolean))];
+                    appState.categories = fromServices.length ? fromServices : [...DEFAULT_CATEGORIES];
+                }
                 if (Array.isArray(parsed.barbers) && parsed.barbers.length) appState.barbers = parsed.barbers;
                 if (Array.isArray(parsed.bookings)) appState.bookings = parsed.bookings;
                 if (Array.isArray(parsed.blockedRanges)) appState.blockedRanges = parsed.blockedRanges;
@@ -1611,6 +1612,7 @@
                     adminPassword: appState.adminPassword,
                     slotStepMinutes: appState.slotStepMinutes,
                     expediente: appState.expediente,
+                    categories: appState.categories,
                     services: appState.services,
                     barbers: appState.barbers,
                     bookings: appState.bookings,
@@ -1638,10 +1640,6 @@
         // CÁLCULO CONTÁBIL DE COMISSÕES (50% SERVIÇOS AVULSOS + PLANOS MENSAIS)
         // ======================================================================
         function calcularFinanceiroAgendamento(booking) {
-            // Para cada item do agendamento:
-            // - Se for serviço avulso: valor gerado na sessão = price, comissão barbeiro = 50% de price.
-            // - Se for Plano Mensal (ex: R$ 150 / 4 semanas = R$ 37,50 por atendimento):
-            //   Cada corte/atendimento feito gera R$ 37,50 de receita proporcional e R$ 18,75 (50%) de comissão para o barbeiro que atendeu!
             let receitaSessao = 0;
             let comissaoBarbeiro = 0;
             let valorCobradoClienteNoDia = 0;
@@ -1652,7 +1650,6 @@
                 receitaSessao += valorPorSessao;
                 comissaoBarbeiro += valorPorSessao * 0.50;
 
-                // Se o cliente está contratando o plano agora, paga o valor cheio do plano; se já é assinante usando sessão, paga R$ 0 no dia
                 if (booking.payment === 'Plano Mensal (Assinante)' && item.isPlan) {
                     valorCobradoClienteNoDia += 0;
                 } else {
@@ -1669,13 +1666,29 @@
         }
 
         // ======================================================================
-        // PASSO 1: SERVIÇOS & PLANOS
+        // PASSO 1: SERVIÇOS, CATEGORIAS & PLANOS
         // ======================================================================
         function renderLogo() {
             const container = document.getElementById('brand-logo-container');
             if (appState.customLogo) {
                 container.innerHTML = `<img src="${appState.customLogo}" alt="Logo Barbearia Mr Jone">`;
             }
+        }
+
+        function renderCategoryTabs() {
+            const tabsContainer = document.getElementById('category-tabs');
+            if (!tabsContainer) return;
+
+            if (appState.activeCategory !== 'todos' && !appState.categories.includes(appState.activeCategory)) {
+                appState.activeCategory = 'todos';
+            }
+
+            const allCats = ['todos', ...appState.categories];
+            tabsContainer.innerHTML = allCats.map(cat => {
+                const isActive = appState.activeCategory === cat;
+                const label = cat === 'todos' ? 'Todos' : (cat === 'Planos Mensais' ? 'Planos Mensais (4x/mês)' : cat);
+                return `<button type="button" class="cat-tab ${isActive ? 'active' : ''}" data-cat="${cat}" onclick="setCategoryFilter('${cat.replace(/'/g, "\\'")}')">${label}</button>`;
+            }).join('');
         }
 
         function setCategoryFilter(cat) {
@@ -1691,6 +1704,12 @@
             const list = appState.activeCategory === 'todos'
                 ? appState.services
                 : appState.services.filter(s => s.category === appState.activeCategory);
+
+            if (list.length === 0) {
+                grid.innerHTML = `<p style="color:var(--text-secondary); padding:14px 0; font-size:0.86rem;">Nenhum item nesta categoria no momento.</p>`;
+                document.getElementById('selected-counter').textContent = `${appState.selectedServiceIds.length} selecionado(s)`;
+                return;
+            }
 
             grid.innerHTML = list.map(srv => {
                 const isSelected = appState.selectedServiceIds.includes(srv.id);
@@ -1755,7 +1774,7 @@
 
         function getSelectedTotalDuration() {
             const srvs = getSelectedServicesObjects();
-            if (srvs.length === 0) return 30; // Duração base para visualização antes de escolher
+            if (srvs.length === 0) return 30;
             return srvs.reduce((acc, s) => acc + Number(s.duration), 0);
         }
 
@@ -1791,13 +1810,13 @@
             renderTimeSlots();
             updateSummaries();
             if (appState.selectedServiceIds.length > 0) {
-                setTimeout(() => {
+                clearTimeout(window._autoScrollStepTimer);
+                window._autoScrollStepTimer = setTimeout(() => {
                     document.getElementById('step-3')?.scrollIntoView({ behavior: 'smooth', block: 'start' });
                 }, 250);
             }
         }
-
-        // ======================================================================
+                // ======================================================================
         // PASSO 3: DATAS & HORÁRIOS INTELIGENTES (BLOQUEIO POR DURAÇÃO REAL)
         // ======================================================================
         function generateUpcomingDates(daysCount = 15) {
@@ -1831,7 +1850,7 @@
             const scroller = document.getElementById('dates-scroller');
             scroller.innerHTML = dates.map(d => {
                 const isSelected = appState.selectedDateISO === d.iso;
-                                const cfgDia = appState.expediente[d.dayOfWeek];
+                const cfgDia = appState.expediente[d.dayOfWeek];
                 const fechado = !cfgDia || !cfgDia.ativo;
                 return `
                     <div class="date-card ${isSelected ? 'selected' : ''}" style="${fechado ? 'opacity:0.45;' : ''}" onclick="selectDate('${d.iso}')">
@@ -1851,9 +1870,7 @@
             updateSummaries();
         }
 
-        // Verifica se o intervalo [startMin, endMin) conflita com qualquer agendamento já marcado ou pausa bloqueada para o barbeiro
         function hasIntervalConflict(dateISO, barberId, startMin, endMin) {
-            // 1. Conflito com agendamentos existentes
             const bookingConflict = appState.bookings.some(b => {
                 if (b.status === 'cancelado') return false;
                 if (b.dateISO !== dateISO) return false;
@@ -1864,7 +1881,6 @@
             });
             if (bookingConflict) return true;
 
-            // 2. Conflito com pausas/bloqueios manuais do proprietário
             const pauseConflict = appState.blockedRanges.some(p => {
                 if (p.dateISO !== dateISO) return false;
                 if (p.barberId !== 'todos' && p.barberId !== barberId) return false;
@@ -1911,14 +1927,12 @@
                 turnos.push([horaParaMin(cfgDia.t2Inicio), horaParaMin(cfgDia.t2Fim)]);
             }
 
-            // Se for hoje, oculta horários que já passaram
             const now = new Date();
             const todayISO = `${now.getFullYear()}-${String(now.getMonth() + 1).padStart(2, '0')}-${String(now.getDate()).padStart(2, '0')}`;
             const nowMin = (now.getHours() * 60) + now.getMinutes();
 
             const candidateSlots = [];
             turnos.forEach(([tStart, tEnd]) => {
-                // O atendimento precisa começar e terminar dentro do expediente do turno (tStart <= s e s + durationMin <= tEnd)
                 for (let s = tStart; s + durationMin <= tEnd; s += step) {
                     if (currentDateObj.iso === todayISO && s <= nowMin) continue;
                     const e = s + durationMin;
@@ -1976,15 +1990,11 @@
             updateSummaries();
         }
 
-        // ======================================================================
-        // ATUALIZAÇÃO DOS RESUMOS
-        // ======================================================================
         function updateSummaries() {
             const selectedSrvs = getSelectedServicesObjects();
             const totalDuration = selectedSrvs.reduce((acc, s) => acc + Number(s.duration), 0);
             const barberObj = appState.barbers.find(b => b.id === appState.selectedBarberId) || appState.barbers[0];
 
-            // Calcula valor total considerando se é assinante usando sessão
             let totalPrice = 0;
             selectedSrvs.forEach(s => {
                 if (appState.selectedPayment === 'Plano Mensal (Assinante)' && s.isPlan) {
@@ -2027,23 +2037,8 @@
                 : formatBRL(totalPrice);
         }
 
-        function scrollToNextStep() {
-            if (appState.selectedStartMin === null) {
-                document.getElementById('step-3').scrollIntoView({ behavior: 'smooth' });
-            } else {
-                document.getElementById('step-4').scrollIntoView({ behavior: 'smooth' });
-            }
-        }
-
-        // ======================================================================
-        // CONFIRMAÇÃO DE AGENDAMENTO (BLOQUEIA O INTERVALO NA HORA!)
-        // ======================================================================
-        
-        // ======================================================================
-        // NOTIFICAÇÕES NO APARELHO / SOM / VIBRAÇÃO QUANDO CLIENTE AGENDA
-        // ======================================================================
         function requestDeviceNotificationPermission() {
-                    if (!('Notification' in window)) {
+            if (!('Notification' in window)) {
                 showToast('Este navegador não suporta notificação nativa do sistema.');
                 return;
             }
@@ -2106,7 +2101,6 @@
             }
         }
 
-        
         function sendBookingEmailNotification(booking) {
             const fin = calcularFinanceiroAgendamento(booking);
             const servicesText = booking.items.map(s => s.name).join(' + ');
@@ -2146,7 +2140,6 @@
                 resumo_completo: plainLines
             };
 
-            // Disparo imediato via AJAX para jhonyvr58@gmail.com assim que o cliente finaliza
             fetch('https://formsubmit.co/ajax/jhonyvr58@gmail.com', {
                 method: 'POST',
                 headers: {
@@ -2247,14 +2240,12 @@
 
             const waUrl = buildWhatsAppBookingUrl(booking);
 
-            // Atualiza imediatamente a grade de horários para refletir o novo bloqueio
             appState.selectedStartMin = null;
             renderTimeSlots();
             updateSummaries();
             openReceiptModal(booking, waUrl);
-        }
-
-        function buildWhatsAppBookingMessage(booking) {
+    }
+                function buildWhatsAppBookingMessage(booking) {
             const fin = calcularFinanceiroAgendamento(booking);
             const servicesText = booking.items.map(s => s.name).join(' + ');
             return [
@@ -2286,7 +2277,7 @@
                 navigator.clipboard.writeText(txt).then(() => {
                     showToast('Mensagem copiada! Cole no WhatsApp (21) 98962-2789.');
                 }).catch(() => {
-                                        fallbackCopyText(txt);
+                    fallbackCopyText(txt);
                 });
             } else {
                 fallbackCopyText(txt);
@@ -2337,6 +2328,7 @@
             linkEl.href = prebuiltWaUrl || buildWhatsAppBookingUrl(booking);
             linkEl.setAttribute('target', '_blank');
             linkEl.setAttribute('rel', 'noopener noreferrer');
+
             let copyBtn = document.getElementById('copy-wa-msg-btn');
             if (!copyBtn) {
                 copyBtn = document.createElement('button');
@@ -2349,6 +2341,7 @@
             }
             copyBtn.textContent = 'Copiar Mensagem Pronta p/ WhatsApp (21) 98962-2789';
             copyBtn.onclick = () => copyBookingWhatsAppMessage(booking.id);
+
             document.getElementById('receipt-modal').classList.add('open');
         }
 
@@ -2450,6 +2443,7 @@
             if (tabName === 'expediente') renderAdminExpediente();
             if (tabName === 'servicos') renderAdminServicos();
             if (tabName === 'equipe') renderAdminEquipe();
+            if (tabName === 'config') renderAdminConfig();
         }
 
         // --- ABA 1: CONTABILIDADE & COMISSÃO DE 50% (AVULSO + PLANOS MENSAIS) ---
@@ -2496,8 +2490,150 @@
 
                 if (!porBarbeiro[b.barberId]) {
                     porBarbeiro[b.barberId] = { name: b.barberName, atendimentos: 0, atendimentosPlano: 0, receitaGerada: 0, comissaoPagar: 0 };
+                }
+                porBarbeiro[b.barberId].atendimentos += 1;
+                if (temPlano) porBarbeiro[b.barberId].atendimentosPlano += 1;
+                porBarbeiro[b.barberId].receitaGerada += fin.receitaSessao;
+                porBarbeiro[b.barberId].comissaoPagar += fin.comissaoBarbeiro;
+            });
+
+            container.innerHTML = `
+                <div style="background:rgba(212,175,55,0.09); border:1px solid var(--border-gold); border-radius:12px; padding:12px; margin-bottom:14px; font-size:0.8rem;">
+                    <strong style="color:var(--gold-light);">Regra Contábil de Comissão (50%):</strong>
+                    <div style="color:var(--text-secondary); margin-top:4px;">
+                        • <strong>Serviços Avulsos:</strong> Barbeiro recebe 50% do valor do serviço.<br>
+                        • <strong>Plano Cabelo e Barba (R$ 150 / 4 sem):</strong> R$ 37,50 por corte feito → <strong>R$ 18,75 de comissão</strong> por atendimento.<br>
+                        • <strong>Plano Só Cabelo (R$ 110 / 4 sem):</strong> R$ 27,50 por corte feito → <strong>R$ 13,75 de comissão</strong> por atendimento.<br>
+                        • <strong>Plano Só Barba (R$ 75 / 4 sem):</strong> R$ 18,75 por barba feita → <strong>R$ 9,38 de comissão</strong> por atendimento.
+                    </div>
+                </div>
+
+                <div class="form-row" style="margin-bottom:14px;">
+                    <div class="field-group">
+                        <label class="field-label">Filtrar Período</label>
+                        <select class="field-input" style="padding:8px 10px;" onchange="appState.accountingFilterPeriod=this.value; renderAdminContabilidade();">
+                            <option value="hoje" ${appState.accountingFilterPeriod === 'hoje' ? 'selected' : ''}>Hoje (${todayISO})</option>
+                            <option value="mes" ${appState.accountingFilterPeriod === 'mes' ? 'selected' : ''}>Mês Atual (${currentMonthPrefix})</option>
+                            <option value="todos" ${appState.accountingFilterPeriod === 'todos' ? 'selected' : ''}>Todo o Histórico</option>
+                        </select>
+                    </div>
+                    <div class="field-group">
+                        <label class="field-label">Filtrar Profissional</label>
+                        <select class="field-input" style="padding:8px 10px;" onchange="appState.accountingFilterBarber=this.value; renderAdminContabilidade();">
+                            <option value="todos" ${appState.accountingFilterBarber === 'todos' ? 'selected' : ''}>Todos os Barbeiros</option>
+                            ${appState.barbers.map(b => `<option value="${b.id}" ${appState.accountingFilterBarber === b.id ? 'selected' : ''}>${b.name}</option>`).join('')}
+                        </select>
+                    </div>
+                </div>
+
+                <div class="kpi-grid">
+                    <div class="kpi-card">
+                        <div class="kpi-label">Faturamento Gerado</div>
+                        <div class="kpi-value">${formatBRL(totalReceita)}</div>
+                        <div class="kpi-sub">${filtered.length} atend. (${qtdAvulsos} avulsos / ${qtdPlanos} planos)</div>
+                    </div>
+                    <div class="kpi-card">
+                        <div class="kpi-label">Comissão Barbeiros (50%)</div>
+                        <div class="kpi-value" style="color:#86EFAC;">${formatBRL(totalComissao)}</div>
+                        <div class="kpi-sub">Repasse proporcional + avulsos</div>
+                    </div>
+                    <div class="kpi-card">
+                        <div class="kpi-label">Líquido Barbearia (50%)</div>
+                        <div class="kpi-value">${formatBRL(totalBarbearia)}</div>
+                        <div class="kpi-sub">Caixa da casa</div>
+                    </div>
+                </div>
+
+                <h4 style="color:var(--gold-light); font-size:0.92rem; margin-bottom:8px;">Resumo por Profissional</h4>
+                ${Object.values(porBarbeiro).map(pb => `
+                    <div class="admin-item-card" style="display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:8px;">
+                        <div>
+                            <strong style="font-size:0.92rem; color:var(--text-primary);">${pb.name}</strong>
+                            <div style="color:var(--text-secondary); font-size:0.78rem;">
+                                ${pb.atendimentos} atendimento(s) (${pb.atendimentosPlano} de plano mensal) • Produção: ${formatBRL(pb.receitaGerada)}
+                            </div>
+                        </div>
+                        <div style="text-align:right;">
+                            <div style="font-size:0.72rem; color:var(--text-secondary);">Comissão a Receber (50%)</div>
+                            <strong style="font-size:1.05rem; color:#86EFAC;">${formatBRL(pb.comissaoPagar)}</strong>
+                        </div>
+                    </div>
+                `).join('')}
+
+                <h4 style="color:var(--gold-light); font-size:0.92rem; margin:14px 0 8px;">Lançar Atendimento Manual (Balcão / Assinante)</h4>
+                <div class="admin-item-card" style="display:flex; flex-direction:column; gap:8px;">
+                    <div class="form-row">
+                        <input type="text" id="manual-client-name" class="field-input" style="padding:8px;" placeholder="Nome do Cliente">
+                        <select id="manual-barber-id" class="field-input" style="padding:8px;">
+                            ${appState.barbers.map(b => `<option value="${b.id}">${b.name}</option>`).join('')}
+                        </select>
+                    </div>
+                    <div class="form-row">
+                        <select id="manual-service-id" class="field-input" style="padding:8px;">
+                            ${appState.services.map(s => `<option value="${s.id}">${s.name} (${formatBRL(s.price)})</option>`).join('')}
+                        </select>
+                        <select id="manual-payment-type" class="field-input" style="padding:8px;">
+                            <option value="Pix">Avulso — Pix</option>
+                            <option value="Dinheiro">Avulso — Dinheiro</option>
+                            <option value="Cartão">Avulso — Cartão</option>
+                            <option value="Plano Mensal (Assinante)">Sessão de Plano Mensal</option>
+                        </select>
+                    </div>
+                    <button type="button" class="btn-gold-primary" style="padding:10px;" onclick="addManualAccountingEntry()">+ Registrar Atendimento na Contabilidade</button>
+                </div>
+            `;
         }
-                        porBarbeiro[b.barberId].atendimentos += 1;
+
+        function addManualAccountingEntry() {
+            const clientName = document.getElementById('manual-client-name').value.trim() || 'Cliente Balcão';
+            const barberId = document.getElementById('manual-barber-id').value;
+            const serviceId = document.getElementById('manual-service-id').value;
+            const payment = document.getElementById('manual-payment-type').value;
+
+            const barberObj = appState.barbers.find(b => b.id === barberId) || appState.barbers[0];
+            const srvObj = appState.services.find(s => s.id === serviceId) || appState.services[0];
+
+            const now = new Date();
+            const todayISO = `${now.getFullYear()}-${String(now.getMonth() + 1).padStart(2, '0')}-${String(now.getDate()).padStart(2, '0')}`;
+            const currentMonthPrefix = todayISO.slice(0, 7);
+
+            const filtered = validBookings.filter(b => {
+                if (appState.accountingFilterBarber !== 'todos' && b.barberId !== appState.accountingFilterBarber) return false;
+                if (appState.accountingFilterPeriod === 'hoje' && b.dateISO !== todayISO) return false;
+                if (appState.accountingFilterPeriod === 'mes' && !b.dateISO.startsWith(currentMonthPrefix)) return false;
+                return true;
+            });
+
+            let totalReceita = 0;
+            let totalComissao = 0;
+            let totalBarbearia = 0;
+            let qtdAvulsos = 0;
+            let qtdPlanos = 0;
+
+            const porBarbeiro = {};
+            appState.barbers.forEach(barb => {
+                porBarbeiro[barb.id] = {
+                    name: barb.name,
+                    atendimentos: 0,
+                    atendimentosPlano: 0,
+                    receitaGerada: 0,
+                    comissaoPagar: 0
+                };
+            });
+
+            filtered.forEach(b => {
+                const fin = calcularFinanceiroAgendamento(b);
+                totalReceita += fin.receitaSessao;
+                totalComissao += fin.comissaoBarbeiro;
+                totalBarbearia += fin.lucroBarbearia;
+
+                const temPlano = (b.items || []).some(i => i.isPlan);
+                if (temPlano) qtdPlanos++; else qtdAvulsos++;
+
+                if (!porBarbeiro[b.barberId]) {
+                    porBarbeiro[b.barberId] = { name: b.barberName, atendimentos: 0, atendimentosPlano: 0, receitaGerada: 0, comissaoPagar: 0 };
+                }
+                porBarbeiro[b.barberId].atendimentos += 1;
                 if (temPlano) porBarbeiro[b.barberId].atendimentosPlano += 1;
                 porBarbeiro[b.barberId].receitaGerada += fin.receitaSessao;
                 porBarbeiro[b.barberId].comissaoPagar += fin.comissaoBarbeiro;
@@ -2634,8 +2770,7 @@
             renderAdminContabilidade();
             showToast('Atendimento registrado e comissão calculada!');
         }
-
-        // --- ABA 2: AGENDA DE ATENDIMENTOS ---
+                // --- ABA 2: AGENDA DE ATENDIMENTOS ---
         function renderAdminAgenda() {
             const container = document.getElementById('admin-tab-agenda');
             if (appState.bookings.length === 0) {
@@ -2656,7 +2791,8 @@
                         </div>
                         <div style="display:flex; gap:8px; flex-wrap:wrap;">
                             ${b.status !== 'concluído' ? `<button type="button" class="success-btn" onclick="updateBookingStatus('${b.id}', 'concluído')">Concluir</button>` : ''}
-                                    ${b.status !== 'cancelado' ? `<button type="button" class="danger-btn" onclick="updateBookingStatus('${b.id}', 'cancelado')">Cancelar (Libera Horário)</button>` : ''}
+                            ${b.status !== 'cancelado' ? `<button type="button" class="danger-btn" onclick="updateBookingStatus('${b.id}', 'cancelado')">Cancelar (Libera Horário)</button>` : ''}
+                            <button type="button" class="danger-btn" onclick="deleteBookingRecord('${b.id}')">Excluir</button>
                         </div>
                     </div>
                 `;
@@ -2673,6 +2809,18 @@
                 renderTimeSlots();
                 showToast(`Status atualizado: ${status}`);
             }
+        }
+
+        function deleteBookingRecord(id) {
+            const idx = appState.bookings.findIndex(b => b.id === id);
+            if (idx < 0) return;
+            if (!confirm('Excluir este registro de agendamento permanentemente?')) return;
+            appState.bookings.splice(idx, 1);
+            saveData();
+            renderAdminAgenda();
+            renderAdminContabilidade();
+            renderTimeSlots();
+            showToast('Registro excluído da agenda!');
         }
 
         // --- ABA 3: CONFIGURAR EXPEDIENTE E PAUSAS ---
@@ -2795,7 +2943,7 @@
             const barberId = document.getElementById('pause-barber').value;
             const startMin = horaParaMin(document.getElementById('pause-ini').value);
             const endMin = horaParaMin(document.getElementById('pause-fim').value);
-                        const reason = document.getElementById('pause-reason').value.trim();
+            const reason = document.getElementById('pause-reason').value.trim();
 
             if (!dateISO || endMin <= startMin) {
                 showToast('Informe data e intervalo válido.');
@@ -2816,30 +2964,88 @@
             renderTimeSlots();
         }
 
-        // --- ABA 4: EDITAR PREÇOS E TEMPO (DURAÇÃO EM MINUTOS) DE CADA SERVIÇO ---
+        // --- ABA 4: CATEGORIAS, PREÇOS E TEMPO (DURAÇÃO EM MINUTOS) ---
         function renderAdminServicos() {
             const container = document.getElementById('admin-tab-servicos');
             container.innerHTML = `
+                <h4 style="color:var(--gold-light); font-size:0.92rem; margin-bottom:8px;">Categorias de Serviços &amp; Planos</h4>
+                <div class="admin-item-card" style="display:flex; flex-direction:column; gap:10px; margin-bottom:14px;">
+                    <div style="display:flex; gap:8px;">
+                        <input type="text" id="new-category-name" class="field-input" style="padding:8px;" placeholder="Nova categoria (Ex: Tratamentos, Infantil)">
+                        <button type="button" class="btn-gold-primary" style="width:auto; padding:8px 14px; white-space:nowrap;" onclick="addCategory()">+ Adicionar</button>
+                    </div>
+                    <div style="display:flex; flex-wrap:wrap; gap:8px;">
+                        ${appState.categories.map((cat, cIdx) => `
+                            <div style="display:inline-flex; align-items:center; gap:6px; background:#0B0B0C; border:1px solid var(--border-subtle); padding:5px 10px; border-radius:8px; font-size:0.78rem;">
+                                <span>${cat}</span>
+                                <button type="button" class="danger-btn" style="padding:2px 7px; font-size:0.7rem;" onclick="removeCategory(${cIdx})">Excluir</button>
+                            </div>
+                        `).join('')}
+                    </div>
+                </div>
+
                 <p style="font-size:0.8rem; color:var(--text-secondary); margin-bottom:10px;">
-                    Edite o nome, o preço (R$) ou o tempo médio em minutos de cada serviço/plano:
+                    Edite o nome, categoria, preço (R$) ou tempo médio em minutos de cada serviço/plano:
                 </p>
                 ${appState.services.map((s, idx) => `
                     <div class="admin-item-card" style="display:flex; flex-direction:column; gap:8px;">
                         <input type="text" class="field-input" style="padding:8px; font-weight:700;" value="${s.name}" onchange="updateServiceField(${idx}, 'name', this.value)">
                         <div class="form-row">
                             <div>
+                                <label class="field-label">Categoria</label>
+                                <select class="field-input" style="padding:8px;" onchange="updateServiceField(${idx}, 'category', this.value)">
+                                    ${appState.categories.map(cat => `<option value="${cat}" ${s.category === cat ? 'selected' : ''}>${cat}</option>`).join('')}
+                                </select>
+                            </div>
+                            <div>
                                 <label class="field-label">Preço (R$)</label>
                                 <input type="number" class="field-input" style="padding:8px;" value="${s.price}" onchange="updateServiceField(${idx}, 'price', Number(this.value))">
                             </div>
-                            <div>
-                                <label class="field-label">Tempo Médio (minutos)</label>
-                                <input type="number" step="5" min="5" class="field-input" style="padding:8px;" value="${s.duration}" onchange="updateServiceField(${idx}, 'duration', Number(this.value))">
-                            </div>
+                        </div>
+                        <div>
+                            <label class="field-label">Tempo Médio (minutos)</label>
+                            <input type="number" step="5" min="5" class="field-input" style="padding:8px;" value="${s.duration}" onchange="updateServiceField(${idx}, 'duration', Number(this.value))">
                         </div>
                     </div>
                 `).join('')}
                 <button type="button" class="btn-secondary" onclick="restoreDefaultServices()">Restaurar Serviços, Tempos e Planos Padrão</button>
             `;
+        }
+
+        function addCategory() {
+            const input = document.getElementById('new-category-name');
+            if (!input) return;
+            const nome = input.value.trim();
+            if (!nome) {
+                showToast('Digite o nome da categoria.');
+                return;
+            }
+            const exists = appState.categories.some(c => c.toLowerCase() === nome.toLowerCase());
+            if (exists) {
+                showToast('Essa categoria já existe.');
+                return;
+            }
+            appState.categories.push(nome);
+            input.value = '';
+            saveData();
+            renderCategoryTabs();
+            renderAdminServicos();
+            showToast('Categoria adicionada!');
+        }
+
+        function removeCategory(idx) {
+            const cat = appState.categories[idx];
+            if (!cat) return;
+            if (!confirm(`Excluir a categoria "${cat}"?`)) return;
+            appState.categories.splice(idx, 1);
+            if (appState.activeCategory === cat) {
+                appState.activeCategory = 'todos';
+            }
+            saveData();
+            renderCategoryTabs();
+            renderServices();
+            renderAdminServicos();
+            showToast('Categoria excluída!');
         }
 
         function updateServiceField(idx, field, val) {
@@ -2853,16 +3059,17 @@
         }
 
         function restoreDefaultServices() {
+            appState.categories = [...DEFAULT_CATEGORIES];
             appState.services = JSON.parse(JSON.stringify(INITIAL_SERVICES));
             saveData();
+            renderCategoryTabs();
             renderAdminServicos();
             renderServices();
             renderTimeSlots();
             updateSummaries();
             showToast('Tabela padrão restaurada!');
         }
-
-        // --- ABA 5: GERENCIAR BARBEIROS À DISPOSIÇÃO ---
+                // --- ABA 5: GERENCIAR BARBEIROS À DISPOSIÇÃO ---
         function renderAdminEquipe() {
             const container = document.getElementById('admin-tab-equipe');
             container.innerHTML = `
@@ -2989,6 +3196,7 @@
             loadSavedData();
             updateHeaderHoursBanner();
             renderLogo();
+            renderCategoryTabs();
             renderServices();
             renderBarbers();
             renderDates();
