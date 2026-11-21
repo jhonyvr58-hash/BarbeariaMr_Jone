@@ -1,3 +1,4 @@
+<!-- === INÍCIO PARTE 1/14 === -->
 <!DOCTYPE html>
 <html lang="pt-BR">
 <head>
@@ -61,7 +62,9 @@
         a { color: inherit; text-decoration: none; }
         button, input, select, textarea { font-family: inherit; color: inherit; }
         button { cursor: pointer; border: none; background: none; }
-                /* ==========================================================================
+<!-- === FIM PARTE 1/14 === -->
+/* === INÍCIO PARTE 2/14 === */
+        /* ==========================================================================
            LAYOUT PRINCIPAL & CABEÇALHO
            ========================================================================== */
         .container {
@@ -242,7 +245,9 @@
             border-radius: 999px;
             white-space: nowrap;
         }
-                /* ==========================================================================
+/* === FIM PARTE 2/14 === */
+/* === INÍCIO PARTE 3/14 === */
+        /* ==========================================================================
            FILTROS DE CATEGORIA & CARDS DE SERVIÇOS E PLANOS
            ========================================================================== */
         .category-tabs {
@@ -527,7 +532,9 @@
         .barber-card.selected .barber-name { color: var(--gold-light); }
         .barber-role { font-size: 0.78rem; color: var(--text-secondary); margin-top: 2px; }
         .barber-rating { font-size: 0.75rem; color: var(--gold-primary); font-weight: 700; margin-top: 4px; }
-                                       /* ==========================================================================
+/* === FIM PARTE 3/14 === */
+ /* === INÍCIO PARTE 4/14 === */
+        /* ==========================================================================
            PASSO 3: DATA E HORÁRIOS INTELIGENTES (COM INTERVALO INÍCIO → FIM)
            ========================================================================== */
         .dates-scroller {
@@ -1049,7 +1056,9 @@
     </style>
 </head>
 <body>
-        <div id="toast" class="toast-msg"></div>
+<!-- === FIM PARTE 4/14 === -->
+<!-- === INÍCIO PARTE 5/14 === -->
+    <div id="toast" class="toast-msg"></div>
 
     <!-- ======================================================================
          CABEÇALHO PRINCIPAL COM LOGO EXCLUSIVA MR JONE
@@ -1153,8 +1162,10 @@
             <div class="category-tabs" id="category-tabs"></div>
 
             <div id="services-grid" class="services-grid"></div>
-    </section>
-            <!-- PASSO 2: ESCOLHA DO PROFISSIONAL -->
+        </section>
+<!-- === FIM PARTE 5/14 === -->
+<!-- === INÍCIO PARTE 6/14 === -->
+        <!-- PASSO 2: ESCOLHA DO PROFISSIONAL -->
         <section id="step-2" class="section-block">
             <div class="section-header">
                 <div class="step-title-group">
@@ -1200,7 +1211,9 @@
                 <div id="slots-grid" class="slots-grid"></div>
             </div>
         </section>
-                <!-- PASSO 4: DADOS DO CLIENTE & CONFIRMAÇÃO -->
+<!-- === FIM PARTE 6/14 === -->
+<!-- === INÍCIO PARTE 7/14 === -->
+        <!-- PASSO 4: DADOS DO CLIENTE & CONFIRMAÇÃO -->
         <section id="step-4" class="section-block">
             <div class="section-header">
                 <div class="step-title-group">
@@ -1290,7 +1303,9 @@
             <button type="button" onclick="confirmBooking()" class="sticky-cta">Confirmar e Finalizar</button>
         </div>
     </div>
-        <!-- MODAL 1: COMPROVANTE DIGITAL -->
+<!-- === FIM PARTE 7/14 === -->
+<!-- === INÍCIO PARTE 8/14 === -->
+    <!-- MODAL 1: COMPROVANTE DIGITAL -->
     <div id="receipt-modal" class="modal-backdrop">
         <div class="modal-card" style="max-width:520px;">
             <div class="modal-top">
@@ -1364,12 +1379,14 @@
             </div>
         </div>
     </div>
-        <!-- ======================================================================
+<!-- === FIM PARTE 8/14 === --> 
+// === INÍCIO PARTE 9/14 ===
+    <!-- ======================================================================
          JAVASCRIPT COMPLETO (FIREBASE REALTIME + DURAÇÃO + GESTÃO)
          ====================================================================== -->
     <script>
         const STORAGE_KEY = 'mr_jone_barbearia_full_v2';
-        const FIREBASE_DB_URL = 'https://barbeariamrjone-f3e8a-default-rtdb.firebaseio.com'; //[span_2](start_span)[span_2](end_span)
+        const FIREBASE_DB_URL = 'https://barbeariamrjone-f3e8a-default-rtdb.firebaseio.com';
         const BARBERSHOP_WHATSAPP = '5521989622789';
 
         const DEFAULT_CATEGORIES = [
@@ -1391,7 +1408,7 @@
             0: { ativo: true, name: 'Domingo', t1Inicio: '09:00', t1Fim: '14:00', t2Ativo: false, t2Inicio: '14:00', t2Fim: '18:00' }
         };
 
-        // Serviços com durações + Planos Mensais (4 atendimentos/mês) — sem comissão visível ao cliente[span_3](start_span)[span_3](end_span)
+        // Serviços com durações + Planos Mensais (4 atendimentos/mês)
         const INITIAL_SERVICES = [
             {
                 id: 'srv-corte-barba',
@@ -1491,7 +1508,7 @@
                 tag: '4x NO MÊS',
                 isPlan: true,
                 sessionsPerMonth: 4,
-                desc: 'Assinatura mensal com direito a 1 corte + barba por semana (4 atendimentos/mês) e agendamento prioritário.' //[span_4](start_span)[span_4](end_span)
+                desc: 'Assinatura mensal com direito a 1 corte + barba por semana (4 atendimentos/mês) e agendamento prioritário.'
             },
             {
                 id: 'plan-so-cabelo',
@@ -1502,7 +1519,7 @@
                 tag: '4x NO MÊS',
                 isPlan: true,
                 sessionsPerMonth: 4,
-                desc: 'Assinatura mensal com direito a 1 corte de cabelo por semana (4 atendimentos/mês) e agendamento prioritário.' //[span_5](start_span)[span_5](end_span)
+                desc: 'Assinatura mensal com direito a 1 corte de cabelo por semana (4 atendimentos/mês) e agendamento prioritário.'
             },
             {
                 id: 'plan-so-barba',
@@ -1513,7 +1530,7 @@
                 tag: '4x NO MÊS',
                 isPlan: true,
                 sessionsPerMonth: 4,
-                desc: 'Assinatura mensal com direito a 1 barba por semana (4 atendimentos/mês) e agendamento prioritário.' //[span_6](start_span)[span_6](end_span)
+                desc: 'Assinatura mensal com direito a 1 barba por semana (4 atendimentos/mês) e agendamento prioritário.'
             }
         ];
 
@@ -1527,7 +1544,9 @@
                 commissionRate: 0.50
             }
         ];
-                // Estado Global
+// === FIM PARTE 9/14 ===
+// === INÍCIO PARTE 10/14 ===
+        // Estado Global
         let appState = {
             adminPassword: '1234',
             slotStepMinutes: 15,
@@ -1738,8 +1757,10 @@
             firebaseSyncInterval = setInterval(() => {
                 syncBookingsFromFirebase({ silentNewAlert: false });
             }, 6000);
-            }
-                function updateHeaderHoursBanner() {
+        }
+// === FIM PARTE 10/14 ===
+// === INÍCIO PARTE 11/14 ===
+        function updateHeaderHoursBanner() {
             const e = appState.expediente;
             const fmtDia = (d) => {
                 if (!e[d] || !e[d].ativo) return `${e[d]?.name || ''}: Fechado`;
@@ -1932,7 +1953,9 @@
                 }, 250);
             }
         }
-                // ======================================================================
+// === FIM PARTE 11/14 ===
+// === INÍCIO PARTE 12/14 ===
+        // ======================================================================
         // PASSO 3: DATAS & HORÁRIOS INTELIGENTES (BLOQUEIO POR DURAÇÃO REAL)
         // ======================================================================
         function generateUpcomingDates(daysCount = 15) {
@@ -2360,14 +2383,16 @@
             triggerBookingNotification(booking);
             sendBookingEmailNotification(booking);
 
-            const waUrl = buildWhatsAppBookingUrl(bookingUrl(booking);
+            const waUrl =buildWhatsAppBookingUrl(booking);
 
             appState.selectedStartMin = null;
             renderTimeSlots();
             updateSummaries();
             openReceiptModal(booking, waUrl);
         }
-                function buildWhatsAppBookingMessage(booking) {
+// === FIM PARTE 12/14 ===
+// === INÍCIO PARTE 13/14 ===
+        function buildWhatsAppBookingMessage(booking) {
             const fin = calcularFinanceiroAgendamento(booking);
             const servicesText = booking.items.map(s => s.name).join(' + ');
             return [
@@ -2759,7 +2784,9 @@
             renderAdminAgenda();
             showToast('Atendimento registrado e comissão calculada!');
         }
-                // --- ABA 2: AGENDA DE ATENDIMENTOS ---
+// === FIM PARTE 13/14 ===
+// === INÍCIO PARTE 14/14 ===
+        // --- ABA 2: AGENDA DE ATENDIMENTOS ---
         function renderAdminAgenda() {
             const container = document.getElementById('admin-tab-agenda');
             if (appState.bookings.length === 0) {
@@ -3202,3 +3229,4 @@
     </script>
 </body>
 </html>
+<!-- === FIM PARTE 14/14 === -->
