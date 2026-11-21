@@ -1,0 +1,1100 @@
+<!-- === INÍCIO PARTE 1/15 === -->
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0">
+    <meta name="theme-color" content="#0B0B0C">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="mobile-web-app-capable" content="yes">
+    <title>App Gestão | BARBEARIA MR JONE</title>
+    <style>
+        :root {
+            --bg-main: #0B0B0C;
+            --bg-surface: #141417;
+            --bg-surface-hover: #1B1B20;
+            --gold-primary: #D4AF37;
+            --gold-light: #F3D97E;
+            --gold-dark: #9E7C1E;
+            --border-subtle: rgba(255, 255, 255, 0.09);
+            --border-gold: rgba(212, 175, 55, 0.45);
+            --text-primary: #F4F4F6;
+            --text-secondary: #A8A8B3;
+            --text-muted: #737380;
+            --success: #22C55E;
+            --danger: #EF4444;
+            --radius-sm: 10px;
+            --radius-md: 14px;
+            --radius-lg: 20px;
+            --shadow-gold: 0 6px 24px rgba(212, 175, 55, 0.25);
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            -webkit-tap-highlight-color: transparent;
+        }
+
+        html {
+            background-color: var(--bg-main);
+            color: var(--text-primary);
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+            line-height: 1.5;
+        }
+
+        body {
+            background-color: var(--bg-main);
+            background-image: radial-gradient(circle at 50% 0%, rgba(212, 175, 55, 0.11) 0%, transparent 45%);
+            color: var(--text-primary);
+            min-height: 100vh;
+            padding-bottom: 48px;
+            overflow-x: hidden;
+        }
+
+        button, input, select { font-family: inherit; color: inherit; }
+        button { cursor: pointer; border: none; background: none; }
+<!-- === FIM PARTE 1/15 === -->
+/* === INÍCIO PARTE 2/15 === */
+        .app-header {
+            background: linear-gradient(180deg, #070708 0%, #111115 100%);
+            border-bottom: 1px solid var(--border-gold);
+            padding: 16px;
+            position: sticky;
+            top: 0;
+            z-index: 50;
+            box-shadow: 0 8px 28px rgba(0, 0, 0, 0.75);
+        }
+
+        .app-header-inner {
+            max-width: 860px;
+            margin: 0 auto;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 10px;
+            flex-wrap: wrap;
+        }
+
+        .app-brand {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .app-badge-icon {
+            width: 40px;
+            height: 40px;
+            border-radius: 12px;
+            background: linear-gradient(135deg, var(--gold-light), var(--gold-primary));
+            color: #0B0B0C;
+            font-weight: 900;
+            font-size: 1rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            box-shadow: var(--shadow-gold);
+        }
+
+        .app-title { font-size: 1rem; font-weight: 800; color: var(--gold-light); }
+        .app-sub { font-size: 0.74rem; color: var(--text-secondary); display: flex; align-items: center; gap: 6px; }
+
+        .live-dot {
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+            background: var(--success);
+            box-shadow: 0 0 8px var(--success);
+            display: inline-block;
+        }
+
+        .header-actions {
+            display: flex;
+            gap: 8px;
+            flex-wrap: wrap;
+        }
+
+        .chip-btn {
+            padding: 7px 12px;
+            border-radius: 999px;
+            background: var(--bg-surface);
+            border: 1px solid var(--border-subtle);
+            font-size: 0.76rem;
+            font-weight: 700;
+            color: var(--text-primary);
+        }
+
+        .chip-btn.gold {
+            border-color: var(--border-gold);
+            color: var(--gold-light);
+        }
+
+        .container {
+            max-width: 860px;
+            margin: 0 auto;
+            padding: 16px;
+        }
+<!-- === FIM PARTE 2/15 === -->
+ /* === INÍCIO PARTE 3/15 === */
+        .login-card, .panel-card {
+            background: var(--bg-surface);
+            border: 1px solid var(--border-gold);
+            border-radius: var(--radius-lg);
+            padding: 20px;
+            box-shadow: 0 14px 36px rgba(0, 0, 0, 0.7);
+        }
+
+        .login-card {
+            max-width: 440px;
+            margin: 36px auto;
+            display: flex;
+            flex-direction: column;
+            gap: 14px;
+        }
+
+        .field-label { font-size: 0.8rem; font-weight: 700; color: var(--text-secondary); display: block; margin-bottom: 5px; }
+
+        .field-input {
+            width: 100%;
+            padding: 11px 13px;
+            border-radius: var(--radius-sm);
+            background: #0B0B0C;
+            border: 1px solid var(--border-subtle);
+            color: var(--text-primary);
+            font-size: 0.9rem;
+            outline: none;
+        }
+
+        .field-input:focus { border-color: var(--gold-primary); }
+
+        .form-row {
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 10px;
+        }
+
+        @media (min-width: 580px) {
+            .form-row { grid-template-columns: 1fr 1fr; }
+        }
+
+        .btn-gold-primary {
+            width: 100%;
+            padding: 13px 18px;
+            border-radius: var(--radius-md);
+            background: linear-gradient(135deg, var(--gold-light), var(--gold-primary), var(--gold-dark));
+            color: #0B0B0C;
+            font-size: 0.9rem;
+            font-weight: 800;
+            text-transform: uppercase;
+            letter-spacing: 0.04em;
+            box-shadow: var(--shadow-gold);
+        }
+
+        .btn-secondary {
+            width: 100%;
+            padding: 11px 14px;
+            border-radius: var(--radius-md);
+            background: #0E0E11;
+            border: 1px solid var(--border-subtle);
+            color: var(--text-primary);
+            font-size: 0.84rem;
+            font-weight: 700;
+        }
+
+        .admin-tabs {
+            display: flex;
+            gap: 6px;
+            margin-bottom: 16px;
+            flex-wrap: wrap;
+        }
+
+        .admin-tab-btn {
+            padding: 8px 12px;
+            border-radius: 9px;
+            background: #0E0E11;
+            border: 1px solid var(--border-subtle);
+            font-size: 0.78rem;
+            font-weight: 700;
+            color: var(--text-secondary);
+        }
+
+        .admin-tab-btn.active {
+            background: linear-gradient(135deg, var(--gold-light), var(--gold-primary));
+            color: #0B0B0C;
+            border-color: var(--gold-light);
+        }
+
+        .kpi-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+            gap: 10px;
+            margin-bottom: 16px;
+        }
+
+        .kpi-card {
+            background: #0E0E11;
+            border: 1px solid var(--border-subtle);
+            border-radius: 12px;
+            padding: 12px;
+        }
+
+        .kpi-label { font-size: 0.72rem; color: var(--text-secondary); text-transform: uppercase; }
+        .kpi-value { font-size: 1.2rem; font-weight: 800; color: var(--gold-light); margin-top: 4px; }
+        .kpi-sub { font-size: 0.72rem; color: var(--text-muted); margin-top: 2px; }
+
+        .admin-item-card {
+            background: #0E0E11;
+            border: 1px solid var(--border-subtle);
+            border-radius: 12px;
+            padding: 12px;
+            margin-bottom: 10px;
+            font-size: 0.82rem;
+        }
+
+        .danger-btn {
+            padding: 6px 10px;
+            border-radius: 7px;
+            background: rgba(239, 68, 68, 0.16);
+            border: 1px solid rgba(239, 68, 68, 0.4);
+            color: #FCA5A5;
+            font-size: 0.74rem;
+            font-weight: 700;
+        }
+
+        .success-btn {
+            padding: 6px 10px;
+            border-radius: 7px;
+            background: rgba(34, 197, 94, 0.16);
+            border: 1px solid rgba(34, 197, 94, 0.4);
+            color: #86EFAC;
+            font-size: 0.74rem;
+            font-weight: 700;
+        }
+
+        .toast-msg {
+            position: fixed;
+            top: 16px;
+            left: 50%;
+            transform: translateX(-50%) translateY(-140%);
+            background: #1A1A1F;
+            border: 1px solid var(--gold-primary);
+            color: var(--text-primary);
+            padding: 12px 18px;
+            border-radius: 12px;
+            font-size: 0.84rem;
+            font-weight: 600;
+            box-shadow: 0 12px 30px rgba(0, 0, 0, 0.85);
+            z-index: 999;
+            transition: transform 0.28s ease;
+            max-width: 92vw;
+            text-align: center;
+        }
+
+        .toast-msg.show { transform: translateX(-50%) translateY(0); }
+    </style>
+</head>
+<body>
+<!-- === FIM PARTE 3/15 === -->
+<!-- === INÍCIO PARTE 4/15 === -->
+    <div id="toast" class="toast-msg"></div>
+
+    <header class="app-header">
+        <div class="app-header-inner">
+            <div class="app-brand">
+                <div class="app-badge-icon">MJ</div>
+                <div>
+                    <div class="app-title">GESTÃO MR JONE</div>
+                    <div class="app-sub"><span class="live-dot"></span><span id="sync-status-label">Sincronizando Firebase...</span></div>
+                </div>
+            </div>
+            <div class="header-actions">
+                <button type="button" class="chip-btn gold" onclick="syncBookingsFromFirebase({ silentNewAlert: true }); showToast('Agenda atualizada!');">Atualizar</button>
+                <a href="./index.html" class="chip-btn">Link Cliente</a>
+                <button type="button" id="logout-btn" class="chip-btn" style="display:none;" onclick="logoutAdminSession()">Sair</button>
+            </div>
+        </div>
+    </header>
+
+    <main class="container">
+        <div id="login-view" class="login-card">
+            <div>
+                <h1 style="font-size:1.15rem; font-weight:800; color:var(--gold-light);">Acesso Exclusivo do Proprietário</h1>
+                <p style="font-size:0.82rem; color:var(--text-secondary); margin-top:4px;">
+                    Marque <strong>Manter conectado neste celular</strong> para não precisar digitar a senha toda vez ao abrir o app.
+                </p>
+            </div>
+            <div>
+                <label class="field-label" for="pass-input">Senha de Gestão (padrão: 1234)</label>
+                <input type="password" id="pass-input" class="field-input" placeholder="Digite sua senha">
+            </div>
+            <label style="display:flex; align-items:center; gap:8px; font-size:0.82rem; color:var(--text-primary); cursor:pointer;">
+                <input type="checkbox" id="remember-device-check" checked>
+                <span>Manter conectado neste celular</span>
+            </label>
+            <button type="button" class="btn-gold-primary" onclick="verifyLogin()">Entrar no App de Gestão</button>
+        </div>
+
+        <div id="dashboard-view" class="panel-card" style="display:none;">
+            <div class="admin-tabs">
+                <button type="button" class="admin-tab-btn active" onclick="switchTab('agenda', this)">Agenda Clientes</button>
+                <button type="button" class="admin-tab-btn" onclick="switchTab('contabilidade', this)">Contabilidade &amp; 50%</button>
+                <button type="button" class="admin-tab-btn" onclick="switchTab('expediente', this)">Expediente &amp; Pausas</button>
+                <button type="button" class="admin-tab-btn" onclick="switchTab('servicos', this)">Serviços &amp; Planos</button>
+                <button type="button" class="admin-tab-btn" onclick="switchTab('equipe', this)">Barbeiros</button>
+                <button type="button" class="admin-tab-btn" onclick="switchTab('config', this)">App &amp; Senha</button>
+            </div>
+
+            <div id="tab-agenda"></div>
+            <div id="tab-contabilidade" style="display:none;"></div>
+            <div id="tab-expediente" style="display:none;"></div>
+            <div id="tab-servicos" style="display:none;"></div>
+            <div id="tab-equipe" style="display:none;"></div>
+            <div id="tab-config" style="display:none;"></div>
+        </div>
+    </main>
+<!-- === FIM PARTE 4/15 === -->
+<!-- === INÍCIO PARTE 5/15 === -->
+    <script>
+        const STORAGE_KEY = 'mr_jone_barbearia_full_v2';
+        const SESSION_KEY = 'mr_jone_gestao_auth_v1';
+        const FIREBASE_DB_URL = 'https://barbeariamrjone-f3e8a-default-rtdb.firebaseio.com'; //
+
+        const DEFAULT_CATEGORIES = ['Cortes', 'Combos', 'Planos Mensais', 'Barba & Acabamentos', 'Química'];
+
+        const DEFAULT_EXPEDIENTE = {
+            1: { ativo: true, name: 'Segunda', t1Inicio: '09:00', t1Fim: '12:00', t2Ativo: true, t2Inicio: '14:00', t2Fim: '18:30' },
+            2: { ativo: true, name: 'Terça',   t1Inicio: '09:00', t1Fim: '12:00', t2Ativo: true, t2Inicio: '14:00', t2Fim: '19:30' },
+            3: { ativo: true, name: 'Quarta',  t1Inicio: '09:00', t1Fim: '12:00', t2Ativo: true, t2Inicio: '14:00', t2Fim: '19:30' },
+            4: { ativo: true, name: 'Quinta',  t1Inicio: '09:00', t1Fim: '12:00', t2Ativo: true, t2Inicio: '14:00', t2Fim: '19:30' },
+            5: { ativo: true, name: 'Sexta',   t1Inicio: '08:00', t1Fim: '12:00', t2Ativo: true, t2Inicio: '14:00', t2Fim: '20:00' },
+            6: { ativo: true, name: 'Sábado',  t1Inicio: '08:00', t1Fim: '12:00', t2Ativo: true, t2Inicio: '15:00', t2Fim: '20:00' },
+            0: { ativo: true, name: 'Domingo', t1Inicio: '09:00', t1Fim: '14:00', t2Ativo: false, t2Inicio: '14:00', t2Fim: '18:00' }
+        };
+
+        const INITIAL_SERVICES = [
+            { id: 'srv-corte-barba', name: 'Cabelo e Barba (Combo Completo)', price: 65, duration: 50, category: 'Combos', isPlan: false, sessionsPerMonth: 1 },
+            { id: 'srv-degrade', name: 'Corte Degradê / Disfarçado / Navalhado', price: 40, duration: 40, category: 'Cortes', isPlan: false, sessionsPerMonth: 1 },
+            { id: 'srv-um-pente', name: 'Corte (Um Pente Só)', price: 35, duration: 30, category: 'Cortes', isPlan: false, sessionsPerMonth: 1 },
+            { id: 'srv-barba', name: 'Barba Completa', price: 30, duration: 20, category: 'Barba & Acabamentos', isPlan: false, sessionsPerMonth: 1 },
+            { id: 'srv-sobrancelha', name: 'Sobrancelha', price: 8, duration: 10, category: 'Barba & Acabamentos', isPlan: false, sessionsPerMonth: 1 },
+            { id: 'srv-pigmentacao', name: 'Pigmentação', price: 15, duration: 15, category: 'Barba & Acabamentos', isPlan: false, sessionsPerMonth: 1 },
+            { id: 'srv-platinado', name: 'Platinado ou Luzes + Corte', price: 100, duration: 60, category: 'Química', isPlan: false, sessionsPerMonth: 1 },
+            { id: 'srv-pezinho', name: 'Só Pezinho (Acabamento)', price: 10, duration: 15, category: 'Barba & Acabamentos', isPlan: false, sessionsPerMonth: 1 },
+            { id: 'plan-cabelo-barba', name: 'Plano Mensal: Cabelo e Barba (Toda Semana)', price: 150, duration: 50, category: 'Planos Mensais', isPlan: true, sessionsPerMonth: 4 },
+            { id: 'plan-so-cabelo', name: 'Plano Mensal: Só Cabelo (Toda Semana)', price: 110, duration: 40, category: 'Planos Mensais', isPlan: true, sessionsPerMonth: 4 },
+            { id: 'plan-so-barba', name: 'Plano Mensal: Só Barba (Toda Semana)', price: 75, duration: 20, category: 'Planos Mensais', isPlan: true, sessionsPerMonth: 4 }
+        ];
+
+        const INITIAL_BARBERS = [
+            { id: 'mr-jone', name: 'Mr. Jone', role: 'Barbeiro Proprietário', initials: 'MJ', active: true, commissionRate: 0.50 }
+        ];
+<!-- === FIM PARTE 5/15 === -->
+<!-- === INÍCIO PARTE 6/15 === -->
+        let appState = {
+            adminPassword: '1234',
+            slotStepMinutes: 15,
+            expediente: JSON.parse(JSON.stringify(DEFAULT_EXPEDIENTE)),
+            categories: [...DEFAULT_CATEGORIES],
+            services: JSON.parse(JSON.stringify(INITIAL_SERVICES)),
+            barbers: JSON.parse(JSON.stringify(INITIAL_BARBERS)),
+            bookings: [],
+            blockedRanges: [],
+            accountingFilterBarber: 'todos',
+            accountingFilterPeriod: 'mes'
+        };
+
+        let knownBookingIds = new Set();
+        let pollTimer = null;
+
+        function horaParaMin(hhmm) {
+            if (!hhmm || !hhmm.includes(':')) return 0;
+            const [h, m] = hhmm.split(':').map(Number);
+            return (h * 60) + m;
+        }
+
+        function minParaHora(totalMin) {
+            const h = String(Math.floor(totalMin / 60)).padStart(2, '0');
+            const m = String(totalMin % 60).padStart(2, '0');
+            return `${h}:${m}`;
+        }
+
+        function formatBRL(val) {
+            return Number(val || 0).toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' });
+        }
+
+        function showToast(msg) {
+            const t = document.getElementById('toast');
+            t.textContent = msg;
+            t.classList.add('show');
+            clearTimeout(window._toastTimer);
+            window._toastTimer = setTimeout(() => t.classList.remove('show'), 3200);
+        }
+
+        function loadSavedData() {
+            try {
+                const raw = localStorage.getItem(STORAGE_KEY);
+                if (!raw) return;
+                const parsed = JSON.parse(raw);
+                if (parsed.adminPassword) appState.adminPassword = parsed.adminPassword;
+                if (parsed.slotStepMinutes) appState.slotStepMinutes = Number(parsed.slotStepMinutes);
+                if (parsed.expediente) appState.expediente = { ...DEFAULT_EXPEDIENTE, ...parsed.expediente };
+                if (Array.isArray(parsed.services) && parsed.services.length) appState.services = parsed.services;
+                if (Array.isArray(parsed.categories) && parsed.categories.length) appState.categories = parsed.categories;
+                if (Array.isArray(parsed.barbers) && parsed.barbers.length) appState.barbers = parsed.barbers;
+                if (Array.isArray(parsed.bookings)) appState.bookings = parsed.bookings;
+                if (Array.isArray(parsed.blockedRanges)) appState.blockedRanges = parsed.blockedRanges;
+            } catch (e) {}
+        }
+
+        function saveData() {
+            try {
+                localStorage.setItem(STORAGE_KEY, JSON.stringify({
+                    adminPassword: appState.adminPassword,
+                    slotStepMinutes: appState.slotStepMinutes,
+                    expediente: appState.expediente,
+                    categories: appState.categories,
+                    services: appState.services,
+                    barbers: appState.barbers,
+                    bookings: appState.bookings,
+                    blockedRanges: appState.blockedRanges
+                }));
+            } catch (e) {}
+        }
+<!-- === FIM PARTE 6/15 === -->
+<!-- === INÍCIO PARTE 7/15 === -->
+        function checkRememberedSession() {
+            try {
+                const saved = localStorage.getItem(SESSION_KEY);
+                if (saved === String(appState.adminPassword)) {
+                    openDashboard();
+                }
+            } catch (e) {}
+        }
+
+        function verifyLogin() {
+            const pass = document.getElementById('pass-input').value.trim();
+            const remember = document.getElementById('remember-device-check').checked;
+            if (pass === String(appState.adminPassword)) {
+                if (remember) {
+                    try { localStorage.setItem(SESSION_KEY, pass); } catch (e) {}
+                }
+                openDashboard();
+            } else {
+                showToast('Senha incorreta!');
+            }
+        }
+
+        function logoutAdminSession() {
+            try { localStorage.removeItem(SESSION_KEY); } catch (e) {}
+            document.getElementById('dashboard-view').style.display = 'none';
+            document.getElementById('login-view').style.display = 'flex';
+            document.getElementById('logout-btn').style.display = 'none';
+            document.getElementById('pass-input').value = '';
+            showToast('Sessão encerrada.');
+        }
+
+        function openDashboard() {
+            document.getElementById('login-view').style.display = 'none';
+            document.getElementById('dashboard-view').style.display = 'block';
+            document.getElementById('logout-btn').style.display = 'inline-block';
+            renderActiveTab();
+            syncBookingsFromFirebase({ silentNewAlert: true });
+        }
+
+        async function pushBookingToFirebase(booking) {
+            if (!FIREBASE_DB_URL || !booking) return;
+            try {
+                const res = await fetch(`${FIREBASE_DB_URL}/bookings.json`, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify(booking)
+                });
+                if (res.ok) {
+                    const data = await res.json();
+                    if (data && data.name) {
+                        booking.firebaseKey = data.name;
+                        saveData();
+                    }
+                }
+            } catch (e) {}
+        }
+
+        async function patchBookingInFirebase(booking) {
+            if (!FIREBASE_DB_URL || !booking || !booking.firebaseKey) return;
+            try {
+                await fetch(`${FIREBASE_DB_URL}/bookings/${booking.firebaseKey}.json`, {
+                    method: 'PATCH',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ status: booking.status })
+                });
+            } catch (e) {}
+        }
+
+        async function deleteBookingFromFirebase(booking) {
+            if (!FIREBASE_DB_URL || !booking || !booking.firebaseKey) return;
+            try {
+                await fetch(`${FIREBASE_DB_URL}/bookings/${booking.firebaseKey}.json`, {
+                    method: 'DELETE'
+                });
+            } catch (e) {}
+        }
+
+        async function syncBookingsFromFirebase(options = {}) {
+            const { silentNewAlert = false } = options;
+            if (!FIREBASE_DB_URL) return;
+            try {
+                const res = await fetch(`${FIREBASE_DB_URL}/bookings.json?t=${Date.now()}`, { cache: 'no-store' });
+                if (!res.ok) return;
+                const rawData = await res.json();
+
+                const hadInit = knownBookingIds.size > 0;
+                const cloudList = [];
+                if (rawData && typeof rawData === 'object') {
+                    Object.entries(rawData).forEach(([firebaseKey, item]) => {
+                        if (item && typeof item === 'object') {
+                            cloudList.push({ ...item, firebaseKey });
+                        }
+                    });
+                }
+
+                cloudList.sort((a, b) => new Date(b.createdAt || 0) - new Date(a.createdAt || 0));
+
+                const newOnes = [];
+                if (hadInit && !silentNewAlert) {
+                    cloudList.forEach(b => {
+                        if (b.id && !knownBookingIds.has(b.id) && b.status !== 'cancelado') {
+                            newOnes.push(b);
+                        }
+                    });
+                }
+
+                knownBookingIds = new Set(cloudList.map(b => b.id).filter(Boolean));
+                appState.bookings = cloudList;
+                saveData();
+
+                const statusEl = document.getElementById('sync-status-label');
+                if (statusEl) statusEl.textContent = `Firebase online • ${cloudList.length} registro(s)`;
+
+                if (document.getElementById('dashboard-view').style.display !== 'none') {
+                    renderAgenda();
+                    renderContabilidade();
+                }
+
+                if (newOnes.length > 0) {
+                    triggerBookingNotification(newOnes[0]);
+                }
+            } catch (e) {
+                const statusEl = document.getElementById('sync-status-label');
+                if (statusEl) statusEl.textContent = 'Sem conexão com o banco';
+            }
+        }
+<!-- === FIM PARTE 7/15 === -->
+<!-- === INÍCIO PARTE 8/15 === -->
+        function requestDeviceNotificationPermission() {
+            if (!('Notification' in window)) {
+                showToast('Navegador sem suporte a notificação nativa.');
+                return;
+            }
+            Notification.requestPermission().then(perm => {
+                if (perm === 'granted') {
+                    showToast('Notificações ativadas neste celular!');
+                    playBookingAlertSound();
+                } else {
+                    showToast('Permissão de notificação negada ou bloqueada.');
+                }
+            });
+        }
+
+        function playBookingAlertSound() {
+            try { if (navigator.vibrate) navigator.vibrate([180, 90, 180]); } catch (e) {}
+            try {
+                const AudioCtx = window.AudioContext || window.webkitAudioContext;
+                if (!AudioCtx) return;
+                const ctx = new AudioCtx();
+                const now = ctx.currentTime;
+                [587.33, 880].forEach((freq, idx) => {
+                    const osc = ctx.createOscillator();
+                    const gain = ctx.createGain();
+                    osc.type = 'triangle';
+                    osc.frequency.setValueAtTime(freq, now + idx * 0.14);
+                    gain.gain.setValueAtTime(0.08, now + idx * 0.14);
+                    gain.gain.exponentialRampToValueAtTime(0.001, now + idx * 0.14 + 0.25);
+                    osc.connect(gain);
+                    gain.connect(ctx.destination);
+                    osc.start(now + idx * 0.14);
+                    osc.stop(now + idx * 0.14 + 0.26);
+                });
+            } catch (e) {}
+        }
+
+        function triggerBookingNotification(booking) {
+            playBookingAlertSound();
+            const servicesText = (booking.items || []).map(s => s.name).join(' + ');
+            const title = `Novo Cliente: ${booking.clientName}`;
+            const body = `${booking.barberName} • ${booking.dateLabel} às ${booking.time} (${servicesText})`;
+            showToast(`🔔 ${title} — ${booking.time}`);
+            if ('Notification' in window && Notification.permission === 'granted') {
+                try {
+                    const n = new Notification(title, { body, tag: booking.id, renotify: true });
+                    setTimeout(() => n.close(), 8000);
+                } catch (e) {}
+            }
+        }
+
+        function calcularFinanceiroAgendamento(booking) {
+            let receitaSessao = 0;
+            let comissaoBarbeiro = 0;
+            let valorCobradoClienteNoDia = 0;
+
+            (booking.items || []).forEach(item => {
+                const sessoes = item.isPlan ? (Number(item.sessionsPerMonth) || 4) : 1;
+                const valorPorSessao = Number(item.price) / sessoes;
+                receitaSessao += valorPorSessao;
+                comissaoBarbeiro += valorPorSessao * 0.50;
+                valorCobradoClienteNoDia += (booking.payment === 'Plano Mensal (Assinante)' && item.isPlan) ? 0 : Number(item.price);
+            });
+
+            return { receitaSessao, comissaoBarbeiro, lucroBarbearia: receitaSessao - comissaoBarbeiro, valorCobradoClienteNoDia };
+        }
+<!-- === FIM PARTE 8/15 === -->
+<!-- === INÍCIO PARTE 9/15 === -->
+        let currentTab = 'agenda';
+
+        function switchTab(tabName, btnEl) {
+            currentTab = tabName;
+            document.querySelectorAll('.admin-tab-btn').forEach(b => b.classList.remove('active'));
+            if (btnEl) btnEl.classList.add('active');
+            ['agenda', 'contabilidade', 'expediente', 'servicos', 'equipe', 'config'].forEach(t => {
+                document.getElementById(`tab-${t}`).style.display = (t === tabName) ? 'block' : 'none';
+            });
+            renderActiveTab();
+        }
+
+        function renderActiveTab() {
+            if (currentTab === 'agenda') renderAgenda();
+            if (currentTab === 'contabilidade') renderContabilidade();
+            if (currentTab === 'expediente') renderExpediente();
+            if (currentTab === 'servicos') renderServicos();
+            if (currentTab === 'equipe') renderEquipe();
+            if (currentTab === 'config') renderConfig();
+        }
+
+        function renderAgenda() {
+            const container = document.getElementById('tab-agenda');
+            if (!appState.bookings.length) {
+                container.innerHTML = `<p style="color:var(--text-secondary); padding:12px 0;">Nenhum agendamento registrado no banco ainda.</p>`;
+                return;
+            }
+            container.innerHTML = appState.bookings.map(b => {
+                const fin = calcularFinanceiroAgendamento(b);
+                const waDigits = String(b.clientPhone || '').replace(/\D/g, '');
+                const waLink = waDigits.length >= 8 ? `https://wa.me/${waDigits.startsWith('55') ? waDigits : '55' + waDigits}` : '';
+                return `
+                    <div class="admin-item-card">
+                        <div style="display:flex; justify-content:space-between; gap:8px; margin-bottom:4px; flex-wrap:wrap;">
+                            <strong style="color:var(--gold-light);">${b.dateLabel} • ${b.time} às ${b.endTime} — ${b.clientName}</strong>
+                            <span style="font-size:0.72rem; font-weight:800; text-transform:uppercase; color:${b.status === 'cancelado' ? '#FCA5A5' : '#86EFAC'};">${b.status}</span>
+                        </div>
+                        <div style="color:var(--text-secondary); margin-bottom:4px;">Barbeiro: <strong>${b.barberName}</strong> • WhatsApp: ${b.clientPhone} • ${b.payment}</div>
+                        <div style="color:var(--text-primary); margin-bottom:8px;">
+                            ${(b.items || []).map(s => s.name).join(' + ')} — Receita: <strong>${formatBRL(fin.receitaSessao)}</strong> • Comissão (50%): <strong style="color:#86EFAC;">${formatBRL(fin.comissaoBarbeiro)}</strong>
+                        </div>
+                        <div style="display:flex; gap:8px; flex-wrap:wrap;">
+                            ${waLink ? `<a href="${waLink}" target="_blank" rel="noopener" class="success-btn">Chamar no WhatsApp</a>` : ''}
+                            ${b.status !== 'concluído' ? `<button type="button" class="success-btn" onclick="updateBookingStatus('${b.id}', 'concluído')">Concluir</button>` : ''}
+                            ${b.status !== 'cancelado' ? `<button type="button" class="danger-btn" onclick="updateBookingStatus('${b.id}', 'cancelado')">Cancelar</button>` : ''}
+                            <button type="button" class="danger-btn" onclick="deleteBookingRecord('${b.id}')">Excluir</button>
+                        </div>
+                    </div>
+                `;
+            }).join('');
+        }
+
+        async function updateBookingStatus(id, status) {
+            const item = appState.bookings.find(b => b.id === id);
+            if (!item) return;
+            item.status = status;
+            saveData();
+            await patchBookingInFirebase(item);
+            renderAgenda();
+            renderContabilidade();
+            showToast(`Status atualizado: ${status}`);
+        }
+
+        async function deleteBookingRecord(id) {
+            const idx = appState.bookings.findIndex(b => b.id === id);
+            if (idx < 0 || !confirm('Excluir este agendamento permanentemente?')) return;
+            const removed = appState.bookings[idx];
+            appState.bookings.splice(idx, 1);
+            saveData();
+            await deleteBookingFromFirebase(removed);
+            renderAgenda();
+            renderContabilidade();
+            showToast('Agendamento excluído!');
+        }
+<!-- === FIM PARTE 9/15 === -->
+<!-- === INÍCIO PARTE 10/15 === -->
+        function renderContabilidade() {
+            const container = document.getElementById('tab-contabilidade');
+            const validBookings = appState.bookings.filter(b => b.status !== 'cancelado');
+
+            const now = new Date();
+            const todayISO = `${now.getFullYear()}-${String(now.getMonth() + 1).padStart(2, '0')}-${String(now.getDate()).padStart(2, '0')}`;
+            const currentMonthPrefix = todayISO.slice(0, 7);
+
+            const filtered = validBookings.filter(b => {
+                if (appState.accountingFilterBarber !== 'todos' && b.barberId !== appState.accountingFilterBarber) return false;
+                if (appState.accountingFilterPeriod === 'hoje' && b.dateISO !== todayISO) return false;
+                if (appState.accountingFilterPeriod === 'mes' && !String(b.dateISO || '').startsWith(currentMonthPrefix)) return false;
+                return true;
+            });
+
+            let totalReceita = 0;
+            let totalComissao = 0;
+            let totalBarbearia = 0;
+            let qtdAvulsos = 0;
+            let qtdPlanos = 0;
+
+            const porBarbeiro = {};
+            appState.barbers.forEach(barb => {
+                porBarbeiro[barb.id] = { name: barb.name, atendimentos: 0, atendimentosPlano: 0, receitaGerada: 0, comissaoPagar: 0 };
+            });
+
+            filtered.forEach(b => {
+                const fin = calcularFinanceiroAgendamento(b);
+                totalReceita += fin.receitaSessao;
+                totalComissao += fin.comissaoBarbeiro;
+                totalBarbearia += fin.lucroBarbearia;
+                const temPlano = (b.items || []).some(i => i.isPlan);
+                if (temPlano) qtdPlanos++; else qtdAvulsos++;
+                if (!porBarbeiro[b.barberId]) {
+                    porBarbeiro[b.barberId] = { name: b.barberName, atendimentos: 0, atendimentosPlano: 0, receitaGerada: 0, comissaoPagar: 0 };
+                }
+                porBarbeiro[b.barberId].atendimentos += 1;
+                if (temPlano) porBarbeiro[b.barberId].atendimentosPlano += 1;
+                porBarbeiro[b.barberId].receitaGerada += fin.receitaSessao;
+                porBarbeiro[b.barberId].comissaoPagar += fin.comissaoBarbeiro;
+            });
+
+            container.innerHTML = `
+                <div class="form-row" style="margin-bottom:14px;">
+                    <div>
+                        <label class="field-label">Período</label>
+                        <select class="field-input" style="padding:8px;" onchange="appState.accountingFilterPeriod=this.value; renderContabilidade();">
+                            <option value="hoje" ${appState.accountingFilterPeriod === 'hoje' ? 'selected' : ''}>Hoje (${todayISO})</option>
+                            <option value="mes" ${appState.accountingFilterPeriod === 'mes' ? 'selected' : ''}>Mês Atual (${currentMonthPrefix})</option>
+                            <option value="todos" ${appState.accountingFilterPeriod === 'todos' ? 'selected' : ''}>Todo o Histórico</option>
+                        </select>
+                    </div>
+                    <div>
+                        <label class="field-label">Profissional</label>
+                        <select class="field-input" style="padding:8px;" onchange="appState.accountingFilterBarber=this.value; renderContabilidade();">
+                            <option value="todos" ${appState.accountingFilterBarber === 'todos' ? 'selected' : ''}>Todos os Barbeiros</option>
+                            ${appState.barbers.map(b => `<option value="${b.id}" ${appState.accountingFilterBarber === b.id ? 'selected' : ''}>${b.name}</option>`).join('')}
+                        </select>
+                    </div>
+                </div>
+
+                <div class="kpi-grid">
+                    <div class="kpi-card">
+                        <div class="kpi-label">Faturamento Gerado</div>
+                        <div class="kpi-value">${formatBRL(totalReceita)}</div>
+                        <div class="kpi-sub">${filtered.length} atend. (${qtdAvulsos} avulsos / ${qtdPlanos} planos)</div>
+                    </div>
+                    <div class="kpi-card">
+                        <div class="kpi-label">Comissão Barbeiros (50%)</div>
+                        <div class="kpi-value" style="color:#86EFAC;">${formatBRL(totalComissao)}</div>
+                        <div class="kpi-sub">Repasse proporcional + avulsos</div>
+                    </div>
+                    <div class="kpi-card">
+                        <div class="kpi-label">Líquido Barbearia (50%)</div>
+                        <div class="kpi-value">${formatBRL(totalBarbearia)}</div>
+                        <div class="kpi-sub">Caixa da casa</div>
+                    </div>
+                </div>
+
+                ${Object.values(porBarbeiro).map(pb => `
+                    <div class="admin-item-card" style="display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:8px;">
+                        <div>
+                            <strong style="font-size:0.92rem;">${pb.name}</strong>
+                            <div style="color:var(--text-secondary); font-size:0.78rem;">${pb.atendimentos} atend. (${pb.atendimentosPlano} de plano) • Produção: ${formatBRL(pb.receitaGerada)}</div>
+                        </div>
+                        <div style="text-align:right;">
+                            <div style="font-size:0.72rem; color:var(--text-secondary);">Comissão (50%)</div>
+                            <strong style="font-size:1.05rem; color:#86EFAC;">${formatBRL(pb.comissaoPagar)}</strong>
+                        </div>
+                    </div>
+                `).join('')}
+
+                <h4 style="color:var(--gold-light); font-size:0.9rem; margin:14px 0 8px;">Lançar Atendimento Manual</h4>
+                <div class="admin-item-card" style="display:flex; flex-direction:column; gap:8px;">
+                    <div class="form-row">
+                        <input type="text" id="manual-client-name" class="field-input" style="padding:8px;" placeholder="Nome do Cliente">
+                        <select id="manual-barber-id" class="field-input" style="padding:8px;">
+                            ${appState.barbers.map(b => `<option value="${b.id}">${b.name}</option>`).join('')}
+                        </select>
+                    </div>
+                    <div class="form-row">
+                        <select id="manual-service-id" class="field-input" style="padding:8px;">
+                            ${appState.services.map(s => `<option value="${s.id}">${s.name} (${formatBRL(s.price)})</option>`).join('')}
+                        </select>
+                        <select id="manual-payment-type" class="field-input" style="padding:8px;">
+                            <option value="Pix">Avulso — Pix</option>
+                            <option value="Dinheiro">Avulso — Dinheiro</option>
+                            <option value="Cartão">Avulso — Cartão</option>
+                            <option value="Plano Mensal (Assinante)">Sessão de Plano Mensal</option>
+                        </select>
+                    </div>
+                    <button type="button" class="btn-gold-primary" style="padding:10px;" onclick="addManualEntry()">+ Registrar Atendimento</button>
+                </div>
+            `;
+        }
+
+        async function addManualEntry() {
+            const clientName = document.getElementById('manual-client-name').value.trim() || 'Cliente Balcão';
+            const barberObj = appState.barbers.find(b => b.id === document.getElementById('manual-barber-id').value) || appState.barbers[0];
+            const srvObj = appState.services.find(s => s.id === document.getElementById('manual-service-id').value) || appState.services[0];
+            const payment = document.getElementById('manual-payment-type').value;
+
+            const now = new Date();
+            const todayISO = `${now.getFullYear()}-${String(now.getMonth() + 1).padStart(2, '0')}-${String(now.getDate()).padStart(2, '0')}`;
+            const startMin = (now.getHours() * 60) + now.getMinutes();
+
+            const entry = {
+                id: 'BAL-' + Math.floor(1000 + Math.random() * 9000),
+                clientName,
+                clientPhone: 'Balcão',
+                notes: 'Lançamento manual',
+                items: [{ id: srvObj.id, name: srvObj.name, price: Number(srvObj.price), duration: Number(srvObj.duration), isPlan: Boolean(srvObj.isPlan), sessionsPerMonth: Number(srvObj.sessionsPerMonth || 1) }],
+                barberId: barberObj.id,
+                barberName: barberObj.name,
+                dateISO: todayISO,
+                dateLabel: todayISO,
+                startMin,
+                endMin: startMin + Number(srvObj.duration),
+                time: minParaHora(startMin),
+                endTime: minParaHora(startMin + Number(srvObj.duration)),
+                duration: Number(srvObj.duration),
+                payment,
+                status: 'concluído',
+                createdAt: now.toISOString()
+            };
+
+            knownBookingIds.add(entry.id);
+            appState.bookings.unshift(entry);
+            saveData();
+            await pushBookingToFirebase(entry);
+            renderContabilidade();
+            renderAgenda();
+            showToast('Atendimento registrado!');
+        }
+<!-- === FIM PARTE 10/15 === -->
+<!-- === INÍCIO PARTE 11/15 === -->
+        function renderExpediente() {
+            const container = document.getElementById('tab-expediente');
+            const ordem = [1, 2, 3, 4, 5, 6, 0];
+            const now = new Date();
+            const todayISO = `${now.getFullYear()}-${String(now.getMonth() + 1).padStart(2, '0')}-${String(now.getDate()).padStart(2, '0')}`;
+
+            container.innerHTML = `
+                <div style="margin-bottom:12px;">
+                    <label class="field-label">Grade de encaixe dos horários (minutos)</label>
+                    <select id="admin-step-select" class="field-input" style="padding:8px;">
+                        <option value="10" ${appState.slotStepMinutes === 10 ? 'selected' : ''}>A cada 10 min</option>
+                        <option value="15" ${appState.slotStepMinutes === 15 ? 'selected' : ''}>A cada 15 min</option>
+                        <option value="20" ${appState.slotStepMinutes === 20 ? 'selected' : ''}>A cada 20 min</option>
+                        <option value="30" ${appState.slotStepMinutes === 30 ? 'selected' : ''}>A cada 30 min</option>
+                    </select>
+                </div>
+
+                ${ordem.map(d => {
+                    const info = appState.expediente[d];
+                    return `
+                        <div class="admin-item-card">
+                            <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:8px;">
+                                <label style="display:inline-flex; align-items:center; gap:8px; font-weight:700; cursor:pointer;">
+                                    <input type="checkbox" class="exp-ativo" data-dia="${d}" ${info.ativo ? 'checked' : ''}>
+                                    <span>${info.name}</span>
+                                </label>
+                                <label style="display:inline-flex; align-items:center; gap:6px; font-size:0.76rem; color:var(--text-secondary); cursor:pointer;">
+                                    <input type="checkbox" class="exp-t2-ativo" data-dia="${d}" ${info.t2Ativo ? 'checked' : ''}>
+                                    <span>2º Turno</span>
+                                </label>
+                            </div>
+                            <div class="form-row">
+                                <div style="display:flex; gap:6px; align-items:center;">
+                                    <span style="font-size:0.75rem; color:var(--text-secondary);">T1:</span>
+                                    <input type="time" class="field-input exp-t1-ini" data-dia="${d}" style="padding:6px;" value="${info.t1Inicio}">
+                                    <span>às</span>
+                                    <input type="time" class="field-input exp-t1-fim" data-dia="${d}" style="padding:6px;" value="${info.t1Fim}">
+                                </div>
+                                <div style="display:flex; gap:6px; align-items:center;">
+                                    <span style="font-size:0.75rem; color:var(--text-secondary);">T2:</span>
+                                    <input type="time" class="field-input exp-t2-ini" data-dia="${d}" style="padding:6px;" value="${info.t2Inicio}">
+                                    <span>às</span>
+                                    <input type="time" class="field-input exp-t2-fim" data-dia="${d}" style="padding:6px;" value="${info.t2Fim}">
+                                </div>
+                            </div>
+                        </div>
+                    `;
+                }).join('')}
+
+                <button type="button" class="btn-gold-primary" style="padding:11px; margin-bottom:16px;" onclick="saveExpediente()">Salvar Expediente</button>
+
+                <h4 style="color:var(--gold-light); font-size:0.9rem; margin-bottom:8px;">Pausas / Bloqueios</h4>
+                <div class="admin-item-card" style="display:flex; flex-direction:column; gap:8px;">
+                    <div class="form-row">
+                        <input type="date" id="pause-date" class="field-input" style="padding:8px;" value="${todayISO}">
+                        <select id="pause-barber" class="field-input" style="padding:8px;">
+                            <option value="todos">Todos os Barbeiros</option>
+                            ${appState.barbers.map(b => `<option value="${b.id}">${b.name}</option>`).join('')}
+                        </select>
+                    </div>
+                    <div class="form-row">
+                        <div style="display:flex; gap:6px; align-items:center;">
+                            <input type="time" id="pause-ini" class="field-input" style="padding:8px;" value="12:00">
+                            <span>até</span>
+                            <input type="time" id="pause-fim" class="field-input" style="padding:8px;" value="13:00">
+                        </div>
+                        <input type="text" id="pause-reason" class="field-input" style="padding:8px;" placeholder="Motivo (Ex: Almoço)">
+                    </div>
+                    <button type="button" class="btn-secondary" onclick="addPause()">+ Bloquear Intervalo</button>
+                </div>
+
+                ${appState.blockedRanges.map((p, idx) => `
+                    <div class="admin-item-card" style="display:flex; justify-content:space-between; align-items:center; gap:8px;">
+                        <div><strong>${p.dateISO}</strong> • ${minParaHora(p.startMin)} às ${minParaHora(p.endMin)} (${p.reason || 'Pausa'})</div>
+                        <button type="button" class="danger-btn" onclick="removePause(${idx})">Remover</button>
+                    </div>
+                `).join('')}
+            `;
+        }
+
+        function saveExpediente() {
+            appState.slotStepMinutes = Number(document.getElementById('admin-step-select').value) || 15;
+            document.querySelectorAll('.exp-ativo').forEach(el => { appState.expediente[Number(el.dataset.dia)].ativo = el.checked; });
+            document.querySelectorAll('.exp-t2-ativo').forEach(el => { appState.expediente[Number(el.dataset.dia)].t2Ativo = el.checked; });
+            document.querySelectorAll('.exp-t1-ini').forEach(el => { appState.expediente[Number(el.dataset.dia)].t1Inicio = el.value; });
+            document.querySelectorAll('.exp-t1-fim').forEach(el => { appState.expediente[Number(el.dataset.dia)].t1Fim = el.value; });
+            document.querySelectorAll('.exp-t2-ini').forEach(el => { appState.expediente[Number(el.dataset.dia)].t2Inicio = el.value; });
+            document.querySelectorAll('.exp-t2-fim').forEach(el => { appState.expediente[Number(el.dataset.dia)].t2Fim = el.value; });
+            saveData();
+            showToast('Expediente salvo!');
+        }
+
+        function addPause() {
+            const dateISO = document.getElementById('pause-date').value;
+            const barberId = document.getElementById('pause-barber').value;
+            const startMin = horaParaMin(document.getElementById('pause-ini').value);
+            const endMin = horaParaMin(document.getElementById('pause-fim').value);
+            const reason = document.getElementById('pause-reason').value.trim();
+            if (!dateISO || endMin <= startMin) { showToast('Informe data e horário válidos.'); return; }
+            appState.blockedRanges.push({ id: Date.now(), dateISO, barberId, startMin, endMin, reason });
+            saveData();
+            renderExpediente();
+            showToast('Pausa adicionada!');
+        }
+
+        function removePause(idx) {
+            appState.blockedRanges.splice(idx, 1);
+            saveData();
+            renderExpediente();
+        }
+<!-- === FIM PARTE 11/15 === -->
+<!-- === INÍCIO PARTE 12/15 === -->
+        function renderServicos() {
+            const container = document.getElementById('tab-servicos');
+            container.innerHTML = `
+                <div class="admin-item-card" style="display:flex; gap:8px; margin-bottom:14px;">
+                    <input type="text" id="new-category-name" class="field-input" style="padding:8px;" placeholder="Nova categoria">
+                    <button type="button" class="btn-gold-primary" style="width:auto; padding:8px 14px; white-space:nowrap;" onclick="addCategory()">+ Categoria</button>
+                </div>
+                ${appState.services.map((s, idx) => `
+                    <div class="admin-item-card" style="display:flex; flex-direction:column; gap:8px;">
+                        <input type="text" class="field-input" style="padding:8px; font-weight:700;" value="${s.name}" onchange="updateServiceField(${idx}, 'name', this.value)">
+                        <div class="form-row">
+                            <div>
+                                <label class="field-label">Categoria</label>
+                                <select class="field-input" style="padding:8px;" onchange="updateServiceField(${idx}, 'category', this.value)">
+                                    ${appState.categories.map(cat => `<option value="${cat}" ${s.category === cat ? 'selected' : ''}>${cat}</option>`).join('')}
+                                </select>
+                            </div>
+                            <div>
+                                <label class="field-label">Preço (R$)</label>
+                                <input type="number" class="field-input" style="padding:8px;" value="${s.price}" onchange="updateServiceField(${idx}, 'price', Number(this.value))">
+                            </div>
+                        </div>
+                        <div>
+                            <label class="field-label">Duração (minutos)</label>
+                            <input type="number" step="5" min="5" class="field-input" style="padding:8px;" value="${s.duration}" onchange="updateServiceField(${idx}, 'duration', Number(this.value))">
+                        </div>
+                    </div>
+                `).join('')}
+            `;
+        }
+
+        function addCategory() {
+            const input = document.getElementById('new-category-name');
+            const nome = input ? input.value.trim() : '';
+            if (!nome) { showToast('Digite o nome da categoria.'); return; }
+            if (appState.categories.some(c => c.toLowerCase() === nome.toLowerCase())) { showToast('Categoria já existe.'); return; }
+            appState.categories.push(nome);
+            input.value = '';
+            saveData();
+            renderServicos();
+            showToast('Categoria adicionada!');
+        }
+
+        function updateServiceField(idx, field, val) {
+            if (!val && val !== 0) return;
+            appState.services[idx][field] = val;
+            saveData();
+            showToast('Serviço atualizado!');
+        }
+<!-- === FIM PARTE 12/15 === -->
+<!-- === INÍCIO PARTE 14/15 === -->
+        function renderConfig() {
+            const container = document.getElementById('tab-config');
+            const notifStatus = ('Notification' in window) ? Notification.permission : 'indisponível';
+            container.innerHTML = `
+                <div class="admin-item-card" style="display:flex; flex-direction:column; gap:10px;">
+                    <label class="field-label">Som, Vibração &amp; Notificação no Celular (Status: ${notifStatus})</label>
+                    <div style="display:flex; gap:8px; flex-wrap:wrap;">
+                        <button type="button" class="btn-gold-primary" style="width:auto; padding:9px 14px;" onclick="requestDeviceNotificationPermission()">Ativar Notificação</button>
+                        <button type="button" class="btn-secondary" style="width:auto; padding:9px 14px;" onclick="playBookingAlertSound()">Testar Som / Vibração</button>
+                    </div>
+                </div>
+                <div class="admin-item-card" style="display:flex; flex-direction:column; gap:10px;">
+                    <label class="field-label">Alterar Senha do Proprietário</label>
+                    <div style="display:flex; gap:8px;">
+                        <input type="password" id="new-admin-pass" class="field-input" style="padding:8px;" placeholder="Nova senha">
+                        <button type="button" class="btn-secondary" style="width:auto; padding:8px 14px;" onclick="changeAdminPassword()">Salvar</button>
+                    </div>
+                </div>
+            `;
+        }
+
+        function changeAdminPassword() {
+            const p = document.getElementById('new-admin-pass').value.trim();
+            if (!p || p.length < 4) { showToast('A senha deve ter pelo menos 4 caracteres.'); return; }
+            appState.adminPassword = p;
+            saveData();
+            try { if (localStorage.getItem(SESSION_KEY)) localStorage.setItem(SESSION_KEY, p); } catch (e) {}
+            document.getElementById('new-admin-pass').value = '';
+            showToast('Senha atualizada!');
+        }
+<!-- === FIM PARTE 14/15 === -->
+<!-- === INÍCIO PARTE 15/15 === -->
+        window.addEventListener('DOMContentLoaded', async () => {
+            loadSavedData();
+            knownBookingIds = new Set((appState.bookings || []).map(b => b.id).filter(Boolean));
+            checkRememberedSession();
+            await syncBookingsFromFirebase({ silentNewAlert: true });
+            pollTimer = setInterval(() => {
+                syncBookingsFromFirebase({ silentNewAlert: false });
+            }, 6000);
+        });
+    </script>
+</body>
+</html>
+<!-- === FIM PARTE 15/15 === -->
