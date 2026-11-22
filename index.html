@@ -1,4 +1,3 @@
-<!-- === INÍCIO PARTE 1/14 === -->
 <!DOCTYPE html>
 <html lang="pt-BR">
 <head>
@@ -62,9 +61,7 @@
         a { color: inherit; text-decoration: none; }
         button, input, select, textarea { font-family: inherit; color: inherit; }
         button { cursor: pointer; border: none; background: none; }
-<!-- === FIM PARTE 1/14 === -->
-/* === INÍCIO PARTE 2/14 === */
-        /* ==========================================================================
+                /* ==========================================================================
            LAYOUT PRINCIPAL & CABEÇALHO
            ========================================================================== */
         .container {
@@ -245,11 +242,64 @@
             border-radius: 999px;
             white-space: nowrap;
         }
-/* === FIM PARTE 2/14 === */
-/* === INÍCIO PARTE 3/14 === */
+
         /* ==========================================================================
-           FILTROS DE CATEGORIA & CARDS DE SERVIÇOS E PLANOS
+           BARBEIROS & CARDS DE SERVIÇOS E PLANOS
            ========================================================================== */
+        .barbers-grid {
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 12px;
+        }
+
+        @media (min-width: 560px) {
+            .barbers-grid { grid-template-columns: 1fr 1fr; }
+        }
+
+        .barber-card {
+            background: var(--bg-surface);
+            border: 1px solid var(--border-subtle);
+            border-radius: var(--radius-md);
+            padding: 16px;
+            display: flex;
+            align-items: center;
+            gap: 14px;
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+
+        .barber-card:hover {
+            border-color: rgba(212, 175, 55, 0.45);
+            background: var(--bg-surface-hover);
+        }
+
+        .barber-card.selected {
+            background: linear-gradient(145deg, #1A1812 0%, #141417 100%);
+            border: 1.5px solid var(--gold-primary);
+            box-shadow: 0 6px 22px rgba(212, 175, 55, 0.15);
+        }
+
+        .barber-avatar {
+            width: 52px;
+            height: 52px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, #272215, #141417);
+            border: 1.5px solid var(--gold-primary);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--gold-light);
+            font-weight: 800;
+            font-size: 1.1rem;
+            flex-shrink: 0;
+        }
+
+        .barber-details { flex: 1; }
+        .barber-name { font-weight: 700; font-size: 0.98rem; color: var(--text-primary); }
+        .barber-card.selected .barber-name { color: var(--gold-light); }
+        .barber-role { font-size: 0.78rem; color: var(--text-secondary); margin-top: 2px; }
+        .barber-rating { font-size: 0.75rem; color: var(--gold-primary); font-weight: 700; margin-top: 4px; }
+
         .category-tabs {
             display: flex;
             gap: 8px;
@@ -474,67 +524,8 @@
             color: #0B0B0C;
             font-weight: 800;
             border-color: var(--gold-light);
-        }
-
-        /* ==========================================================================
-           PASSO 2: PROFISSIONAIS
-           ========================================================================== */
-        .barbers-grid {
-            display: grid;
-            grid-template-columns: 1fr;
-            gap: 12px;
-        }
-
-        @media (min-width: 560px) {
-            .barbers-grid { grid-template-columns: 1fr 1fr; }
-        }
-
-        .barber-card {
-            background: var(--bg-surface);
-            border: 1px solid var(--border-subtle);
-            border-radius: var(--radius-md);
-            padding: 16px;
-            display: flex;
-            align-items: center;
-            gap: 14px;
-            cursor: pointer;
-            transition: all 0.2s ease;
-        }
-
-        .barber-card:hover {
-            border-color: rgba(212, 175, 55, 0.45);
-            background: var(--bg-surface-hover);
-        }
-
-        .barber-card.selected {
-            background: linear-gradient(145deg, #1A1812 0%, #141417 100%);
-            border: 1.5px solid var(--gold-primary);
-            box-shadow: 0 6px 22px rgba(212, 175, 55, 0.15);
-        }
-
-        .barber-avatar {
-            width: 52px;
-            height: 52px;
-            border-radius: 50%;
-            background: linear-gradient(135deg, #272215, #141417);
-            border: 1.5px solid var(--gold-primary);
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            color: var(--gold-light);
-            font-weight: 800;
-            font-size: 1.1rem;
-            flex-shrink: 0;
-        }
-
-        .barber-details { flex: 1; }
-        .barber-name { font-weight: 700; font-size: 0.98rem; color: var(--text-primary); }
-        .barber-card.selected .barber-name { color: var(--gold-light); }
-        .barber-role { font-size: 0.78rem; color: var(--text-secondary); margin-top: 2px; }
-        .barber-rating { font-size: 0.75rem; color: var(--gold-primary); font-weight: 700; margin-top: 4px; }
-/* === FIM PARTE 3/14 === */
- /* === INÍCIO PARTE 4/14 === */
-        /* ==========================================================================
+            }
+                /* ==========================================================================
            PASSO 3: DATA E HORÁRIOS INTELIGENTES (COM INTERVALO INÍCIO → FIM)
            ========================================================================== */
         .dates-scroller {
@@ -826,7 +817,7 @@
         }
 
         /* ==========================================================================
-           MODAIS & PAINEL CONTÁBIL / GESTÃO DO BARBEIRO
+           MODAIS DE COMPROVANTE E MEUS AGENDAMENTOS
            ========================================================================== */
         .modal-backdrop {
             position: fixed;
@@ -879,7 +870,6 @@
             justify-content: center;
         }
 
-        /* Ticket Digital */
         .ticket-box {
             background: linear-gradient(180deg, #17171B 0%, #0E0E11 100%);
             border: 1.5px solid var(--gold-primary);
@@ -940,48 +930,7 @@
             font-size: 0.85rem;
         }
 
-        /* Admin Tabs, KPIs & Tables */
-        .admin-tabs {
-            display: flex;
-            gap: 6px;
-            margin-bottom: 16px;
-            flex-wrap: wrap;
-        }
-
-        .admin-tab-btn {
-            padding: 8px 12px;
-            border-radius: 8px;
-            background: var(--bg-surface);
-            border: 1px solid var(--border-subtle);
-            font-size: 0.78rem;
-            font-weight: 700;
-            color: var(--text-secondary);
-        }
-
-        .admin-tab-btn.active {
-            background: var(--gold-primary);
-            color: #0B0B0C;
-        }
-
-        .kpi-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
-            gap: 10px;
-            margin-bottom: 16px;
-        }
-
-        .kpi-card {
-            background: var(--bg-surface);
-            border: 1px solid var(--border-subtle);
-            border-radius: 12px;
-            padding: 12px;
-        }
-
-        .kpi-label { font-size: 0.72rem; color: var(--text-secondary); text-transform: uppercase; letter-spacing: 0.04em; }
-        .kpi-value { font-size: 1.2rem; font-weight: 800; color: var(--gold-light); margin-top: 4px; }
-        .kpi-sub { font-size: 0.72rem; color: var(--text-muted); margin-top: 2px; }
-
-        .admin-item-card {
+        .booking-item-card {
             background: var(--bg-surface);
             border: 1px solid var(--border-subtle);
             border-radius: 10px;
@@ -1000,16 +949,6 @@
             font-weight: 700;
         }
 
-        .success-btn {
-            padding: 6px 10px;
-            border-radius: 7px;
-            background: rgba(34, 197, 94, 0.16);
-            border: 1px solid rgba(34, 197, 94, 0.4);
-            color: #86EFAC;
-            font-size: 0.74rem;
-            font-weight: 700;
-        }
-
         .site-footer {
             margin-top: 42px;
             padding: 24px 16px;
@@ -1021,16 +960,6 @@
             flex-direction: column;
             align-items: center;
             gap: 10px;
-        }
-
-        .admin-trigger {
-            font-size: 0.78rem;
-            color: var(--gold-light);
-            padding: 8px 14px;
-            border-radius: 8px;
-            border: 1px solid var(--border-gold);
-            background: rgba(212, 175, 55, 0.08);
-            font-weight: 700;
         }
 
         .toast-msg {
@@ -1056,8 +985,7 @@
     </style>
 </head>
 <body>
-<!-- === FIM PARTE 4/14 === -->
-<!-- === INÍCIO PARTE 5/14 === -->
+
     <div id="toast" class="toast-msg"></div>
 
     <!-- ======================================================================
@@ -1142,15 +1070,30 @@
     </header>
 
     <!-- ======================================================================
-         CONTEÚDO PRINCIPAL: FLUXO DE AGENDAMENTO EM 4 PASSOS
+         CONTEÚDO PRINCIPAL: INICIA PELO BARBEIRO E ROLA PARA SERVIÇOS E DEMAIS OPÇÕES
          ====================================================================== -->
     <main class="container">
 
-        <!-- PASSO 1: SERVIÇOS, COMBOS & PLANOS MENSAIS -->
+        <!-- PASSO 1: ESCOLHA DO PROFISSIONAL (INICIA AQUI) -->
         <section id="step-1" class="section-block">
             <div class="section-header">
                 <div class="step-title-group">
                     <div class="step-badge">1</div>
+                    <div>
+                        <h2 class="section-title">Escolha o Profissional</h2>
+                        <p class="section-subtitle">Ao escolher o barbeiro, vamos direto para os serviços e opções</p>
+                    </div>
+                </div>
+            </div>
+
+            <div id="barbers-grid" class="barbers-grid"></div>
+        </section>
+
+        <!-- PASSO 2: SERVIÇOS, COMBOS & PLANOS MENSAIS -->
+        <section id="step-2" class="section-block">
+            <div class="section-header">
+                <div class="step-title-group">
+                    <div class="step-badge">2</div>
                     <div>
                         <h2 class="section-title">Escolha os Serviços ou Plano Mensal</h2>
                         <p class="section-subtitle">A duração é calculada automaticamente para reservar sua cadeira</p>
@@ -1163,24 +1106,7 @@
 
             <div id="services-grid" class="services-grid"></div>
         </section>
-<!-- === FIM PARTE 5/14 === -->
-<!-- === INÍCIO PARTE 6/14 === -->
-        <!-- PASSO 2: ESCOLHA DO PROFISSIONAL -->
-        <section id="step-2" class="section-block">
-            <div class="section-header">
-                <div class="step-title-group">
-                    <div class="step-badge">2</div>
-                    <div>
-                        <h2 class="section-title">Escolha o Profissional</h2>
-                        <p class="section-subtitle">Veja a agenda livre em tempo real de cada barbeiro</p>
-                    </div>
-                </div>
-            </div>
-
-            <div id="barbers-grid" class="barbers-grid"></div>
-        </section>
-
-        <!-- PASSO 3: DATA E HORÁRIO INTELIGENTE -->
+                <!-- PASSO 3: DATA E HORÁRIO INTELIGENTE -->
         <section id="step-3" class="section-block">
             <div class="section-header">
                 <div class="step-title-group">
@@ -1211,8 +1137,7 @@
                 <div id="slots-grid" class="slots-grid"></div>
             </div>
         </section>
-<!-- === FIM PARTE 6/14 === -->
-<!-- === INÍCIO PARTE 7/14 === -->
+
         <!-- PASSO 4: DADOS DO CLIENTE & CONFIRMAÇÃO -->
         <section id="step-4" class="section-block">
             <div class="section-header">
@@ -1254,12 +1179,12 @@
 
                 <div class="summary-box">
                     <div class="summary-line">
-                        <span>Serviços:</span>
-                        <strong id="sum-services">Nenhum selecionado</strong>
-                    </div>
-                    <div class="summary-line">
                         <span>Profissional:</span>
                         <strong id="sum-barber">Mr. Jone</strong>
+                    </div>
+                    <div class="summary-line">
+                        <span>Serviços:</span>
+                        <strong id="sum-services">Nenhum selecionado</strong>
                     </div>
                     <div class="summary-line">
                         <span>Data e Intervalo:</span>
@@ -1285,12 +1210,11 @@
     </main>
 
     <!-- ======================================================================
-         RODAPÉ COM ACESSO AO PAINEL DO PROPRIETÁRIO (ADMIN & CONTABILIDADE)
+         RODAPÉ
          ====================================================================== -->
     <footer class="site-footer">
         <div><strong>BARBEARIA MR JONE</strong> • Av. Raul de Oliveira Rodrigues (Av. 7), Piratininga, Niterói - RJ</div>
         <div>Instagram: <a href="https://instagram.com/barbeariaMr_Jone" target="_blank" rel="noopener" style="color:var(--gold-light);">@barbeariaMr_Jone</a> • WhatsApp: <a href="https://wa.me/5521989622789" target="_blank" rel="noopener" style="color:var(--gold-light);">(21) 98962-2789</a></div>
-        <button type="button" onclick="openAdminAuth()" class="admin-trigger">Gestão do Proprietário (Agenda, Equipe &amp; Contabilidade)</button>
     </footer>
 
     <!-- BARRA INFERIOR FIXA -->
@@ -1303,8 +1227,7 @@
             <button type="button" onclick="confirmBooking()" class="sticky-cta">Confirmar e Finalizar</button>
         </div>
     </div>
-<!-- === FIM PARTE 7/14 === -->
-<!-- === INÍCIO PARTE 8/14 === -->
+
     <!-- MODAL 1: COMPROVANTE DIGITAL -->
     <div id="receipt-modal" class="modal-backdrop">
         <div class="modal-card" style="max-width:520px;">
@@ -1330,63 +1253,8 @@
             <div id="my-bookings-list"></div>
         </div>
     </div>
-
-    <!-- ======================================================================
-         MODAL 3: PAINEL DO PROPRIETÁRIO (EXPEDIENTE, SERVIÇOS, EQUIPE & CONTÁBIL)
-         ====================================================================== -->
-    <div id="admin-modal" class="modal-backdrop">
-        <div class="modal-card">
-            <div class="modal-top">
-                <h3 class="modal-title">Gestão Mr. Jone — Agenda, Equipe &amp; Contabilidade</h3>
-                <button type="button" class="modal-close" onclick="closeModal('admin-modal')">✕</button>
-            </div>
-
-            <!-- Login Admin -->
-            <div id="admin-login-view" style="display:flex; flex-direction:column; gap:12px;">
-                <p style="font-size:0.85rem; color:var(--text-secondary);">Acesso exclusivo do proprietário. Digite sua senha (padrão inicial: <strong>1234</strong>):</p>
-                <input type="password" id="admin-pass-input" class="field-input" placeholder="Senha (1234)">
-                <button type="button" onclick="verifyAdminLogin()" class="btn-gold-primary">Entrar na Gestão</button>
-            </div>
-
-            <!-- Painel Autenticado -->
-            <div id="admin-panel-view" style="display:none;">
-                <div class="admin-tabs">
-                    <button type="button" class="admin-tab-btn active" onclick="switchAdminTab('contabilidade', this)">Contabilidade &amp; Comissões</button>
-                    <button type="button" class="admin-tab-btn" onclick="switchAdminTab('agenda', this)">Agenda</button>
-                    <button type="button" class="admin-tab-btn" onclick="switchAdminTab('expediente', this)">Expediente &amp; Pausas</button>
-                    <button type="button" class="admin-tab-btn" onclick="switchAdminTab('servicos', this)">Serviços &amp; Tempos</button>
-                    <button type="button" class="admin-tab-btn" onclick="switchAdminTab('equipe', this)">Barbeiros</button>
-                    <button type="button" class="admin-tab-btn" onclick="switchAdminTab('config', this)">Logo &amp; Senha</button>
-                </div>
-
-                <!-- ABA 1: CONTABILIDADE, FATURAMENTO & COMISSÕES -->
-                <div id="admin-tab-contabilidade"></div>
-
-                <!-- ABA 2: AGENDA DE ATENDIMENTOS -->
-                <div id="admin-tab-agenda" style="display:none;"></div>
-
-                <!-- ABA 3: EXPEDIENTE SEMANAL E BLOQUEIOS / PAUSAS -->
-                <div id="admin-tab-expediente" style="display:none;"></div>
-
-                <!-- ABA 4: SERVIÇOS, PREÇOS, DURAÇÃO EM MINUTOS E PLANOS -->
-                <div id="admin-tab-servicos" style="display:none;"></div>
-
-                <!-- ABA 5: EQUIPE DE BARBEIROS -->
-                <div id="admin-tab-equipe" style="display:none;"></div>
-
-                <!-- ABA 6: LOGO E SENHA -->
-                <div id="admin-tab-config" style="display:none;"></div>
-            </div>
-        </div>
-    </div>
-<!-- === FIM PARTE 8/14 === --> 
-// === INÍCIO PARTE 9/14 ===
-    <!-- ======================================================================
-         JAVASCRIPT COMPLETO (FIREBASE REALTIME + DURAÇÃO + GESTÃO)
-         ====================================================================== -->
-    <script>
+        <script>
         const STORAGE_KEY = 'mr_jone_barbearia_full_v2';
-        const FIREBASE_DB_URL = 'https://barbeariamrjone-f3e8a-default-rtdb.firebaseio.com';
         const BARBERSHOP_WHATSAPP = '5521989622789';
 
         const DEFAULT_CATEGORIES = [
@@ -1397,7 +1265,6 @@
             'Química'
         ];
 
-        // Expediente inicial configurado conforme horário da barbearia
         const DEFAULT_EXPEDIENTE = {
             1: { ativo: true, name: 'Segunda', t1Inicio: '09:00', t1Fim: '12:00', t2Ativo: true, t2Inicio: '14:00', t2Fim: '18:30' },
             2: { ativo: true, name: 'Terça',   t1Inicio: '09:00', t1Fim: '12:00', t2Ativo: true, t2Inicio: '14:00', t2Fim: '19:30' },
@@ -1408,7 +1275,6 @@
             0: { ativo: true, name: 'Domingo', t1Inicio: '09:00', t1Fim: '14:00', t2Ativo: false, t2Inicio: '14:00', t2Fim: '18:00' }
         };
 
-        // Serviços com durações + Planos Mensais (4 atendimentos/mês)
         const INITIAL_SERVICES = [
             {
                 id: 'srv-corte-barba',
@@ -1498,7 +1364,6 @@
                 sessionsPerMonth: 1,
                 desc: 'Alinhamento rápido dos contornos da nuca, orelhas e testa com máquina e navalha. Duração média: 15 min.'
             },
-            // PLANOS MENSAIS (1 atendimento por semana = 4 atendimentos no mês)
             {
                 id: 'plan-cabelo-barba',
                 name: 'Plano Mensal: Cabelo e Barba (Toda Semana)',
@@ -1544,11 +1409,8 @@
                 commissionRate: 0.50
             }
         ];
-// === FIM PARTE 9/14 ===
-// === INÍCIO PARTE 10/14 ===
-        // Estado Global
+
         let appState = {
-            adminPassword: '1234',
             slotStepMinutes: 15,
             expediente: JSON.parse(JSON.stringify(DEFAULT_EXPEDIENTE)),
             categories: [...DEFAULT_CATEGORIES],
@@ -1562,18 +1424,9 @@
             selectedBarberId: 'mr-jone',
             selectedDateISO: '',
             selectedStartMin: null,
-            selectedPayment: 'Pix',
-            adminLoggedIn: false,
-            accountingFilterBarber: 'todos',
-            accountingFilterPeriod: 'mes'
+            selectedPayment: 'Pix'
         };
 
-        let knownBookingIds = new Set();
-        let firebaseSyncInterval = null;
-
-        // ======================================================================
-        // UTILITÁRIOS DE TEMPO, MOEDA & PERSISTÊNCIA
-        // ======================================================================
         function horaParaMin(hhmm) {
             if (!hhmm || !hhmm.includes(':')) return 0;
             const [h, m] = hhmm.split(':').map(Number);
@@ -1604,13 +1457,11 @@
             clearTimeout(window._toastTimer);
             window._toastTimer = setTimeout(() => t.classList.remove('show'), 3200);
         }
-
-        function loadSavedData() {
+                 function loadSavedData() {
             try {
                 const raw = localStorage.getItem(STORAGE_KEY);
                 if (!raw) return;
                 const parsed = JSON.parse(raw);
-                if (parsed.adminPassword) appState.adminPassword = parsed.adminPassword;
                 if (parsed.slotStepMinutes) appState.slotStepMinutes = Number(parsed.slotStepMinutes);
                 if (parsed.expediente) appState.expediente = { ...DEFAULT_EXPEDIENTE, ...parsed.expediente };
                 if (Array.isArray(parsed.services) && parsed.services.length) appState.services = parsed.services;
@@ -1632,7 +1483,6 @@
         function saveData() {
             try {
                 localStorage.setItem(STORAGE_KEY, JSON.stringify({
-                    adminPassword: appState.adminPassword,
                     slotStepMinutes: appState.slotStepMinutes,
                     expediente: appState.expediente,
                     categories: appState.categories,
@@ -1647,119 +1497,6 @@
             }
         }
 
-        // ======================================================================
-        // SINCRONIZAÇÃO COM FIREBASE REALTIME DATABASE
-        // ======================================================================
-        async function pushBookingToFirebase(booking) {
-            if (!FIREBASE_DB_URL) return;
-            try {
-                const res = await fetch(`${FIREBASE_DB_URL}/bookings.json`, {
-                    method: 'POST',
-                    headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify(booking)
-                });
-                if (res.ok) {
-                    const data = await res.json();
-                    if (data && data.name) {
-                        booking.firebaseKey = data.name;
-                        saveData();
-                    }
-                }
-            } catch (e) {
-                console.warn('Erro ao enviar agendamento para o Firebase:', e);
-            }
-        }
-
-        async function patchBookingInFirebase(booking) {
-            if (!FIREBASE_DB_URL || !booking || !booking.firebaseKey) return;
-            try {
-                await fetch(`${FIREBASE_DB_URL}/bookings/${booking.firebaseKey}.json`, {
-                    method: 'PATCH',
-                    headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify({ status: booking.status })
-                });
-            } catch (e) {
-                console.warn('Erro ao atualizar agendamento no Firebase:', e);
-            }
-        }
-
-        async function deleteBookingFromFirebase(booking) {
-            if (!FIREBASE_DB_URL || !booking || !booking.firebaseKey) return;
-            try {
-                await fetch(`${FIREBASE_DB_URL}/bookings/${booking.firebaseKey}.json`, {
-                    method: 'DELETE'
-                });
-            } catch (e) {
-                console.warn('Erro ao excluir agendamento no Firebase:', e);
-            }
-        }
-
-        async function syncBookingsFromFirebase(options = {}) {
-            const { silentNewAlert = false } = options;
-            if (!FIREBASE_DB_URL) return;
-            try {
-                const res = await fetch(`${FIREBASE_DB_URL}/bookings.json?t=${Date.now()}`, {
-                    cache: 'no-store'
-                });
-                if (!res.ok) return;
-                const rawData = await res.json();
-
-                const hadInitializedIds = knownBookingIds.size > 0;
-                const cloudList = [];
-
-                if (rawData && typeof rawData === 'object') {
-                    Object.entries(rawData).forEach(([firebaseKey, item]) => {
-                        if (item && typeof item === 'object') {
-                            cloudList.push({ ...item, firebaseKey });
-                        }
-                    });
-                }
-
-                cloudList.sort((a, b) => new Date(b.createdAt || 0) - new Date(a.createdAt || 0));
-
-                const newBookingsForAlert = [];
-                if (hadInitializedIds && !silentNewAlert) {
-                    cloudList.forEach(b => {
-                        if (b.id && !knownBookingIds.has(b.id) && b.status !== 'cancelado') {
-                            newBookingsForAlert.push(b);
-                        }
-                    });
-                }
-
-                knownBookingIds = new Set(cloudList.map(b => b.id).filter(Boolean));
-                appState.bookings = cloudList;
-                saveData();
-
-                renderTimeSlots();
-                updateSummaries();
-
-                const adminOpen = document.getElementById('admin-modal')?.classList.contains('open');
-                if (adminOpen && appState.adminLoggedIn) {
-                    renderAdminAgenda();
-                    renderAdminContabilidade();
-                }
-
-                const myBookingsOpen = document.getElementById('my-bookings-modal')?.classList.contains('open');
-                if (myBookingsOpen) {
-                    openMyBookingsModal();
-                }
-
-                if (newBookingsForAlert.length > 0) {
-                    triggerBookingNotification(newBookingsForAlert[0]);
-                }
-            } catch (e) {
-                console.warn('Erro ao sincronizar com o Firebase:', e);
-            }
-        }
-
-        function startFirebasePolling() {
-            if (firebaseSyncInterval) clearInterval(firebaseSyncInterval);
-            firebaseSyncInterval = setInterval(() => {
-                syncBookingsFromFirebase({ silentNewAlert: false });
-            }, 6000);
-        }
-// === FIM PARTE 10/14 ===
-// === INÍCIO PARTE 11/14 ===
         function updateHeaderHoursBanner() {
             const e = appState.expediente;
             const fmtDia = (d) => {
@@ -1772,9 +1509,6 @@
             banner.innerHTML = `<span class="status-dot"></span><span>${fmtDia(1)} • ${fmtDia(2)} • ${fmtDia(5)} • ${fmtDia(6)} • ${fmtDia(0)}</span>`;
         }
 
-        // ======================================================================
-        // CÁLCULO CONTÁBIL DE COMISSÕES (50% SERVIÇOS AVULSOS + PLANOS MENSAIS)
-        // ======================================================================
         function calcularFinanceiroAgendamento(booking) {
             let receitaSessao = 0;
             let comissaoBarbeiro = 0;
@@ -1799,16 +1533,50 @@
                 lucroBarbearia: receitaSessao - comissaoBarbeiro,
                 valorCobradoClienteNoDia
             };
-        }
-
-        // ======================================================================
-        // PASSO 1: SERVIÇOS, CATEGORIAS & PLANOS
-        // ======================================================================
-        function renderLogo() {
+            }
+                     function renderLogo() {
             const container = document.getElementById('brand-logo-container');
             if (appState.customLogo) {
                 container.innerHTML = `<img src="${appState.customLogo}" alt="Logo Barbearia Mr Jone">`;
             }
+        }
+
+        function renderBarbers() {
+            const activeBarbers = appState.barbers.filter(b => b.active !== false);
+            if (!activeBarbers.some(b => b.id === appState.selectedBarberId) && activeBarbers.length > 0) {
+                appState.selectedBarberId = activeBarbers[0].id;
+            }
+
+            const grid = document.getElementById('barbers-grid');
+            grid.innerHTML = activeBarbers.map(b => {
+                const isSelected = appState.selectedBarberId === b.id;
+                return `
+                    <div class="barber-card ${isSelected ? 'selected' : ''}" onclick="selectBarber('${b.id}')">
+                        <div class="barber-avatar">${b.initials || b.name.slice(0, 2).toUpperCase()}</div>
+                        <div class="barber-details">
+                            <div class="barber-name">${b.name}</div>
+                            <div class="barber-role">${b.role || 'Barbeiro Profissional'}</div>
+                            <div class="barber-rating">★ Selecionar e ver serviços</div>
+                        </div>
+                    </div>
+                `;
+            }).join('');
+        }
+
+        function selectBarber(barberId) {
+            appState.selectedBarberId = barberId;
+            appState.selectedStartMin = null;
+            renderBarbers();
+            renderTimeSlots();
+            updateSummaries();
+
+            clearTimeout(window._autoScrollStepTimer);
+            window._autoScrollStepTimer = setTimeout(() => {
+                const step2 = document.getElementById('step-2');
+                if (step2) {
+                    step2.scrollIntoView({ behavior: 'smooth', block: 'start' });
+                }
+            }, 220);
         }
 
         function renderCategoryTabs() {
@@ -1913,52 +1681,7 @@
             if (srvs.length === 0) return 30;
             return srvs.reduce((acc, s) => acc + Number(s.duration), 0);
         }
-
-        // ======================================================================
-        // PASSO 2: BARBEIROS ATIVOS
-        // ======================================================================
-        function renderBarbers() {
-            const activeBarbers = appState.barbers.filter(b => b.active !== false);
-            if (!activeBarbers.some(b => b.id === appState.selectedBarberId) && activeBarbers.length > 0) {
-                appState.selectedBarberId = activeBarbers[0].id;
-            }
-
-            const grid = document.getElementById('barbers-grid');
-            grid.innerHTML = activeBarbers.map(b => {
-                const isSelected = appState.selectedBarberId === b.id;
-                return `
-                    <div class="barber-card ${isSelected ? 'selected' : ''}" onclick="selectBarber('${b.id}')">
-                        <div class="barber-avatar">${b.initials || b.name.slice(0, 2).toUpperCase()}</div>
-                        <div class="barber-details">
-                            <div class="barber-name">${b.name}</div>
-                            <div class="barber-role">${b.role || 'Barbeiro Profissional'}</div>
-                            <div class="barber-rating">★ Agenda Online Ativa</div>
-                        </div>
-                    </div>
-                `;
-            }).join('');
-        }
-
-        function selectBarber(barberId) {
-            appState.selectedBarberId = barberId;
-            appState.selectedStartMin = null;
-            renderBarbers();
-            syncBookingsFromFirebase({ silentNewAlert: true });
-            renderTimeSlots();
-            updateSummaries();
-            if (appState.selectedServiceIds.length > 0) {
-                clearTimeout(window._autoScrollStepTimer);
-                window._autoScrollStepTimer = setTimeout(() => {
-                    document.getElementById('step-3')?.scrollIntoView({ behavior: 'smooth', block: 'start' });
-                }, 250);
-            }
-        }
-// === FIM PARTE 11/14 ===
-// === INÍCIO PARTE 12/14 ===
-        // ======================================================================
-        // PASSO 3: DATAS & HORÁRIOS INTELIGENTES (BLOQUEIO POR DURAÇÃO REAL)
-        // ======================================================================
-        function generateUpcomingDates(daysCount = 15) {
+                    function generateUpcomingDates(daysCount = 15) {
             const weekDays = ['Dom', 'Seg', 'Ter', 'Qua', 'Qui', 'Sex', 'Sáb'];
             const months = ['Jan', 'Fev', 'Mar', 'Abr', 'Mai', 'Jun', 'Jul', 'Ago', 'Set', 'Out', 'Nov', 'Dez'];
             const dates = [];
@@ -2005,7 +1728,6 @@
             appState.selectedDateISO = iso;
             appState.selectedStartMin = null;
             renderDates();
-            syncBookingsFromFirebase({ silentNewAlert: true });
             renderTimeSlots();
             updateSummaries();
         }
@@ -2175,26 +1897,8 @@
             document.getElementById('sum-total').textContent = appState.selectedPayment === 'Plano Mensal (Assinante)' && selectedSrvs.some(s => s.isPlan)
                 ? 'R$ 0,00 (Sessão do Plano)'
                 : formatBRL(totalPrice);
-        }
-
-        function requestDeviceNotificationPermission() {
-            if (!('Notification' in window)) {
-                showToast('Este navegador não suporta notificação nativa do sistema.');
-                return;
             }
-            Notification.requestPermission().then(perm => {
-                if (perm === 'granted') {
-                    showToast('Notificações do celular/navegador ativadas!');
-                    playBookingAlertSound();
-                } else {
-                    showToast('Permissão de notificação negada ou bloqueada no aparelho.');
-                }
-            }).catch(() => {
-                showToast('Não foi possível solicitar permissão de notificação.');
-            });
-        }
-
-        function playBookingAlertSound() {
+                     function playBookingAlertSound() {
             try {
                 if (navigator.vibrate) {
                     navigator.vibrate([180, 90, 180]);
@@ -2259,9 +1963,6 @@
                 `Total no dia: ${formatBRL(fin.valorCobradoClienteNoDia)}`
             ].filter(Boolean).join('\n');
 
-            const subject = encodeURIComponent(subjectStr);
-            const body = encodeURIComponent(plainLines);
-
             const payload = {
                 _subject: subjectStr,
                 _template: 'box',
@@ -2287,25 +1988,14 @@
                     'Accept': 'application/json'
                 },
                 body: JSON.stringify(payload)
-            })
-            .then(r => r.json())
-            .then(data => {
-                if (data && (data.success === 'true' || data.success === true)) {
-                    showToast('E-mail de notificação enviado para jhonyvr58@gmail.com!');
-                }
-            })
-            .catch(() => {});
-
-            const mailtoUrl = `mailto:jhonyvr58@gmail.com?subject=${subject}&body=${body}`;
-            booking._mailtoUrl = mailtoUrl;
-            return mailtoUrl;
+            }).catch(() => {});
         }
 
-        async function confirmBooking() {
+        function confirmBooking() {
             const selectedSrvs = getSelectedServicesObjects();
             if (selectedSrvs.length === 0) {
-                showToast('Selecione pelo menos 1 serviço ou plano no Passo 1.');
-                document.getElementById('step-1').scrollIntoView({ behavior: 'smooth' });
+                showToast('Selecione pelo menos 1 serviço ou plano no Passo 2.');
+                document.getElementById('step-2').scrollIntoView({ behavior: 'smooth' });
                 return;
             }
 
@@ -2330,8 +2020,6 @@
                 document.getElementById('client-phone').focus();
                 return;
             }
-
-            await syncBookingsFromFirebase({ silentNewAlert: true });
 
             const totalDuration = selectedSrvs.reduce((acc, s) => acc + Number(s.duration), 0);
             const startMin = appState.selectedStartMin;
@@ -2375,23 +2063,19 @@
                 createdAt: new Date().toISOString()
             };
 
-            knownBookingIds.add(booking.id);
             appState.bookings.unshift(booking);
             saveData();
-            await pushBookingToFirebase(booking);
-
             triggerBookingNotification(booking);
             sendBookingEmailNotification(booking);
 
-            const waUrl =buildWhatsAppBookingUrl(booking);
+            const waUrl = buildWhatsAppBookingUrl(booking);
 
             appState.selectedStartMin = null;
             renderTimeSlots();
             updateSummaries();
             openReceiptModal(booking, waUrl);
         }
-// === FIM PARTE 12/14 ===
-// === INÍCIO PARTE 13/14 ===
+
         function buildWhatsAppBookingMessage(booking) {
             const fin = calcularFinanceiroAgendamento(booking);
             const servicesText = booking.items.map(s => s.name).join(' + ');
@@ -2444,8 +2128,7 @@
             }
             document.body.removeChild(ta);
         }
-
-        function openReceiptModal(booking, prebuiltWaUrl) {
+                  function openReceiptModal(booking, prebuiltWaUrl) {
             const fin = calcularFinanceiroAgendamento(booking);
             const servicesText = booking.items.map(s => s.name).join(' + ');
 
@@ -2506,19 +2189,13 @@
             document.getElementById(id).classList.remove('open');
         }
 
-        // ======================================================================
-        // MEUS AGENDAMENTOS (CLIENTE)
-        // ======================================================================
-        async function openMyBookingsModal() {
-            document.getElementById('my-bookings-modal').classList.add('open');
-            await syncBookingsFromFirebase({ silentNewAlert: true });
-
+        function openMyBookingsModal() {
             const container = document.getElementById('my-bookings-list');
             if (appState.bookings.length === 0) {
-                container.innerHTML = `<p style="text-align:center; color:var(--text-secondary); padding:20px 0; font-size:0.88rem;">Nenhum agendamento encontrado na agenda.</p>`;
+                container.innerHTML = `<p style="text-align:center; color:var(--text-secondary); padding:20px 0; font-size:0.88rem;">Nenhum agendamento encontrado neste dispositivo.</p>`;
             } else {
                 container.innerHTML = appState.bookings.map(b => `
-                    <div class="admin-item-card">
+                    <div class="booking-item-card">
                         <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:6px;">
                             <strong style="color:var(--gold-light);">${b.id} • ${b.dateLabel} (${b.time} às ${b.endTime})</strong>
                             <span style="font-size:0.72rem; font-weight:800; text-transform:uppercase; color:${b.status === 'cancelado' ? '#FCA5A5' : '#86EFAC'};">${b.status}</span>
@@ -2531,702 +2208,31 @@
                     </div>
                 `).join('');
             }
+            document.getElementById('my-bookings-modal').classList.add('open');
         }
 
-        async function cancelClientBooking(bookingId) {
+        function cancelClientBooking(bookingId) {
             const target = appState.bookings.find(b => b.id === bookingId);
             if (target) {
                 target.status = 'cancelado';
                 saveData();
-                await patchBookingInFirebase(target);
                 renderTimeSlots();
                 openMyBookingsModal();
                 showToast('Agendamento cancelado e horário liberado!');
             }
         }
 
-        // ======================================================================
-        // PAINEL DO PROPRIETÁRIO: CONTABILIDADE, EXPEDIENTE, SERVIÇOS E EQUIPE
-        // ======================================================================
-        function openAdminAuth() {
-            document.getElementById('admin-modal').classList.add('open');
-            if (appState.adminLoggedIn) {
-                showAdminDashboard();
-                syncBookingsFromFirebase({ silentNewAlert: true });
-            } else {
-                document.getElementById('admin-login-view').style.display = 'flex';
-                document.getElementById('admin-panel-view').style.display = 'none';
-            }
-        }
-
-        function verifyAdminLogin() {
-            const pass = document.getElementById('admin-pass-input').value.trim();
-            if (pass === String(appState.adminPassword)) {
-                appState.adminLoggedIn = true;
-                showAdminDashboard();
-                syncBookingsFromFirebase({ silentNewAlert: true });
-            } else {
-                showToast('Senha incorreta!');
-            }
-        }
-
-        function showAdminDashboard() {
-            document.getElementById('admin-login-view').style.display = 'none';
-            document.getElementById('admin-panel-view').style.display = 'block';
-            renderAdminContabilidade();
-            renderAdminAgenda();
-            renderAdminExpediente();
-            renderAdminServicos();
-            renderAdminEquipe();
-            renderAdminConfig();
-        }
-
-        function switchAdminTab(tabName, btnEl) {
-            document.querySelectorAll('.admin-tab-btn').forEach(b => b.classList.remove('active'));
-            btnEl.classList.add('active');
-
-            const tabs = ['contabilidade', 'agenda', 'expediente', 'servicos', 'equipe', 'config'];
-            tabs.forEach(t => {
-                document.getElementById(`admin-tab-${t}`).style.display = (t === tabName) ? 'block' : 'none';
-            });
-
-            if (tabName === 'contabilidade') renderAdminContabilidade();
-            if (tabName === 'agenda') renderAdminAgenda();
-            if (tabName === 'expediente') renderAdminExpediente();
-            if (tabName === 'servicos') renderAdminServicos();
-            if (tabName === 'equipe') renderAdminEquipe();
-            if (tabName === 'config') renderAdminConfig();
-        }
-
-        // --- ABA 1: CONTABILIDADE & COMISSÃO DE 50% (AVULSO + PLANOS MENSAIS) ---
-        function renderAdminContabilidade() {
-            const container = document.getElementById('admin-tab-contabilidade');
-            const validBookings = appState.bookings.filter(b => b.status !== 'cancelado');
-
-            const now = new Date();
-            const todayISO = `${now.getFullYear()}-${String(now.getMonth() + 1).padStart(2, '0')}-${String(now.getDate()).padStart(2, '0')}`;
-            const currentMonthPrefix = todayISO.slice(0, 7);
-
-            const filtered = validBookings.filter(b => {
-                if (appState.accountingFilterBarber !== 'todos' && b.barberId !== appState.accountingFilterBarber) return false;
-                if (appState.accountingFilterPeriod === 'hoje' && b.dateISO !== todayISO) return false;
-                if (appState.accountingFilterPeriod === 'mes' && !b.dateISO.startsWith(currentMonthPrefix)) return false;
-                return true;
-            });
-
-            let totalReceita = 0;
-            let totalComissao = 0;
-            let totalBarbearia = 0;
-            let qtdAvulsos = 0;
-            let qtdPlanos = 0;
-
-            const porBarbeiro = {};
-            appState.barbers.forEach(barb => {
-                porBarbeiro[barb.id] = {
-                    name: barb.name,
-                    atendimentos: 0,
-                    atendimentosPlano: 0,
-                    receitaGerada: 0,
-                    comissaoPagar: 0
-                };
-            });
-
-            filtered.forEach(b => {
-                const fin = calcularFinanceiroAgendamento(b);
-                totalReceita += fin.receitaSessao;
-                totalComissao += fin.comissaoBarbeiro;
-                totalBarbearia += fin.lucroBarbearia;
-
-                const temPlano = (b.items || []).some(i => i.isPlan);
-                if (temPlano) qtdPlanos++; else qtdAvulsos++;
-
-                if (!porBarbeiro[b.barberId]) {
-                    porBarbeiro[b.barberId] = { name: b.barberName, atendimentos: 0, atendimentosPlano: 0, receitaGerada: 0, comissaoPagar: 0 };
-                }
-                porBarbeiro[b.barberId].atendimentos += 1;
-                if (temPlano) porBarbeiro[b.barberId].atendimentosPlano += 1;
-                porBarbeiro[b.barberId].receitaGerada += fin.receitaSessao;
-                porBarbeiro[b.barberId].comissaoPagar += fin.comissaoBarbeiro;
-            });
-
-            container.innerHTML = `
-                <div style="background:rgba(212,175,55,0.09); border:1px solid var(--border-gold); border-radius:12px; padding:12px; margin-bottom:14px; font-size:0.8rem;">
-                    <strong style="color:var(--gold-light);">Regra Contábil de Comissão (50%):</strong>
-                    <div style="color:var(--text-secondary); margin-top:4px;">
-                        • <strong>Serviços Avulsos:</strong> Barbeiro recebe 50% do valor do serviço.<br>
-                        • <strong>Plano Cabelo e Barba (R$ 150 / 4 sem):</strong> R$ 37,50 por corte feito → <strong>R$ 18,75 de comissão</strong> por atendimento.<br>
-                        • <strong>Plano Só Cabelo (R$ 110 / 4 sem):</strong> R$ 27,50 por corte feito → <strong>R$ 13,75 de comissão</strong> por atendimento.<br>
-                        • <strong>Plano Só Barba (R$ 75 / 4 sem):</strong> R$ 18,75 por barba feita → <strong>R$ 9,38 de comissão</strong> por atendimento.
-                    </div>
-                </div>
-
-                <div class="form-row" style="margin-bottom:14px;">
-                    <div class="field-group">
-                        <label class="field-label">Filtrar Período</label>
-                        <select class="field-input" style="padding:8px 10px;" onchange="appState.accountingFilterPeriod=this.value; renderAdminContabilidade();">
-                            <option value="hoje" ${appState.accountingFilterPeriod === 'hoje' ? 'selected' : ''}>Hoje (${todayISO})</option>
-                            <option value="mes" ${appState.accountingFilterPeriod === 'mes' ? 'selected' : ''}>Mês Atual (${currentMonthPrefix})</option>
-                            <option value="todos" ${appState.accountingFilterPeriod === 'todos' ? 'selected' : ''}>Todo o Histórico</option>
-                        </select>
-                    </div>
-                    <div class="field-group">
-                        <label class="field-label">Filtrar Profissional</label>
-                        <select class="field-input" style="padding:8px 10px;" onchange="appState.accountingFilterBarber=this.value; renderAdminContabilidade();">
-                            <option value="todos" ${appState.accountingFilterBarber === 'todos' ? 'selected' : ''}>Todos os Barbeiros</option>
-                            ${appState.barbers.map(b => `<option value="${b.id}" ${appState.accountingFilterBarber === b.id ? 'selected' : ''}>${b.name}</option>`).join('')}
-                        </select>
-                    </div>
-                </div>
-
-                <div class="kpi-grid">
-                    <div class="kpi-card">
-                        <div class="kpi-label">Faturamento Gerado</div>
-                        <div class="kpi-value">${formatBRL(totalReceita)}</div>
-                        <div class="kpi-sub">${filtered.length} atend. (${qtdAvulsos} avulsos / ${qtdPlanos} planos)</div>
-                    </div>
-                    <div class="kpi-card">
-                        <div class="kpi-label">Comissão Barbeiros (50%)</div>
-                        <div class="kpi-value" style="color:#86EFAC;">${formatBRL(totalComissao)}</div>
-                        <div class="kpi-sub">Repasse proporcional + avulsos</div>
-                    </div>
-                    <div class="kpi-card">
-                        <div class="kpi-label">Líquido Barbearia (50%)</div>
-                        <div class="kpi-value">${formatBRL(totalBarbearia)}</div>
-                        <div class="kpi-sub">Caixa da casa</div>
-                    </div>
-                </div>
-
-                <h4 style="color:var(--gold-light); font-size:0.92rem; margin-bottom:8px;">Resumo por Profissional</h4>
-                ${Object.values(porBarbeiro).map(pb => `
-                    <div class="admin-item-card" style="display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:8px;">
-                        <div>
-                            <strong style="font-size:0.92rem; color:var(--text-primary);">${pb.name}</strong>
-                            <div style="color:var(--text-secondary); font-size:0.78rem;">
-                                ${pb.atendimentos} atendimento(s) (${pb.atendimentosPlano} de plano mensal) • Produção: ${formatBRL(pb.receitaGerada)}
-                            </div>
-                        </div>
-                        <div style="text-align:right;">
-                            <div style="font-size:0.72rem; color:var(--text-secondary);">Comissão a Receber (50%)</div>
-                            <strong style="font-size:1.05rem; color:#86EFAC;">${formatBRL(pb.comissaoPagar)}</strong>
-                        </div>
-                    </div>
-                `).join('')}
-
-                <h4 style="color:var(--gold-light); font-size:0.92rem; margin:14px 0 8px;">Lançar Atendimento Manual (Balcão / Assinante)</h4>
-                <div class="admin-item-card" style="display:flex; flex-direction:column; gap:8px;">
-                    <div class="form-row">
-                        <input type="text" id="manual-client-name" class="field-input" style="padding:8px;" placeholder="Nome do Cliente">
-                        <select id="manual-barber-id" class="field-input" style="padding:8px;">
-                            ${appState.barbers.map(b => `<option value="${b.id}">${b.name}</option>`).join('')}
-                        </select>
-                    </div>
-                    <div class="form-row">
-                        <select id="manual-service-id" class="field-input" style="padding:8px;">
-                            ${appState.services.map(s => `<option value="${s.id}">${s.name} (${formatBRL(s.price)})</option>`).join('')}
-                        </select>
-                        <select id="manual-payment-type" class="field-input" style="padding:8px;">
-                            <option value="Pix">Avulso — Pix</option>
-                            <option value="Dinheiro">Avulso — Dinheiro</option>
-                            <option value="Cartão">Avulso — Cartão</option>
-                            <option value="Plano Mensal (Assinante)">Sessão de Plano Mensal</option>
-                        </select>
-                    </div>
-                    <button type="button" class="btn-gold-primary" style="padding:10px;" onclick="addManualAccountingEntry()">+ Registrar Atendimento na Contabilidade</button>
-                </div>
-            `;
-        }
-
-        async function addManualAccountingEntry() {
-            const clientName = document.getElementById('manual-client-name').value.trim() || 'Cliente Balcão';
-            const barberId = document.getElementById('manual-barber-id').value;
-            const serviceId = document.getElementById('manual-service-id').value;
-            const payment = document.getElementById('manual-payment-type').value;
-
-            const barberObj = appState.barbers.find(b => b.id === barberId) || appState.barbers[0];
-            const srvObj = appState.services.find(s => s.id === serviceId) || appState.services[0];
-
-            const now = new Date();
-            const todayISO = `${now.getFullYear()}-${String(now.getMonth() + 1).padStart(2, '0')}-${String(now.getDate()).padStart(2, '0')}`;
-            const startMin = (now.getHours() * 60) + now.getMinutes();
-
-            const entry = {
-                id: 'BAL-' + Math.floor(1000 + Math.random() * 9000),
-                clientName,
-                clientPhone: 'Balcão',
-                notes: 'Lançamento manual',
-                items: [{
-                    id: srvObj.id,
-                    name: srvObj.name,
-                    price: Number(srvObj.price),
-                    duration: Number(srvObj.duration),
-                    isPlan: Boolean(srvObj.isPlan),
-                    sessionsPerMonth: Number(srvObj.sessionsPerMonth || 1)
-                }],
-                barberId: barberObj.id,
-                barberName: barberObj.name,
-                dateISO: todayISO,
-                dateLabel: todayISO,
-                startMin,
-                endMin: startMin + Number(srvObj.duration),
-                time: minParaHora(startMin),
-                endTime: minParaHora(startMin + Number(srvObj.duration)),
-                duration: Number(srvObj.duration),
-                payment,
-                status: 'concluído',
-                createdAt: now.toISOString()
-            };
-
-            knownBookingIds.add(entry.id);
-            appState.bookings.unshift(entry);
-            saveData();
-            await pushBookingToFirebase(entry);
-            renderAdminContabilidade();
-            renderAdminAgenda();
-            showToast('Atendimento registrado e comissão calculada!');
-        }
-// === FIM PARTE 13/14 ===
-// === INÍCIO PARTE 14/14 ===
-        // --- ABA 2: AGENDA DE ATENDIMENTOS ---
-        function renderAdminAgenda() {
-            const container = document.getElementById('admin-tab-agenda');
-            if (appState.bookings.length === 0) {
-                container.innerHTML = `<p style="color:var(--text-secondary); font-size:0.85rem;">Nenhum agendamento registrado ainda.</p>`;
-                return;
-            }
-            container.innerHTML = appState.bookings.map(b => {
-                const fin = calcularFinanceiroAgendamento(b);
-                return `
-                    <div class="admin-item-card">
-                        <div style="display:flex; justify-content:space-between; gap:8px; margin-bottom:4px; flex-wrap:wrap;">
-                            <strong style="color:var(--gold-light);">${b.dateLabel} • ${b.time} às ${b.endTime} — ${b.clientName}</strong>
-                            <span style="font-size:0.72rem; font-weight:800; text-transform:uppercase; color:${b.status === 'cancelado' ? '#FCA5A5' : '#86EFAC'};">${b.status}</span>
-                        </div>
-                        <div style="color:var(--text-secondary); margin-bottom:4px;">Barbeiro: <strong>${b.barberName}</strong> • WhatsApp: ${b.clientPhone} • ${b.payment}</div>
-                        <div style="color:var(--text-primary); margin-bottom:6px;">
-                            ${b.items.map(s => s.name).join(' + ')} — Receita sessão: <strong>${formatBRL(fin.receitaSessao)}</strong> • Comissão (50%): <strong style="color:#86EFAC;">${formatBRL(fin.comissaoBarbeiro)}</strong>
-                        </div>
-                        <div style="display:flex; gap:8px; flex-wrap:wrap;">
-                            ${b.status !== 'concluído' ? `<button type="button" class="success-btn" onclick="updateBookingStatus('${b.id}', 'concluído')">Concluir</button>` : ''}
-                            ${b.status !== 'cancelado' ? `<button type="button" class="danger-btn" onclick="updateBookingStatus('${b.id}', 'cancelado')">Cancelar (Libera Horário)</button>` : ''}
-                            <button type="button" class="danger-btn" onclick="deleteBookingRecord('${b.id}')">Excluir</button>
-                        </div>
-                    </div>
-                `;
-            }).join('');
-        }
-
-        async function updateBookingStatus(id, status) {
-            const item = appState.bookings.find(b => b.id === id);
-            if (item) {
-                item.status = status;
-                saveData();
-                await patchBookingInFirebase(item);
-                renderAdminAgenda();
-                renderAdminContabilidade();
-                renderTimeSlots();
-                showToast(`Status atualizado: ${status}`);
-            }
-        }
-
-        async function deleteBookingRecord(id) {
-            const idx = appState.bookings.findIndex(b => b.id === id);
-            if (idx < 0) return;
-            if (!confirm('Excluir este registro de agendamento permanentemente?')) return;
-            const removed = appState.bookings[idx];
-            appState.bookings.splice(idx, 1);
-            saveData();
-            await deleteBookingFromFirebase(removed);
-            renderAdminAgenda();
-            renderAdminContabilidade();
-            renderTimeSlots();
-            showToast('Registro excluído da agenda!');
-        }
-
-        // --- ABA 3: CONFIGURAR EXPEDIENTE E PAUSAS ---
-        function renderAdminExpediente() {
-            const container = document.getElementById('admin-tab-expediente');
-            const ordem = [1, 2, 3, 4, 5, 6, 0];
-
-            container.innerHTML = `
-                <h4 style="color:var(--gold-light); font-size:0.92rem; margin-bottom:8px;">Horários de Expediente Semanal</h4>
-                <div style="margin-bottom:12px;">
-                    <label class="field-label">Grade de encaixe dos horários (minutos)</label>
-                    <select id="admin-step-select" class="field-input" style="padding:8px;">
-                        <option value="10" ${appState.slotStepMinutes === 10 ? 'selected' : ''}>A cada 10 min</option>
-                        <option value="15" ${appState.slotStepMinutes === 15 ? 'selected' : ''}>A cada 15 min (Recomendado)</option>
-                        <option value="20" ${appState.slotStepMinutes === 20 ? 'selected' : ''}>A cada 20 min</option>
-                        <option value="30" ${appState.slotStepMinutes === 30 ? 'selected' : ''}>A cada 30 min</option>
-                    </select>
-                </div>
-
-                ${ordem.map(d => {
-                    const info = appState.expediente[d];
-                    return `
-                        <div class="admin-item-card">
-                            <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:8px;">
-                                <label style="display:inline-flex; align-items:center; gap:8px; font-weight:700; color:var(--text-primary); cursor:pointer;">
-                                    <input type="checkbox" class="exp-ativo" data-dia="${d}" ${info.ativo ? 'checked' : ''}>
-                                    <span>${info.name}</span>
-                                </label>
-                                <label style="display:inline-flex; align-items:center; gap:6px; font-size:0.76rem; color:var(--text-secondary); cursor:pointer;">
-                                    <input type="checkbox" class="exp-t2-ativo" data-dia="${d}" ${info.t2Ativo ? 'checked' : ''}>
-                                    <span>2º Turno</span>
-                                </label>
-                            </div>
-                            <div class="form-row">
-                                <div style="display:flex; gap:6px; align-items:center;">
-                                    <span style="font-size:0.75rem; color:var(--text-secondary);">T1:</span>
-                                    <input type="time" class="field-input exp-t1-ini" data-dia="${d}" style="padding:6px;" value="${info.t1Inicio}">
-                                    <span>às</span>
-                                    <input type="time" class="field-input exp-t1-fim" data-dia="${d}" style="padding:6px;" value="${info.t1Fim}">
-                                </div>
-                                <div style="display:flex; gap:6px; align-items:center;">
-                                    <span style="font-size:0.75rem; color:var(--text-secondary);">T2:</span>
-                                    <input type="time" class="field-input exp-t2-ini" data-dia="${d}" style="padding:6px;" value="${info.t2Inicio}">
-                                    <span>às</span>
-                                    <input type="time" class="field-input exp-t2-fim" data-dia="${d}" style="padding:6px;" value="${info.t2Fim}">
-                                </div>
-                            </div>
-                        </div>
-                    `;
-                }).join('')}
-
-                <button type="button" class="btn-gold-primary" style="padding:11px; margin-bottom:18px;" onclick="saveAdminExpediente()">Salvar Horários de Expediente</button>
-
-                <h4 style="color:var(--gold-light); font-size:0.92rem; margin-bottom:8px;">Adicionar Pausa / Bloqueio de Horário</h4>
-                <div class="admin-item-card" style="display:flex; flex-direction:column; gap:8px;">
-                    <div class="form-row">
-                        <input type="date" id="pause-date" class="field-input" style="padding:8px;" value="${appState.selectedDateISO}">
-                        <select id="pause-barber" class="field-input" style="padding:8px;">
-                            <option value="todos">Todos os Barbeiros</option>
-                            ${appState.barbers.map(b => `<option value="${b.id}">${b.name}</option>`).join('')}
-                        </select>
-                    </div>
-                    <div class="form-row">
-                        <div style="display:flex; gap:6px; align-items:center;">
-                            <input type="time" id="pause-ini" class="field-input" style="padding:8px;" value="12:00">
-                            <span>até</span>
-                            <input type="time" id="pause-fim" class="field-input" style="padding:8px;" value="13:00">
-                        </div>
-                        <input type="text" id="pause-reason" class="field-input" style="padding:8px;" placeholder="Motivo (Ex: Almoço, compromisso)">
-                    </div>
-                    <button type="button" class="btn-secondary" style="margin-top:0; border-color:var(--border-gold); color:var(--gold-light);" onclick="addAdminPause()">+ Bloquear Intervalo</button>
-                </div>
-
-                <div id="admin-pauses-list">
-                    ${appState.blockedRanges.map((p, idx) => `
-                        <div class="admin-item-card" style="display:flex; justify-content:space-between; align-items:center; gap:8px;">
-                            <div>
-                                <strong>${p.dateISO}</strong> • ${minParaHora(p.startMin)} às ${minParaHora(p.endMin)}
-                                <span style="color:var(--text-secondary);">(${p.reason || 'Pausa'})</span>
-                            </div>
-                            <button type="button" class="danger-btn" onclick="removeAdminPause(${idx})">Remover</button>
-                        </div>
-                    `).join('')}
-                </div>
-            `;
-        }
-
-        function saveAdminExpediente() {
-            appState.slotStepMinutes = Number(document.getElementById('admin-step-select').value) || 15;
-            document.querySelectorAll('.exp-ativo').forEach(el => {
-                const d = Number(el.dataset.dia);
-                appState.expediente[d].ativo = el.checked;
-            });
-            document.querySelectorAll('.exp-t2-ativo').forEach(el => {
-                const d = Number(el.dataset.dia);
-                appState.expediente[d].t2Ativo = el.checked;
-            });
-            document.querySelectorAll('.exp-t1-ini').forEach(el => {
-                appState.expediente[Number(el.dataset.dia)].t1Inicio = el.value;
-            });
-            document.querySelectorAll('.exp-t1-fim').forEach(el => {
-                appState.expediente[Number(el.dataset.dia)].t1Fim = el.value;
-            });
-            document.querySelectorAll('.exp-t2-ini').forEach(el => {
-                appState.expediente[Number(el.dataset.dia)].t2Inicio = el.value;
-            });
-            document.querySelectorAll('.exp-t2-fim').forEach(el => {
-                appState.expediente[Number(el.dataset.dia)].t2Fim = el.value;
-            });
-
-            saveData();
-            updateHeaderHoursBanner();
-            renderDates();
-            renderTimeSlots();
-            showToast('Expediente atualizado com sucesso!');
-        }
-
-        function addAdminPause() {
-            const dateISO = document.getElementById('pause-date').value;
-            const barberId = document.getElementById('pause-barber').value;
-            const startMin = horaParaMin(document.getElementById('pause-ini').value);
-            const endMin = horaParaMin(document.getElementById('pause-fim').value);
-            const reason = document.getElementById('pause-reason').value.trim();
-
-            if (!dateISO || endMin <= startMin) {
-                showToast('Informe data e intervalo válido.');
-                return;
-            }
-
-            appState.blockedRanges.push({ id: Date.now(), dateISO, barberId, startMin, endMin, reason });
-            saveData();
-            renderAdminExpediente();
-            renderTimeSlots();
-            showToast('Pausa adicionada!');
-        }
-
-        function removeAdminPause(idx) {
-            appState.blockedRanges.splice(idx, 1);
-            saveData();
-            renderAdminExpediente();
-            renderTimeSlots();
-        }
-
-        // --- ABA 4: CATEGORIAS, PREÇOS E TEMPO (DURAÇÃO EM MINUTOS) ---
-        function renderAdminServicos() {
-            const container = document.getElementById('admin-tab-servicos');
-            container.innerHTML = `
-                <h4 style="color:var(--gold-light); font-size:0.92rem; margin-bottom:8px;">Categorias de Serviços &amp; Planos</h4>
-                <div class="admin-item-card" style="display:flex; flex-direction:column; gap:10px; margin-bottom:14px;">
-                    <div style="display:flex; gap:8px;">
-                        <input type="text" id="new-category-name" class="field-input" style="padding:8px;" placeholder="Nova categoria (Ex: Tratamentos, Infantil)">
-                        <button type="button" class="btn-gold-primary" style="width:auto; padding:8px 14px; white-space:nowrap;" onclick="addCategory()">+ Adicionar</button>
-                    </div>
-                    <div style="display:flex; flex-wrap:wrap; gap:8px;">
-                        ${appState.categories.map((cat, cIdx) => `
-                            <div style="display:inline-flex; align-items:center; gap:6px; background:#0B0B0C; border:1px solid var(--border-subtle); padding:5px 10px; border-radius:8px; font-size:0.78rem;">
-                                <span>${cat}</span>
-                                <button type="button" class="danger-btn" style="padding:2px 7px; font-size:0.7rem;" onclick="removeCategory(${cIdx})">Excluir</button>
-                            </div>
-                        `).join('')}
-                    </div>
-                </div>
-
-                <p style="font-size:0.8rem; color:var(--text-secondary); margin-bottom:10px;">
-                    Edite o nome, categoria, preço (R$) ou tempo médio em minutos de cada serviço/plano:
-                </p>
-                ${appState.services.map((s, idx) => `
-                    <div class="admin-item-card" style="display:flex; flex-direction:column; gap:8px;">
-                        <input type="text" class="field-input" style="padding:8px; font-weight:700;" value="${s.name}" onchange="updateServiceField(${idx}, 'name', this.value)">
-                        <div class="form-row">
-                            <div>
-                                <label class="field-label">Categoria</label>
-                                <select class="field-input" style="padding:8px;" onchange="updateServiceField(${idx}, 'category', this.value)">
-                                    ${appState.categories.map(cat => `<option value="${cat}" ${s.category === cat ? 'selected' : ''}>${cat}</option>`).join('')}
-                                </select>
-                            </div>
-                            <div>
-                                <label class="field-label">Preço (R$)</label>
-                                <input type="number" class="field-input" style="padding:8px;" value="${s.price}" onchange="updateServiceField(${idx}, 'price', Number(this.value))">
-                            </div>
-                        </div>
-                        <div>
-                            <label class="field-label">Tempo Médio (minutos)</label>
-                            <input type="number" step="5" min="5" class="field-input" style="padding:8px;" value="${s.duration}" onchange="updateServiceField(${idx}, 'duration', Number(this.value))">
-                        </div>
-                    </div>
-                `).join('')}
-                <button type="button" class="btn-secondary" onclick="restoreDefaultServices()">Restaurar Serviços, Tempos e Planos Padrão</button>
-            `;
-        }
-
-        function addCategory() {
-            const input = document.getElementById('new-category-name');
-            if (!input) return;
-            const nome = input.value.trim();
-            if (!nome) {
-                showToast('Digite o nome da categoria.');
-                return;
-            }
-            const exists = appState.categories.some(c => c.toLowerCase() === nome.toLowerCase());
-            if (exists) {
-                showToast('Essa categoria já existe.');
-                return;
-            }
-            appState.categories.push(nome);
-            input.value = '';
-            saveData();
-            renderCategoryTabs();
-            renderAdminServicos();
-            showToast('Categoria adicionada!');
-        }
-
-        function removeCategory(idx) {
-            const cat = appState.categories[idx];
-            if (!cat) return;
-            if (!confirm(`Excluir a categoria "${cat}"?`)) return;
-            appState.categories.splice(idx, 1);
-            if (appState.activeCategory === cat) {
-                appState.activeCategory = 'todos';
-            }
-            saveData();
-            renderCategoryTabs();
-            renderServices();
-            renderAdminServicos();
-            showToast('Categoria excluída!');
-        }
-
-        function updateServiceField(idx, field, val) {
-            if (!val && val !== 0) return;
-            appState.services[idx][field] = val;
-            saveData();
-            renderServices();
-            renderTimeSlots();
-            updateSummaries();
-            showToast('Serviço e tempo atualizados!');
-        }
-
-        function restoreDefaultServices() {
-            appState.categories = [...DEFAULT_CATEGORIES];
-            appState.services = JSON.parse(JSON.stringify(INITIAL_SERVICES));
-            saveData();
-            renderCategoryTabs();
-            renderAdminServicos();
-            renderServices();
-            renderTimeSlots();
-            updateSummaries();
-            showToast('Tabela padrão restaurada!');
-        }
-
-        // --- ABA 5: GERENCIAR BARBEIROS À DISPOSIÇÃO ---
-        function renderAdminEquipe() {
-            const container = document.getElementById('admin-tab-equipe');
-            container.innerHTML = `
-                <h4 style="color:var(--gold-light); font-size:0.92rem; margin-bottom:8px;">Adicionar Barbeiro na Equipe</h4>
-                <div class="admin-item-card" style="display:flex; flex-direction:column; gap:8px; margin-bottom:14px;">
-                    <div class="form-row">
-                        <input type="text" id="new-barber-name" class="field-input" style="padding:8px;" placeholder="Nome do Barbeiro (Ex: Lucas)">
-                        <input type="text" id="new-barber-role" class="field-input" style="padding:8px;" placeholder="Especialidade (Ex: Degradê & Barba)">
-                    </div>
-                    <button type="button" class="btn-gold-primary" style="padding:10px;" onclick="addNewBarber()">+ Colocar Barbeiro à Disposição</button>
-                </div>
-
-                <h4 style="color:var(--gold-light); font-size:0.92rem; margin-bottom:8px;">Profissionais Cadastrados (Comissão: 50%)</h4>
-                ${appState.barbers.map((b, idx) => `
-                    <div class="admin-item-card" style="display:flex; justify-content:space-between; align-items:center; gap:8px; flex-wrap:wrap;">
-                        <div>
-                            <strong style="color:var(--text-primary);">${b.name}</strong>
-                            <div style="font-size:0.78rem; color:var(--text-secondary);">${b.role || 'Barbeiro'} • Comissão: 50%</div>
-                        </div>
-                        <div style="display:flex; gap:8px; align-items:center;">
-                            <button type="button" class="${b.active !== false ? 'success-btn' : 'danger-btn'}" onclick="toggleBarberActive(${idx})">
-                                ${b.active !== false ? 'Ativo na Agenda' : 'Inativo'}
-                            </button>
-                            ${idx > 0 ? `<button type="button" class="danger-btn" onclick="removeBarber(${idx})">Excluir</button>` : ''}
-                        </div>
-                    </div>
-                `).join('')}
-            `;
-        }
-
-        function addNewBarber() {
-            const name = document.getElementById('new-barber-name').value.trim();
-            const role = document.getElementById('new-barber-role').value.trim() || 'Barbeiro Profissional';
-            if (!name) {
-                showToast('Digite o nome do barbeiro.');
-                return;
-            }
-            const id = 'barb-' + Date.now();
-            const initials = name.split(' ').map(p => p[0]).join('').slice(0, 2).toUpperCase();
-            appState.barbers.push({ id, name, role, initials, active: true, commissionRate: 0.50 });
-            saveData();
-            renderBarbers();
-            renderAdminEquipe();
-            showToast(`${name} adicionado à agenda!`);
-        }
-
-        function toggleBarberActive(idx) {
-            appState.barbers[idx].active = appState.barbers[idx].active === false ? true : false;
-            saveData();
-            renderBarbers();
-            renderAdminEquipe();
-        }
-
-        function removeBarber(idx) {
-            appState.barbers.splice(idx, 1);
-            saveData();
-            renderBarbers();
-            renderAdminEquipe();
-        }
-
-        // --- ABA 6: LOGO E SENHA DO PROPRIETÁRIO ---
-        function renderAdminConfig() {
-            const container = document.getElementById('admin-tab-config');
-            const notifStatus = ('Notification' in window) ? Notification.permission : 'indisponível';
-            container.innerHTML = `
-                <div class="admin-item-card" style="display:flex; flex-direction:column; gap:10px;">
-                    <label class="field-label">Alerta na Hora que o Cliente Agendar (Som, Vibração &amp; Notificação)</label>
-                    <div style="font-size:0.78rem; color:var(--text-secondary);">Status da notificação do aparelho: <strong>${notifStatus}</strong>. Em sites estáticos sem servidor push em segundo plano, a notificação do sistema aparece quando a página está aberta no navegador/celular após permitir o aviso.</div>
-                    <div style="display:flex; gap:8px; flex-wrap:wrap;">
-                        <button type="button" class="btn-gold-primary" style="width:auto; padding:9px 14px;" onclick="requestDeviceNotificationPermission()">Ativar Notificação no Celular</button>
-                        <button type="button" class="btn-secondary" style="margin-top:0; width:auto; padding:9px 14px;" onclick="playBookingAlertSound()">Testar Som e Vibração</button>
-                    </div>
-                </div>
-                <div class="admin-item-card" style="display:flex; flex-direction:column; gap:10px;">
-                    <label class="field-label">Alterar Senha de Acesso do Proprietário</label>
-                    <div style="display:flex; gap:8px;">
-                        <input type="password" id="new-admin-pass" class="field-input" style="padding:8px;" placeholder="Nova senha">
-                        <button type="button" class="btn-secondary" style="margin-top:0; width:auto; padding:8px 14px;" onclick="changeAdminPassword()">Salvar Senha</button>
-                    </div>
-                </div>
-                <div class="admin-item-card" style="display:flex; flex-direction:column; gap:10px;">
-                    <label class="field-label">Trocar Logo do Topo (PNG/JPG)</label>
-                    <input type="file" accept="image/*" class="field-input" style="padding:8px;" onchange="handleLogoUpload(event)">
-                    <button type="button" class="btn-secondary" style="margin-top:0;" onclick="resetDefaultLogo()">Restaurar Logo Dourada Vetorial Padrão</button>
-                </div>
-            `;
-        }
-
-        function changeAdminPassword() {
-            const p = document.getElementById('new-admin-pass').value.trim();
-            if (!p || p.length < 4) {
-                showToast('A senha deve ter pelo menos 4 caracteres.');
-                return;
-            }
-            appState.adminPassword = p;
-            saveData();
-            document.getElementById('new-admin-pass').value = '';
-            showToast('Senha do proprietário atualizada!');
-        }
-
-        function handleLogoUpload(event) {
-            const file = event.target.files[0];
-            if (!file) return;
-            const reader = new FileReader();
-            reader.onload = function(e) {
-                appState.customLogo = e.target.result;
-                saveData();
-                renderLogo();
-                showToast('Logo atualizada!');
-            };
-            reader.readAsDataURL(file);
-        }
-
-        function resetDefaultLogo() {
-            appState.customLogo = null;
-            saveData();
-            location.reload();
-        }
-
-        // ======================================================================
-        // BOOTSTRAP INICIAL
-        // ======================================================================
-        window.addEventListener('DOMContentLoaded', async () => {
+        window.addEventListener('DOMContentLoaded', () => {
             loadSavedData();
-            knownBookingIds = new Set((appState.bookings || []).map(b => b.id).filter(Boolean));
             updateHeaderHoursBanner();
             renderLogo();
+            renderBarbers();
             renderCategoryTabs();
             renderServices();
-            renderBarbers();
             renderDates();
             renderTimeSlots();
             updateSummaries();
-            await syncBookingsFromFirebase({ silentNewAlert: true });
-            startFirebasePolling();
         });
     </script>
 </body>
 </html>
-<!-- === FIM PARTE 14/14 === -->
