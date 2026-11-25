@@ -243,6 +243,29 @@
             white-space: nowrap;
         }
 
+        .plan-status-banner {
+            margin-bottom: 12px;
+            padding: 10px 14px;
+            border-radius: var(--radius-sm);
+            font-size: 0.8rem;
+            font-weight: 600;
+            display: none;
+        }
+
+        .plan-status-banner.active-plan {
+            display: block;
+            background: rgba(34, 197, 94, 0.12);
+            border: 1px solid rgba(34, 197, 94, 0.45);
+            color: #86EFAC;
+        }
+
+        .plan-status-banner.expired-plan {
+            display: block;
+            background: rgba(239, 68, 68, 0.12);
+            border: 1px solid rgba(239, 68, 68, 0.45);
+            color: #FCA5A5;
+        }
+
         /* ==========================================================================
            BARBEIROS & CARDS DE SERVIÇOS E PLANOS
            ========================================================================== */
@@ -524,8 +547,9 @@
             color: #0B0B0C;
             font-weight: 800;
             border-color: var(--gold-light);
-            }
-                /* ==========================================================================
+         white-space: nowrap;
+        }
+                 /* ==========================================================================
            PASSO 3: DATA E HORÁRIOS INTELIGENTES (COM INTERVALO INÍCIO → FIM)
            ========================================================================== */
         .dates-scroller {
@@ -815,8 +839,7 @@
             box-shadow: var(--shadow-gold);
             white-space: nowrap;
         }
-
-        /* ==========================================================================
+                 /* ==========================================================================
            MODAIS DE COMPROVANTE E MEUS AGENDAMENTOS
            ========================================================================== */
         .modal-backdrop {
@@ -1068,13 +1091,12 @@
             </div>
         </div>
     </header>
-
-    <!-- ======================================================================
+        <!-- ======================================================================
          CONTEÚDO PRINCIPAL: INICIA PELO BARBEIRO E ROLA PARA SERVIÇOS E DEMAIS OPÇÕES
          ====================================================================== -->
     <main class="container">
 
-        <!-- PASSO 1: ESCOLHA DO PROFISSIONAL (INICIA AQUI) -->
+        <!-- PASSO 1: ESCOLHA DO PROFISSIONAL -->
         <section id="step-1" class="section-block">
             <div class="section-header">
                 <div class="step-title-group">
@@ -1102,11 +1124,14 @@
                 <span id="selected-counter" class="counter-badge">0 selecionado(s)</span>
             </div>
 
+            <div id="plan-status-banner" class="plan-status-banner"></div>
+
             <div class="category-tabs" id="category-tabs"></div>
 
             <div id="services-grid" class="services-grid"></div>
         </section>
-                <!-- PASSO 3: DATA E HORÁRIO INTELIGENTE -->
+
+        <!-- PASSO 3: DATA E HORÁRIO INTELIGENTE -->
         <section id="step-3" class="section-block">
             <div class="section-header">
                 <div class="step-title-group">
@@ -1154,11 +1179,11 @@
                 <div class="form-row">
                     <div class="field-group">
                         <label class="field-label" for="client-name">Seu Nome Completo *</label>
-                        <input type="text" id="client-name" class="field-input" placeholder="Ex: Lucas Oliveira">
+                        <input type="text" id="client-name" class="field-input" placeholder="Ex: Lucas Oliveira" oninput="handleClientIdentityChange()">
                     </div>
                     <div class="field-group">
                         <label class="field-label" for="client-phone">Seu WhatsApp *</label>
-                        <input type="tel" id="client-phone" class="field-input" placeholder="(21) 99999-9999">
+                        <input type="tel" id="client-phone" class="field-input" placeholder="(21) 99999-9999" oninput="handleClientIdentityChange()">
                     </div>
                 </div>
 
@@ -1200,21 +1225,20 @@
                     </div>
                 </div>
 
-                <button type="button" onclick="confirmBooking()" class="btn-gold-primary">
+                <button type="button" id="btn-confirm-booking" onclick="confirmBooking()" class="btn-gold-primary">
                     <span>Confirmar Agendamento</span>
                     <span>→</span>
                 </button>
             </div>
         </section>
 
-    </main>
-
-    <!-- ======================================================================
+                            </main>
+               <!-- ======================================================================
          RODAPÉ
          ====================================================================== -->
     <footer class="site-footer">
         <div><strong>BARBEARIA MR JONE</strong> • Av. Raul de Oliveira Rodrigues (Av. 7), Piratininga, Niterói - RJ</div>
-        <div>Instagram: <a href="https://instagram.com/barbeariaMr_Jone" target="_blank" rel="noopener" style="color:var(--gold-light);">@barbeariaMr_Jone</a> • WhatsApp: <a href="https://wa.me/5521989622789" target="_blank" rel="noopener" style="color:var(--gold-light);">(21) 98962-2789</a></div>
+        <div>Instagram: <a href="https://instagram.com/barbeariaMr_Jone" target="_blank" rel="noopener" style="color:var(--gold-light);">(21) 98962-2789</a></div>
     </footer>
 
     <!-- BARRA INFERIOR FIXA -->
@@ -1253,7 +1277,9 @@
             <div id="my-bookings-list"></div>
         </div>
     </div>
-        <script>
+
+    <script>
+        const FIREBASE_DB_URL = 'https://barbeariamrjone-f3e8a-default-rtdb.firebaseio.com';
         const STORAGE_KEY = 'mr_jone_barbearia_full_v2';
         const BARBERSHOP_WHATSAPP = '5521989622789';
 
@@ -1418,16 +1444,18 @@
             barbers: JSON.parse(JSON.stringify(INITIAL_BARBERS)),
             bookings: [],
             blockedRanges: [],
+            planMembers: [],
+            clients: [],
             customLogo: null,
             activeCategory: 'todos',
             selectedServiceIds: [],
             selectedBarberId: 'mr-jone',
             selectedDateISO: '',
             selectedStartMin: null,
-            selectedPayment: 'Pix'
+            selectedPayment: 'Pix',
+            isSubmitting: false
         };
-
-        function horaParaMin(hhmm) {
+                 function horaParaMin(hhmm) {
             if (!hhmm || !hhmm.includes(':')) return 0;
             const [h, m] = hhmm.split(':').map(Number);
             return (h * 60) + m;
@@ -1450,14 +1478,44 @@
             return m > 0 ? `${h}h ${m}min` : `${h}h (60 min)`;
         }
 
+        function normalizePhone(raw) {
+            const digits = String(raw || '').replace(/\D/g, '');
+            if (digits.length >= 10 && !digits.startsWith('55')) {
+                return `55${digits}`;
+            }
+            return digits;
+        }
+
+        function parseDateFlexible(raw) {
+            const clean = String(raw || '').trim();
+            if (!clean) return null;
+            const slash = clean.split('/');
+            if (slash.length === 3) {
+                const d = Number(slash[0]);
+                const m = Number(slash[1]);
+                let y = Number(slash[2]);
+                if (y < 100) y += 2000;
+                if (!isNaN(d) && !isNaN(m) && !isNaN(y)) return new Date(y, m - 1, d);
+            }
+            const dash = clean.split('-');
+            if (dash.length === 3) {
+                const y = Number(dash[0]);
+                const m = Number(dash[1]);
+                const d = Number(dash[2]);
+                if (!isNaN(d) && !isNaN(m) && !isNaN(y)) return new Date(y, m - 1, d);
+            }
+            return null;
+        }
+
         function showToast(msg) {
             const t = document.getElementById('toast');
             t.textContent = msg;
             t.classList.add('show');
             clearTimeout(window._toastTimer);
-            window._toastTimer = setTimeout(() => t.classList.remove('show'), 3200);
+            window._toastTimer = setTimeout(() => t.classList.remove('show'), 3400);
         }
-                 function loadSavedData() {
+
+        function loadSavedData() {
             try {
                 const raw = localStorage.getItem(STORAGE_KEY);
                 if (!raw) return;
@@ -1467,16 +1525,13 @@
                 if (Array.isArray(parsed.services) && parsed.services.length) appState.services = parsed.services;
                 if (Array.isArray(parsed.categories) && parsed.categories.length) {
                     appState.categories = parsed.categories;
-                } else {
-                    const fromServices = [...new Set(appState.services.map(s => s.category).filter(Boolean))];
-                    appState.categories = fromServices.length ? fromServices : [...DEFAULT_CATEGORIES];
                 }
                 if (Array.isArray(parsed.barbers) && parsed.barbers.length) appState.barbers = parsed.barbers;
                 if (Array.isArray(parsed.bookings)) appState.bookings = parsed.bookings;
                 if (Array.isArray(parsed.blockedRanges)) appState.blockedRanges = parsed.blockedRanges;
                 if (parsed.customLogo) appState.customLogo = parsed.customLogo;
             } catch (e) {
-                console.warn('Erro ao carregar dados:', e);
+                console.warn('Erro ao carregar dados locais:', e);
             }
         }
 
@@ -1493,8 +1548,275 @@
                     customLogo: appState.customLogo
                 }));
             } catch (e) {
-                console.warn('Erro ao salvar dados:', e);
+                console.warn('Erro ao salvar dados locais:', e);
             }
+        }
+
+        function mapFirebaseBooking(key, val) {
+            const items = Array.isArray(val.items) ? val.items : [];
+            const totalDur = items.length
+                ? items.reduce((acc, it) => acc + (Number(it.duration) || 30), 0)
+                : (Number(val.duration) || 30);
+
+            let startMin = Number(val.startMin);
+            if (isNaN(startMin) || startMin <= 0) {
+                startMin = horaParaMin(val.time || '09:00');
+            }
+            let endMin = Number(val.endMin);
+            if (isNaN(endMin) || endMin <= startMin) {
+                endMin = startMin + totalDur;
+            }
+
+            let dateISO = val.dateISO || '';
+            if (!dateISO) {
+                const dt = parseDateFlexible(val.dateLabel || val.date || '');
+                if (dt) {
+                    dateISO = `${dt.getFullYear()}-${String(dt.getMonth() + 1).padStart(2, '0')}-${String(dt.getDate()).padStart(2, '0')}`;
+                }
+            }
+
+            return {
+                ...val,
+                firebaseKey: key,
+                id: val.id || key,
+                clientName: val.clientName || 'Cliente',
+                clientPhone: val.clientPhone || val.phone || '',
+                barberId: val.barberId || 'mr-jone',
+                barberName: val.barberName || 'Mr. Jone',
+                dateISO,
+                dateLabel: val.dateLabel || val.date || dateISO,
+                startMin,
+                endMin,
+                time: val.time || minParaHora(startMin),
+                endTime: val.endTime || minParaHora(endMin),
+                duration: totalDur,
+                payment: val.payment || 'Pix',
+                status: val.status || 'confirmado',
+                items
+            };
+        }
+
+        async function syncFromFirebase() {
+            try {
+                const [bkRes, srvRes, plnRes, brbRes, expRes, pauRes, memRes, cliRes] = await Promise.all([
+                    fetch(`${FIREBASE_DB_URL}/bookings.json`).catch(() => null),
+                    fetch(`${FIREBASE_DB_URL}/services.json`).catch(() => null),
+                    fetch(`${FIREBASE_DB_URL}/plans.json`).catch(() => null),
+                    fetch(`${FIREBASE_DB_URL}/barbers.json`).catch(() => null),
+                    fetch(`${FIREBASE_DB_URL}/expediente.json`).catch(() => null),
+                    fetch(`${FIREBASE_DB_URL}/pauses.json`).catch(() => null),
+                    fetch(`${FIREBASE_DB_URL}/plan_members.json`).catch(() => null),
+                    fetch(`${FIREBASE_DB_URL}/clients.json`).catch(() => null)
+                ]);
+
+                if (bkRes && bkRes.ok) {
+                    const data = await bkRes.json();
+                    const list = [];
+                    if (data && typeof data === 'object') {
+                        Object.entries(data).forEach(([k, v]) => {
+                            if (v && typeof v === 'object') {
+                                list.push(mapFirebaseBooking(k, v));
+                            }
+                        });
+                    }
+                    list.sort((a, b) => String(b.createdAt || '').localeCompare(String(a.createdAt || '')));
+                    appState.bookings = list;
+                }
+
+                const loadedServices = [];
+                if (srvRes && srvRes.ok) {
+                    const sData = await srvRes.json();
+                    if (Array.isArray(sData)) {
+                        sData.forEach((v, i) => v && typeof v === 'object' && loadedServices.push({ ...v, id: v.id || `srv_${i}`, isPlan: false }));
+                    } else if (sData && typeof sData === 'object') {
+                        Object.entries(sData).forEach(([k, v]) => v && typeof v === 'object' && loadedServices.push({ ...v, id: v.id || k, isPlan: false }));
+                    }
+                }
+
+                const loadedPlans = [];
+                if (plnRes && plnRes.ok) {
+                    const pData = await plnRes.json();
+                    if (Array.isArray(pData)) {
+                        pData.forEach((v, i) => v && typeof v === 'object' && loadedPlans.push({ ...v, id: v.id || `pln_${i}`, isPlan: true, category: v.category || 'Planos Mensais' }));
+                    } else if (pData && typeof pData === 'object') {
+                        Object.entries(pData).forEach(([k, v]) => v && typeof v === 'object' && loadedPlans.push({ ...v, id: v.id || k, isPlan: true, category: v.category || 'Planos Mensais' }));
+                    }
+                }
+
+                if (loadedServices.length > 0 || loadedPlans.length > 0) {
+                    const merged = [
+                        ...(loadedServices.length ? loadedServices : INITIAL_SERVICES.filter(s => !s.isPlan)),
+                        ...(loadedPlans.length ? loadedPlans : INITIAL_SERVICES.filter(s => s.isPlan))
+                    ];
+                    appState.services = merged.map(item => ({
+                        ...item,
+                        price: Number(item.price) || 0,
+                        duration: Number(item.duration) || 30,
+                        sessionsPerMonth: item.isPlan ? (Number(item.sessionsPerMonth) || 4) : 1,
+                        desc: item.desc || (item.isPlan ? 'Assinatura mensal com agendamento prioritário.' : `Atendimento na Barbearia Mr Jone. Duração média: ${Number(item.duration) || 30} min.`)
+                    }));
+                    const cats = [...new Set(appState.services.map(s => s.category).filter(Boolean))];
+                    if (cats.length) appState.categories = cats;
+                }
+
+                if (brbRes && brbRes.ok) {
+                    const bData = await brbRes.json();
+                    const bList = [];
+                    if (Array.isArray(bData)) {
+                        bData.forEach((v, i) => v && typeof v === 'object' && bList.push({
+                            ...v,
+                            id: v.id || `brb_${i}`,
+                            initials: v.initials || String(v.name || 'BJ').slice(0, 2).toUpperCase(),
+                            active: v.active !== false
+                        }));
+                    } else if (bData && typeof bData === 'object') {
+                        Object.entries(bData).forEach(([k, v]) => v && typeof v === 'object' && bList.push({
+                            ...v,
+                            id: v.id || k,
+                            initials: v.initials || String(v.name || 'BJ').slice(0, 2).toUpperCase(),
+                            active: v.active !== false
+                        }));
+                    }
+                    if (bList.length) appState.barbers = bList;
+                }
+
+                if (expRes && expRes.ok) {
+                    const eData = await expRes.json();
+                    if (eData && typeof eData === 'object') {
+                        appState.expediente = { ...DEFAULT_EXPEDIENTE, ...eData };
+                    }
+                }
+
+                if (pauRes && pauRes.ok) {
+                    const paData = await pauRes.json();
+                    if (Array.isArray(paData)) {
+                        const mappedPauses = [];
+                        paData.forEach(p => {
+                            if (!p || typeof p !== 'object') return;
+                            const dt = parseDateFlexible(p.date || p.dateISO || '');
+                            const pISO = dt
+                                ? `${dt.getFullYear()}-${String(dt.getMonth() + 1).padStart(2, '0')}-${String(dt.getDate()).padStart(2, '0')}`
+                                : (p.dateISO || '');
+                            mappedPauses.push({
+                                dateISO: pISO,
+                                barberId: p.barberId || 'todos',
+                                startMin: horaParaMin(p.start || '12:00'),
+                                endMin: horaParaMin(p.end || '13:00')
+                            });
+                        });
+                        appState.blockedRanges = mappedPauses;
+                    }
+                }
+
+                if (memRes && memRes.ok) {
+                    const mData = await memRes.json();
+                    const mList = [];
+                    if (mData && typeof mData === 'object') {
+                        Object.entries(mData).forEach(([k, v]) => v && typeof v === 'object' && mList.push({ ...v, id: k }));
+                    }
+                    appState.planMembers = mList;
+                }
+
+                if (cliRes && cliRes.ok) {
+                    const cData = await cliRes.json();
+                    const cList = [];
+                    if (cData && typeof cData === 'object') {
+                        Object.entries(cData).forEach(([k, v]) => v && typeof v === 'object' && cList.push({ ...v, id: k }));
+                    }
+                    appState.clients = cList;
+                }
+
+                saveData();
+                updateHeaderHoursBanner();
+                renderBarbers();
+                renderCategoryTabs();
+                renderServices();
+                renderDates();
+                renderTimeSlots();
+                updateSummaries();
+            } catch (err) {
+                console.warn('Falha ao sincronizar com Firebase:', err);
+            }
+            }
+                     function findMatchedPlanMember() {
+            const nameVal = (document.getElementById('client-name')?.value || '').trim().toLowerCase();
+            const phoneNorm = normalizePhone(document.getElementById('client-phone')?.value || '');
+
+            if (!nameVal && !phoneNorm) return null;
+
+            return appState.planMembers.find(m => {
+                if (!m || typeof m !== 'object') return false;
+                const mPhone = normalizePhone(m.phone || '');
+                const mName = String(m.clientName || '').trim().toLowerCase();
+                if (phoneNorm && mPhone && phoneNorm === mPhone) return true;
+                if (nameVal && mName && nameVal === mName) return true;
+                return false;
+            }) || null;
+        }
+
+        function isPlanMemberActiveAndValid(member) {
+            if (!member || member.active === false) return false;
+            const expDt = parseDateFlexible(member.expiresAt || '');
+            if (!expDt) return true;
+            const now = new Date();
+            const today = new Date(now.getFullYear(), now.getMonth(), now.getDate());
+            const expiry = new Date(expDt.getFullYear(), expDt.getMonth(), expDt.getDate());
+            return expiry >= today;
+        }
+
+        function getClientPlanRestriction() {
+            const member = findMatchedPlanMember();
+            if (!member) {
+                return { mode: 'none', member: null };
+            }
+            if (isPlanMemberActiveAndValid(member)) {
+                return { mode: 'plan_only', member };
+            }
+            return { mode: 'avulso_only', member };
+        }
+
+        function applyPlanRestrictionRules() {
+            const restriction = getClientPlanRestriction();
+            const banner = document.getElementById('plan-status-banner');
+
+            if (restriction.mode === 'plan_only') {
+                const expStr = restriction.member.expiresAt ? ` • Validade: ${restriction.member.expiresAt}` : '';
+                banner.className = 'plan-status-banner active-plan';
+                banner.textContent = `Plano ativo para ${restriction.member.clientName || 'Assinante'}${expStr}: apenas opções de Plano Mensal estão liberadas (serviços avulsos bloqueados).`;
+
+                appState.selectedServiceIds = appState.selectedServiceIds.filter(id => {
+                    const s = appState.services.find(item => item.id === id);
+                    return s && s.isPlan === true;
+                });
+                selectPayment('Plano Mensal (Assinante)');
+            } else if (restriction.mode === 'avulso_only') {
+                const expStr = restriction.member.expiresAt ? ` (Vencido em ${restriction.member.expiresAt})` : '';
+                banner.className = 'plan-status-banner expired-plan';
+                banner.textContent = `Plano vencido ou inativo para ${restriction.member.clientName || 'Cliente'}${expStr}: opções de plano bloqueadas, apenas serviços avulsos disponíveis.`;
+
+                appState.selectedServiceIds = appState.selectedServiceIds.filter(id => {
+                    const s = appState.services.find(item => item.id === id);
+                    return s && s.isPlan !== true;
+                });
+                if (appState.selectedPayment === 'Plano Mensal (Assinante)') {
+                    selectPayment('Pix');
+                }
+            } else {
+                banner.className = 'plan-status-banner';
+                banner.textContent = '';
+            }
+        }
+
+        function handleClientIdentityChange() {
+            const prevIds = JSON.stringify(appState.selectedServiceIds);
+            applyPlanRestrictionRules();
+            if (prevIds !== JSON.stringify(appState.selectedServiceIds)) {
+                appState.selectedStartMin = null;
+            }
+            renderCategoryTabs();
+            renderServices();
+            renderTimeSlots();
+            updateSummaries();
         }
 
         function updateHeaderHoursBanner() {
@@ -1533,8 +1855,9 @@
                 lucroBarbearia: receitaSessao - comissaoBarbeiro,
                 valorCobradoClienteNoDia
             };
-            }
-                     function renderLogo() {
+        }
+
+        function renderLogo() {
             const container = document.getElementById('brand-logo-container');
             if (appState.customLogo) {
                 container.innerHTML = `<img src="${appState.customLogo}" alt="Logo Barbearia Mr Jone">`;
@@ -1583,11 +1906,21 @@
             const tabsContainer = document.getElementById('category-tabs');
             if (!tabsContainer) return;
 
-            if (appState.activeCategory !== 'todos' && !appState.categories.includes(appState.activeCategory)) {
-                appState.activeCategory = 'todos';
+            const restriction = getClientPlanRestriction();
+            let availableCats = [...appState.categories];
+
+            if (restriction.mode === 'plan_only') {
+                availableCats = availableCats.filter(c => c === 'Planos Mensais');
+                if (!availableCats.length) availableCats = ['Planos Mensais'];
+                appState.activeCategory = 'Planos Mensais';
+            } else if (restriction.mode === 'avulso_only') {
+                availableCats = availableCats.filter(c => c !== 'Planos Mensais');
+                if (appState.activeCategory === 'Planos Mensais') {
+                    appState.activeCategory = 'todos';
+                }
             }
 
-            const allCats = ['todos', ...appState.categories];
+            const allCats = restriction.mode === 'plan_only' ? availableCats : ['todos', ...availableCats];
             tabsContainer.innerHTML = allCats.map(cat => {
                 const isActive = appState.activeCategory === cat;
                 const label = cat === 'todos' ? 'Todos' : (cat === 'Planos Mensais' ? 'Planos Mensais (4x/mês)' : cat);
@@ -1605,12 +1938,20 @@
 
         function renderServices() {
             const grid = document.getElementById('services-grid');
-            const list = appState.activeCategory === 'todos'
+            const restriction = getClientPlanRestriction();
+
+            let list = appState.activeCategory === 'todos'
                 ? appState.services
                 : appState.services.filter(s => s.category === appState.activeCategory);
 
+            if (restriction.mode === 'plan_only') {
+                list = list.filter(s => s.isPlan === true);
+            } else if (restriction.mode === 'avulso_only') {
+                list = list.filter(s => s.isPlan !== true);
+            }
+
             if (list.length === 0) {
-                grid.innerHTML = `<p style="color:var(--text-secondary); padding:14px 0; font-size:0.86rem;">Nenhum item nesta categoria no momento.</p>`;
+                grid.innerHTML = `<p style="color:var(--text-secondary); padding:14px 0; font-size:0.86rem;">Nenhum item disponível para o seu perfil nesta categoria.</p>`;
                 document.getElementById('selected-counter').textContent = `${appState.selectedServiceIds.length} selecionado(s)`;
                 return;
             }
@@ -1649,6 +1990,18 @@
         }
 
         function toggleService(serviceId) {
+            const srvObj = appState.services.find(s => s.id === serviceId);
+            const restriction = getClientPlanRestriction();
+
+            if (restriction.mode === 'plan_only' && srvObj && !srvObj.isPlan) {
+                showToast('Seu plano está ativo: você só pode marcar opções do plano.');
+                return;
+            }
+            if (restriction.mode === 'avulso_only' && srvObj && srvObj.isPlan) {
+                showToast('Seu plano está vencido: você só pode marcar serviços avulsos.');
+                return;
+            }
+
             const idx = appState.selectedServiceIds.indexOf(serviceId);
             const isAdding = idx < 0;
             if (isAdding) {
@@ -1681,7 +2034,358 @@
             if (srvs.length === 0) return 30;
             return srvs.reduce((acc, s) => acc + Number(s.duration), 0);
         }
-                    function generateUpcomingDates(daysCount = 15) {
+
+        function generateUpcomingDates(daysCount = 15) {
+            const weekDays = ['Dom', 'Seg', 'Ter', 'Qua', 'Qui', 'Sex', 'Sáb'];
+            const months = ['Jan', 'Fev', 'Mar', 'Abr', 'Mai', 'Jun', 'Jul', 'Ago', 'Set', 'Out', 'Nov', 'Dez'];
+            const dates = [];
+            const today = new Date();
+
+            for (let i = 0; i < daysCount; i++) {
+                const d = new Date(today);
+                d.setDate(today.getDate() + i);
+                const iso = `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, '0')}-${String(d.getDate()).padStart(2, '0')}`;
+                dates.push({
+                    iso,
+                    dayOfWeek: d.getDay(),
+                    weekday: i === 0 ? 'Hoje' : weekDays[d.getDay()],
+                    day: String(d.getDate()).padStart(2, '0'),
+                    month: months[d.getMonth()],
+                    fullLabel: `${String(d.getDate()).padStart(2, '0')}/${String(d.getMonth() + 1).padStart(2, '0')}/${d.getFullYear()} (${weekDays[d.getDay()]})`
+                });
+            }
+            return dates;
+        }
+
+        function renderDates() {
+            const dates = generateUpcomingDates(15);
+            if (!appState.selectedDateISO && dates.length > 0) {
+                appState.selectedDateISO = dates[0].iso;
+            }
+
+            const scroller = document.getElementById('dates-scroller');
+            scroller.innerHTML = dates.map(d => {
+                const isSelected = appState.selectedDateISO === d.iso;
+                const cfgDia = appState.expediente[d.dayOfWeek];
+                const fechado = !cfgDia || !cfgDia.ativo;
+                return `
+                    <div class="date-card ${isSelected ? 'selected' : ''}" style="${fechado ? 'opacity:0.45;' : ''}" onclick="selectDate('${d.iso}')">
+                        <span class="date-weekday">${d.weekday}</span>
+                        <span class="date-day">${d.day}</span>
+                        <span class="date-month">${fechado ? 'Fechado' : d.month}</span>
+                    </div>
+                `;
+            }).join('');
+        }
+
+        function selectDate(iso) {
+            appState.selectedDateISO = iso;
+            appState.selectedStartMin = null;
+            renderDates();
+            renderTimeSlots();
+            updateSummaries();
+        } catch (err) {
+                console.warn('Falha ao sincronizar com Firebase:', err);
+            }
+        }
+                 function findMatchedPlanMember() {
+            const nameVal = (document.getElementById('client-name')?.value || '').trim().toLowerCase();
+            const phoneNorm = normalizePhone(document.getElementById('client-phone')?.value || '');
+
+            if (!nameVal && !phoneNorm) return null;
+
+            return appState.planMembers.find(m => {
+                if (!m || typeof m !== 'object') return false;
+                const mPhone = normalizePhone(m.phone || '');
+                const mName = String(m.clientName || '').trim().toLowerCase();
+                if (phoneNorm && mPhone && phoneNorm === mPhone) return true;
+                if (nameVal && mName && nameVal === mName) return true;
+                return false;
+            }) || null;
+        }
+
+        function isPlanMemberActiveAndValid(member) {
+            if (!member || member.active === false) return false;
+            const expDt = parseDateFlexible(member.expiresAt || '');
+            if (!expDt) return true;
+            const now = new Date();
+            const today = new Date(now.getFullYear(), now.getMonth(), now.getDate());
+            const expiry = new Date(expDt.getFullYear(), expDt.getMonth(), expDt.getDate());
+            return expiry >= today;
+        }
+
+        function getClientPlanRestriction() {
+            const member = findMatchedPlanMember();
+            if (!member) {
+                return { mode: 'none', member: null };
+            }
+            if (isPlanMemberActiveAndValid(member)) {
+                return { mode: 'plan_only', member };
+            }
+            return { mode: 'avulso_only', member };
+        }
+
+        function applyPlanRestrictionRules() {
+            const restriction = getClientPlanRestriction();
+            const banner = document.getElementById('plan-status-banner');
+
+            if (restriction.mode === 'plan_only') {
+                const expStr = restriction.member.expiresAt ? ` • Validade: ${restriction.member.expiresAt}` : '';
+                banner.className = 'plan-status-banner active-plan';
+                banner.textContent = `Plano ativo para ${restriction.member.clientName || 'Assinante'}${expStr}: apenas opções de Plano Mensal estão liberadas (serviços avulsos bloqueados).`;
+
+                appState.selectedServiceIds = appState.selectedServiceIds.filter(id => {
+                    const s = appState.services.find(item => item.id === id);
+                    return s && s.isPlan === true;
+                });
+                selectPayment('Plano Mensal (Assinante)');
+            } else if (restriction.mode === 'avulso_only') {
+                const expStr = restriction.member.expiresAt ? ` (Vencido em ${restriction.member.expiresAt})` : '';
+                banner.className = 'plan-status-banner expired-plan';
+                banner.textContent = `Plano vencido ou inativo para ${restriction.member.clientName || 'Cliente'}${expStr}: opções de plano bloqueadas, apenas serviços avulsos disponíveis.`;
+
+                appState.selectedServiceIds = appState.selectedServiceIds.filter(id => {
+                    const s = appState.services.find(item => item.id === id);
+                    return s && s.isPlan !== true;
+                });
+                if (appState.selectedPayment === 'Plano Mensal (Assinante)') {
+                    selectPayment('Pix');
+                }
+            } else {
+                banner.className = 'plan-status-banner';
+                banner.textContent = '';
+            }
+        }
+
+        function handleClientIdentityChange() {
+            const prevIds = JSON.stringify(appState.selectedServiceIds);
+            applyPlanRestrictionRules();
+            if (prevIds !== JSON.stringify(appState.selectedServiceIds)) {
+                appState.selectedStartMin = null;
+            }
+            renderCategoryTabs();
+            renderServices();
+            renderTimeSlots();
+            updateSummaries();
+        }
+
+        function updateHeaderHoursBanner() {
+            const e = appState.expediente;
+            const fmtDia = (d) => {
+                if (!e[d] || !e[d].ativo) return `${e[d]?.name || ''}: Fechado`;
+                const t1 = `${e[d].t1Inicio}–${e[d].t1Fim}`;
+                const t2 = e[d].t2Ativo ? ` e ${e[d].t2Inicio}–${e[d].t2Fim}` : '';
+                return `${e[d].name}: ${t1}${t2}`;
+            };
+            const banner = document.getElementById('header-hours-banner');
+            banner.innerHTML = `<span class="status-dot"></span><span>${fmtDia(1)} • ${fmtDia(2)} • ${fmtDia(5)} • ${fmtDia(6)} • ${fmtDia(0)}</span>`;
+        }
+
+        function calcularFinanceiroAgendamento(booking) {
+            let receitaSessao = 0;
+            let comissaoBarbeiro = 0;
+            let valorCobradoClienteNoDia = 0;
+
+            (booking.items || []).forEach(item => {
+                const sessoes = item.isPlan ? (Number(item.sessionsPerMonth) || 4) : 1;
+                const valorPorSessao = Number(item.price) / sessoes;
+                receitaSessao += valorPorSessao;
+                comissaoBarbeiro += valorPorSessao * 0.50;
+
+                if (booking.payment === 'Plano Mensal (Assinante)' && item.isPlan) {
+                    valorCobradoClienteNoDia += 0;
+                } else {
+                    valorCobradoClienteNoDia += Number(item.price);
+                }
+            });
+
+            return {
+                receitaSessao,
+                comissaoBarbeiro,
+                lucroBarbearia: receitaSessao - comissaoBarbeiro,
+                valorCobradoClienteNoDia
+            };
+        }
+
+        function renderLogo() {
+            const container = document.getElementById('brand-logo-container');
+            if (appState.customLogo) {
+                container.innerHTML = `<img src="${appState.customLogo}" alt="Logo Barbearia Mr Jone">`;
+            }
+        }
+
+        function renderBarbers() {
+            const activeBarbers = appState.barbers.filter(b => b.active !== false);
+            if (!activeBarbers.some(b => b.id === appState.selectedBarberId) && activeBarbers.length > 0) {
+                appState.selectedBarberId = activeBarbers[0].id;
+            }
+
+            const grid = document.getElementById('barbers-grid');
+            grid.innerHTML = activeBarbers.map(b => {
+                const isSelected = appState.selectedBarberId === b.id;
+                return `
+                    <div class="barber-card ${isSelected ? 'selected' : ''}" onclick="selectBarber('${b.id}')">
+                        <div class="barber-avatar">${b.initials || b.name.slice(0, 2).toUpperCase()}</div>
+                        <div class="barber-details">
+                            <div class="barber-name">${b.name}</div>
+                            <div class="barber-role">${b.role || 'Barbeiro Profissional'}</div>
+                            <div class="barber-rating">★ Selecionar e ver serviços</div>
+                        </div>
+                    </div>
+                `;
+            }).join('');
+        }
+
+        function selectBarber(barberId) {
+            appState.selectedBarberId = barberId;
+            appState.selectedStartMin = null;
+            renderBarbers();
+            renderTimeSlots();
+            updateSummaries();
+
+            clearTimeout(window._autoScrollStepTimer);
+            window._autoScrollStepTimer = setTimeout(() => {
+                const step2 = document.getElementById('step-2');
+                if (step2) {
+                    step2.scrollIntoView({ behavior: 'smooth', block: 'start' });
+                }
+            }, 220);
+        }
+
+        function renderCategoryTabs() {
+            const tabsContainer = document.getElementById('category-tabs');
+            if (!tabsContainer) return;
+
+            const restriction = getClientPlanRestriction();
+            let availableCats = [...appState.categories];
+
+            if (restriction.mode === 'plan_only') {
+                availableCats = availableCats.filter(c => c === 'Planos Mensais');
+                if (!availableCats.length) availableCats = ['Planos Mensais'];
+                appState.activeCategory = 'Planos Mensais';
+            } else if (restriction.mode === 'avulso_only') {
+                availableCats = availableCats.filter(c => c !== 'Planos Mensais');
+                if (appState.activeCategory === 'Planos Mensais') {
+                    appState.activeCategory = 'todos';
+                }
+            }
+
+            const allCats = restriction.mode === 'plan_only' ? availableCats : ['todos', ...availableCats];
+            tabsContainer.innerHTML = allCats.map(cat => {
+                const isActive = appState.activeCategory === cat;
+                const label = cat === 'todos' ? 'Todos' : (cat === 'Planos Mensais' ? 'Planos Mensais (4x/mês)' : cat);
+                return `<button type="button" class="cat-tab ${isActive ? 'active' : ''}" data-cat="${cat}" onclick="setCategoryFilter('${cat.replace(/'/g, "\\'")}')">${label}</button>`;
+            }).join('');
+        }
+
+        function setCategoryFilter(cat) {
+            appState.activeCategory = cat;
+            document.querySelectorAll('.cat-tab').forEach(btn => {
+                btn.classList.toggle('active', btn.dataset.cat === cat);
+            });
+            renderServices();
+        }
+
+        function renderServices() {
+            const grid = document.getElementById('services-grid');
+            const restriction = getClientPlanRestriction();
+
+            let list = appState.activeCategory === 'todos'
+                ? appState.services
+                : appState.services.filter(s => s.category === appState.activeCategory);
+
+            if (restriction.mode === 'plan_only') {
+                list = list.filter(s => s.isPlan === true);
+            } else if (restriction.mode === 'avulso_only') {
+                list = list.filter(s => s.isPlan !== true);
+            }
+
+            if (list.length === 0) {
+                grid.innerHTML = `<p style="color:var(--text-secondary); padding:14px 0; font-size:0.86rem;">Nenhum item disponível para o seu perfil nesta categoria.</p>`;
+                document.getElementById('selected-counter').textContent = `${appState.selectedServiceIds.length} selecionado(s)`;
+                return;
+            }
+
+            grid.innerHTML = list.map(srv => {
+                const isSelected = appState.selectedServiceIds.includes(srv.id);
+                const perSessionVal = srv.isPlan ? (srv.price / (srv.sessionsPerMonth || 4)) : srv.price;
+                return `
+                    <article class="service-card ${isSelected ? 'selected' : ''}" onclick="toggleService('${srv.id}')">
+                        <div class="service-main">
+                            <div class="service-check" aria-hidden="true">${isSelected ? '✓' : ''}</div>
+                            <div class="service-info">
+                                <div class="service-badges">
+                                    <span class="badge-cat">${srv.category}</span>
+                                    ${srv.tag ? `<span class="badge-tag">${srv.tag}</span>` : ''}
+                                    ${srv.isPlan ? `<span class="badge-plan">1x por semana (${formatBRL(perSessionVal)}/atend.)</span>` : ''}
+                                </div>
+                                <h3 class="service-name">${srv.name}</h3>
+                                <p class="service-desc">${srv.desc}</p>
+                                <div class="service-meta">
+                                    <span class="service-price">${formatBRL(srv.price)}${srv.isPlan ? '/mês' : ''}</span>
+                                    <span class="service-duration">⏱ ${formatDuration(srv.duration)}</span>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="service-action">
+                            <button type="button" class="btn-select-service">
+                                ${isSelected ? 'Selecionado ✓' : '+ Selecionar'}
+                            </button>
+                        </div>
+                    </article>
+                `;
+            }).join('');
+
+            document.getElementById('selected-counter').textContent = `${appState.selectedServiceIds.length} selecionado(s)`;
+        }
+
+        function toggleService(serviceId) {
+            const srvObj = appState.services.find(s => s.id === serviceId);
+            const restriction = getClientPlanRestriction();
+
+            if (restriction.mode === 'plan_only' && srvObj && !srvObj.isPlan) {
+                showToast('Seu plano está ativo: você só pode marcar opções do plano.');
+                return;
+            }
+            if (restriction.mode === 'avulso_only' && srvObj && srvObj.isPlan) {
+                showToast('Seu plano está vencido: você só pode marcar serviços avulsos.');
+                return;
+            }
+
+            const idx = appState.selectedServiceIds.indexOf(serviceId);
+            const isAdding = idx < 0;
+            if (isAdding) {
+                appState.selectedServiceIds.push(serviceId);
+            } else {
+                appState.selectedServiceIds.splice(idx, 1);
+            }
+            appState.selectedStartMin = null;
+            renderServices();
+            renderTimeSlots();
+            updateSummaries();
+
+            if (isAdding) {
+                clearTimeout(window._autoScrollStepTimer);
+                window._autoScrollStepTimer = setTimeout(() => {
+                    const targetEl = document.getElementById('step-3');
+                    if (targetEl) {
+                        targetEl.scrollIntoView({ behavior: 'smooth', block: 'start' });
+                    }
+                }, 400);
+            }
+        }
+
+        function getSelectedServicesObjects() {
+            return appState.services.filter(s => appState.selectedServiceIds.includes(s.id));
+        }
+
+        function getSelectedTotalDuration() {
+            const srvs = getSelectedServicesObjects();
+            if (srvs.length === 0) return 30;
+            return srvs.reduce((acc, s) => acc + Number(s.duration), 0);
+        }
+
+        function generateUpcomingDates(daysCount = 15) {
             const weekDays = ['Dom', 'Seg', 'Ter', 'Qua', 'Qui', 'Sex', 'Sáb'];
             const months = ['Jan', 'Fev', 'Mar', 'Abr', 'Mai', 'Jun', 'Jul', 'Ago', 'Set', 'Out', 'Nov', 'Dez'];
             const dates = [];
@@ -1731,12 +2435,16 @@
             renderTimeSlots();
             updateSummaries();
         }
+                 function hasIntervalConflict(dateISO, barberId, startMin, endMin) {
+            const barberObj = appState.barbers.find(b => b.id === barberId);
+            const barberNameLower = String(barberObj?.name || '').trim().toLowerCase();
 
-        function hasIntervalConflict(dateISO, barberId, startMin, endMin) {
             const bookingConflict = appState.bookings.some(b => {
                 if (b.status === 'cancelado') return false;
                 if (b.dateISO !== dateISO) return false;
-                if (b.barberId !== barberId) return false;
+                const sameId = b.barberId && barberId && b.barberId === barberId;
+                const sameName = barberNameLower && String(b.barberName || '').trim().toLowerCase() === barberNameLower;
+                if (!sameId && !sameName) return false;
                 const bStart = Number(b.startMin);
                 const bEnd = Number(b.endMin);
                 return startMin < bEnd && endMin > bStart;
@@ -1744,8 +2452,8 @@
             if (bookingConflict) return true;
 
             const pauseConflict = appState.blockedRanges.some(p => {
-                if (p.dateISO !== dateISO) return false;
-                if (p.barberId !== 'todos' && p.barberId !== barberId) return false;
+                if (p.dateISO && p.dateISO !== dateISO) return false;
+                if (p.barberId && p.barberId !== 'todos' && p.barberId !== barberId) return false;
                 return startMin < Number(p.endMin) && endMin > Number(p.startMin);
             });
             return pauseConflict;
@@ -1845,6 +2553,11 @@
         }
 
         function selectPayment(method) {
+            const restriction = getClientPlanRestriction();
+            if (restriction.mode === 'plan_only' && method !== 'Plano Mensal (Assinante)') {
+                showToast('Cliente com plano ativo utiliza a modalidade de Assinante.');
+                method = 'Plano Mensal (Assinante)';
+            }
             appState.selectedPayment = method;
             document.querySelectorAll('.pay-option').forEach(btn => {
                 btn.classList.toggle('selected', btn.dataset.pay === method);
@@ -1897,8 +2610,9 @@
             document.getElementById('sum-total').textContent = appState.selectedPayment === 'Plano Mensal (Assinante)' && selectedSrvs.some(s => s.isPlan)
                 ? 'R$ 0,00 (Sessão do Plano)'
                 : formatBRL(totalPrice);
-            }
-                     function playBookingAlertSound() {
+        }
+
+        function playBookingAlertSound() {
             try {
                 if (navigator.vibrate) {
                     navigator.vibrate([180, 90, 180]);
@@ -1942,6 +2656,86 @@
                     });
                     setTimeout(() => n.close(), 8000);
                 } catch (e) {}
+            }
+        }
+
+        async function saveBookingToFirebase(booking) {
+            const payload = {
+                id: booking.id,
+                clientName: booking.clientName,
+                clientPhone: booking.clientPhone,
+                phone: booking.clientPhone,
+                notes: booking.notes || '',
+                items: booking.items,
+                barberId: booking.barberId,
+                barberName: booking.barberName,
+                dateISO: booking.dateISO,
+                dateLabel: booking.dateLabel,
+                date: booking.dateLabel,
+                startMin: booking.startMin,
+                endMin: booking.endMin,
+                time: booking.time,
+                endTime: booking.endTime,
+                duration: booking.duration,
+                payment: booking.payment,
+                status: 'confirmado',
+                attended: false,
+                completedAt: null,
+                createdAt: booking.createdAt
+            };
+
+            const res = await fetch(`${FIREBASE_DB_URL}/bookings.json`, {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify(payload)
+            });
+
+            if (!res.ok) {
+                throw new Error(`Firebase HTTP ${res.status}`);
+            }
+
+            const created = await res.json();
+            const firebaseKey = created && created.name ? String(created.name) : '';
+
+            await upsertClientInFirebase(booking);
+
+            return firebaseKey;
+        }
+                 async function upsertClientInFirebase(booking) {
+            const normPhone = normalizePhone(booking.clientPhone);
+            const cleanName = String(booking.clientName || '').trim();
+            if (!cleanName && !normPhone) return;
+
+            const existing = appState.clients.find(c => {
+                const cPhone = normalizePhone(c.phone || '');
+                const cName = String(c.name || '').trim().toLowerCase();
+                return (normPhone && cPhone && normPhone === cPhone) ||
+                    (!normPhone && cleanName && cName === cleanName.toLowerCase());
+            });
+
+            const prevCount = existing ? (Number(existing.totalBookings) || 0) : 0;
+            const clientPayload = {
+                name: cleanName || (existing?.name || 'Cliente'),
+                phone: normPhone || booking.clientPhone,
+                lastBookingDate: booking.dateLabel,
+                lastBookingTime: booking.time,
+                totalBookings: prevCount + 1,
+                updatedAt: new Date().toISOString()
+            };
+
+            if (existing && existing.id) {
+                await fetch(`${FIREBASE_DB_URL}/clients/${existing.id}.json`, {
+                    method: 'PATCH',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify(clientPayload)
+                }).catch(() => {});
+            } else {
+                clientPayload.createdAt = new Date().toISOString();
+                await fetch(`${FIREBASE_DB_URL}/clients.json`, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify(clientPayload)
+                }).catch(() => {});
             }
         }
 
@@ -1991,11 +2785,23 @@
             }).catch(() => {});
         }
 
-        function confirmBooking() {
+        async function confirmBooking() {
+            if (appState.isSubmitting) return;
+
             const selectedSrvs = getSelectedServicesObjects();
             if (selectedSrvs.length === 0) {
                 showToast('Selecione pelo menos 1 serviço ou plano no Passo 2.');
                 document.getElementById('step-2').scrollIntoView({ behavior: 'smooth' });
+                return;
+            }
+
+            const restriction = getClientPlanRestriction();
+            if (restriction.mode === 'plan_only' && selectedSrvs.some(s => !s.isPlan)) {
+                showToast('Cliente com plano ativo: selecione apenas opções de plano.');
+                return;
+            }
+            if (restriction.mode === 'avulso_only' && selectedSrvs.some(s => s.isPlan)) {
+                showToast('Plano vencido: selecione apenas serviços avulsos.');
                 return;
             }
 
@@ -2032,48 +2838,62 @@
                 return;
             }
 
-            const dates = generateUpcomingDates(15);
-            const dateObj = dates.find(d => d.iso === appState.selectedDateISO);
-            const barberObj = appState.barbers.find(b => b.id === appState.selectedBarberId) || appState.barbers[0];
+            appState.isSubmitting = true;
+            const btnConfirm = document.getElementById('btn-confirm-booking');
+            if (btnConfirm) btnConfirm.disabled = true;
 
-            const booking = {
-                id: 'MRJ-' + Math.floor(1000 + Math.random() * 9000),
-                clientName,
-                clientPhone,
-                notes: clientNotes,
-                items: selectedSrvs.map(s => ({
-                    id: s.id,
-                    name: s.name,
-                    price: Number(s.price),
-                    duration: Number(s.duration),
-                    isPlan: Boolean(s.isPlan),
-                    sessionsPerMonth: Number(s.sessionsPerMonth || 1)
-                })),
-                barberId: barberObj.id,
-                barberName: barberObj.name,
-                dateISO: appState.selectedDateISO,
-                dateLabel: dateObj ? dateObj.fullLabel : appState.selectedDateISO,
-                startMin,
-                endMin,
-                time: minParaHora(startMin),
-                endTime: minParaHora(endMin),
-                duration: totalDuration,
-                payment: appState.selectedPayment,
-                status: 'confirmado',
-                createdAt: new Date().toISOString()
-            };
+            try {
+                const dates = generateUpcomingDates(15);
+                const dateObj = dates.find(d => d.iso === appState.selectedDateISO);
+                const barberObj = appState.barbers.find(b => b.id === appState.selectedBarberId) || appState.barbers[0];
 
-            appState.bookings.unshift(booking);
-            saveData();
-            triggerBookingNotification(booking);
-            sendBookingEmailNotification(booking);
+                const booking = {
+                    id: 'MRJ-' + Math.floor(1000 + Math.random() * 9000),
+                    clientName,
+                    clientPhone,
+                    notes: clientNotes,
+                    items: selectedSrvs.map(s => ({
+                        id: s.id,
+                        name: s.name,
+                        price: Number(s.price),
+                        duration: Number(s.duration),
+                        isPlan: Boolean(s.isPlan),
+                        sessionsPerMonth: Number(s.sessionsPerMonth || 1)
+                    })),
+                    barberId: barberObj.id,
+                    barberName: barberObj.name,
+                    dateISO: appState.selectedDateISO,
+                    dateLabel: dateObj ? dateObj.fullLabel : appState.selectedDateISO,
+                    startMin,
+                    endMin,
+                    time: minParaHora(startMin),
+                    endTime: minParaHora(endMin),
+                    duration: totalDuration,
+                    payment: appState.selectedPayment,
+                    status: 'confirmado',
+                    createdAt: new Date().toISOString()
+                };
 
-            const waUrl = buildWhatsAppBookingUrl(booking);
+                const fbKey = await saveBookingToFirebase(booking);
+                if (fbKey) booking.firebaseKey = fbKey;
 
-            appState.selectedStartMin = null;
-            renderTimeSlots();
-            updateSummaries();
-            openReceiptModal(booking, waUrl);
+                appState.bookings.unshift(booking);
+                saveData();
+                triggerBookingNotification(booking);
+                sendBookingEmailNotification(booking);
+
+                const waUrl = buildWhatsAppBookingUrl(booking);
+
+                appState.selectedStartMin = null;
+                renderTimeSlots();
+                updateSummaries();
+                openReceiptModal(booking, waUrl);
+            } catch (err) {
+                showToast('Erro ao gravar no Firebase. Verifique sua internet e tente novamente.');
+            } finally {
+                appState.isSubmitting = false;
+                if (btnConfirm) btnConfirm.disabled = false;
+            }
         }
 
         function buildWhatsAppBookingMessage(booking) {
@@ -2128,7 +2948,8 @@
             }
             document.body.removeChild(ta);
         }
-                  function openReceiptModal(booking, prebuiltWaUrl) {
+
+        function openReceiptModal(booking, prebuiltWaUrl) {
             const fin = calcularFinanceiroAgendamento(booking);
             const servicesText = booking.items.map(s => s.name).join(' + ');
 
@@ -2192,7 +3013,7 @@
         function openMyBookingsModal() {
             const container = document.getElementById('my-bookings-list');
             if (appState.bookings.length === 0) {
-                container.innerHTML = `<p style="text-align:center; color:var(--text-secondary); padding:20px 0; font-size:0.88rem;">Nenhum agendamento encontrado neste dispositivo.</p>`;
+                container.innerHTML = `<p style="text-align:center; color:var(--text-secondary); padding:20px 0; font-size:0.88rem;">Nenhum agendamento encontrado.</p>`;
             } else {
                 container.innerHTML = appState.bookings.map(b => `
                     <div class="booking-item-card">
@@ -2200,7 +3021,7 @@
                             <strong style="color:var(--gold-light);">${b.id} • ${b.dateLabel} (${b.time} às ${b.endTime})</strong>
                             <span style="font-size:0.72rem; font-weight:800; text-transform:uppercase; color:${b.status === 'cancelado' ? '#FCA5A5' : '#86EFAC'};">${b.status}</span>
                         </div>
-                        <div style="color:var(--text-primary); margin-bottom:4px;">${b.items.map(s => s.name).join(' + ')}</div>
+                        <div style="color:var(--text-primary); margin-bottom:4px;">${b.clientName || 'Cliente'} • ${(b.items || []).map(s => s.name).join(' + ')}</div>
                         <div style="display:flex; justify-content:space-between; align-items:center; color:var(--text-secondary);">
                             <span>Barbeiro: <strong>${b.barberName}</strong></span>
                             ${b.status !== 'cancelado' ? `<button type="button" class="danger-btn" onclick="cancelClientBooking('${b.id}')">Cancelar Horário</button>` : ''}
@@ -2211,18 +3032,25 @@
             document.getElementById('my-bookings-modal').classList.add('open');
         }
 
-        function cancelClientBooking(bookingId) {
+        async function cancelClientBooking(bookingId) {
             const target = appState.bookings.find(b => b.id === bookingId);
             if (target) {
                 target.status = 'cancelado';
                 saveData();
+                if (target.firebaseKey) {
+                    await fetch(`${FIREBASE_DB_URL}/bookings/${target.firebaseKey}.json`, {
+                        method: 'PATCH',
+                        headers: { 'Content-Type': 'application/json' },
+                        body: JSON.stringify({ status: 'cancelado' })
+                    }).catch(() => {});
+                }
                 renderTimeSlots();
                 openMyBookingsModal();
                 showToast('Agendamento cancelado e horário liberado!');
             }
         }
 
-        window.addEventListener('DOMContentLoaded', () => {
+        window.addEventListener('DOMContentLoaded', async () => {
             loadSavedData();
             updateHeaderHoursBanner();
             renderLogo();
@@ -2232,7 +3060,11 @@
             renderDates();
             renderTimeSlots();
             updateSummaries();
+            await syncFromFirebase();
         });
     </script>
 </body>
 </html>
+
+           
+        
