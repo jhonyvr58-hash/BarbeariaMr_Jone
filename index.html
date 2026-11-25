@@ -112,7 +112,7 @@
         .logo-wrapper img {
             width: 100%;
             height: auto;
-            max-height: 160px;
+            max-height: 165px;
             object-fit: contain;
             filter: drop-shadow(0 6px 18px rgba(212, 175, 55, 0.25));
         }
@@ -541,13 +541,11 @@
             transition: all 0.2s ease;
             white-space: nowrap;
         }
-
         .service-card.selected .btn-select-service {
             background: linear-gradient(135deg, var(--gold-light), var(--gold-primary));
             color: #0B0B0C;
             font-weight: 800;
-            border-color: var(--gold-light);
-         white-space: nowrap;
+            border-color: var(--gold-light);   
         }
                  /* ==========================================================================
            PASSO 3: DATA E HORÁRIOS INTELIGENTES (COM INTERVALO INÍCIO → FIM)
@@ -838,8 +836,8 @@
             font-weight: 800;
             box-shadow: var(--shadow-gold);
             white-space: nowrap;
-        }
-                 /* ==========================================================================
+    }
+             /* ==========================================================================
            MODAIS DE COMPROVANTE E MEUS AGENDAMENTOS
            ========================================================================== */
         .modal-backdrop {
@@ -1012,12 +1010,12 @@
     <div id="toast" class="toast-msg"></div>
 
     <!-- ======================================================================
-         CABEÇALHO PRINCIPAL COM LOGO EXCLUSIVA MR JONE
+         CABEÇALHO PRINCIPAL COM LOGO EXCLUSIVA MR JONE (NAVALHAS PROPORCIONAIS)
          ====================================================================== -->
     <header class="top-header">
         <div class="header-inner">
             <div id="brand-logo-container" class="logo-wrapper">
-                <svg viewBox="0 0 520 285" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Logo Barbearia Mr Jone">
+                <svg viewBox="0 0 520 295" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Logo Barbearia Mr Jone">
                     <defs>
                         <linearGradient id="goldGrad" x1="0%" y1="0%" x2="100%" y2="100%">
                             <stop offset="0%" stop-color="#FFF0A8"/>
@@ -1050,16 +1048,32 @@
                         <path d="M-16,6 L-19,-8 L-8,0 L0,-11 L8,0 L19,-8 L16,6 Z" fill="url(#goldGrad)"/>
                         <rect x="-16" y="8" width="32" height="3" rx="1.5" fill="url(#goldGrad)"/>
                     </g>
-                    <g transform="translate(260, 248)">
-                        <g transform="rotate(-24)">
-                            <rect x="-78" y="-5" width="76" height="10" rx="4" fill="url(#goldGrad)" stroke="#4F3806" stroke-width="1"/>
-                            <path d="M-2,-4 L76,-7 L72,5 L-2,4 Z" fill="url(#goldVertical)" stroke="#4F3806" stroke-width="1"/>
+                    <!-- Navalhas cruzadas clássicas (sem esticar) -->
+                    <g transform="translate(260, 256)">
+                        <!-- Navalha esquerda -->
+                        <g transform="rotate(-32)">
+                            <!-- Cabo arredondado com rebite -->
+                            <rect x="-56" y="-3.2" width="30" height="6.4" rx="3.2" fill="url(#goldGrad)" stroke="#4F3806" stroke-width="0.9"/>
+                            <circle cx="-51" cy="0" r="1.4" fill="#111113"/>
+                            <!-- Pivô -->
+                            <circle cx="-25" cy="0" r="2.2" fill="#FFF0A8" stroke="#4F3806" stroke-width="0.9"/>
+                            <!-- Lâmina reta de navalha clássica -->
+                            <path d="M-23,-3.2 L36,-4.2 L42,-1.2 L42,3.2 L-23,2.4 Z" fill="url(#goldVertical)" stroke="#4F3806" stroke-width="0.9"/>
+                            <line x1="-18" y1="1.6" x2="40" y2="2.2" stroke="#FFF0A8" stroke-width="0.7" opacity="0.8"/>
                         </g>
-                        <g transform="rotate(24)">
-                            <rect x="2" y="-5" width="76" height="10" rx="4" fill="url(#goldGrad)" stroke="#4F3806" stroke-width="1"/>
-                            <path d="M2,-4 L-76,-7 L-72,5 L2,4 Z" fill="url(#goldVertical)" stroke="#4F3806" stroke-width="1"/>
+                        <!-- Navalha direita -->
+                        <g transform="rotate(32)">
+                            <!-- Cabo arredondado com rebite -->
+                            <rect x="26" y="-3.2" width="30" height="6.4" rx="3.2" fill="url(#goldGrad)" stroke="#4F3806" stroke-width="0.9"/>
+                            <circle cx="51" cy="0" r="1.4" fill="#111113"/>
+                            <!-- Pivô -->
+                            <circle cx="25" cy="0" r="2.2" fill="#FFF0A8" stroke="#4F3806" stroke-width="0.9"/>
+                            <!-- Lâmina reta de navalha clássica -->
+                            <path d="M23,-3.2 L-36,-4.2 L-42,-1.2 L-42,3.2 L23,2.4 Z" fill="url(#goldVertical)" stroke="#4F3806" stroke-width="0.9"/>
+                            <line x1="18" y1="1.6" x2="-40" y2="2.2" stroke="#FFF0A8" stroke-width="0.7" opacity="0.8"/>
                         </g>
-                        <circle cx="0" cy="0" r="4.5" fill="#FFF0A8" stroke="#5E4308" stroke-width="1.5"/>
+                        <!-- Pino central do cruzamento -->
+                        <circle cx="0" cy="0" r="3.4" fill="#FFF0A8" stroke="#5E4308" stroke-width="1.2"/>
                     </g>
                 </svg>
             </div>
@@ -1232,8 +1246,8 @@
             </div>
         </section>
 
-                            </main>
-               <!-- ======================================================================
+    </main>
+        <!-- ======================================================================
          RODAPÉ
          ====================================================================== -->
     <footer class="site-footer">
@@ -1737,358 +1751,8 @@
             } catch (err) {
                 console.warn('Falha ao sincronizar com Firebase:', err);
             }
-            }
+                                                                                }
                      function findMatchedPlanMember() {
-            const nameVal = (document.getElementById('client-name')?.value || '').trim().toLowerCase();
-            const phoneNorm = normalizePhone(document.getElementById('client-phone')?.value || '');
-
-            if (!nameVal && !phoneNorm) return null;
-
-            return appState.planMembers.find(m => {
-                if (!m || typeof m !== 'object') return false;
-                const mPhone = normalizePhone(m.phone || '');
-                const mName = String(m.clientName || '').trim().toLowerCase();
-                if (phoneNorm && mPhone && phoneNorm === mPhone) return true;
-                if (nameVal && mName && nameVal === mName) return true;
-                return false;
-            }) || null;
-        }
-
-        function isPlanMemberActiveAndValid(member) {
-            if (!member || member.active === false) return false;
-            const expDt = parseDateFlexible(member.expiresAt || '');
-            if (!expDt) return true;
-            const now = new Date();
-            const today = new Date(now.getFullYear(), now.getMonth(), now.getDate());
-            const expiry = new Date(expDt.getFullYear(), expDt.getMonth(), expDt.getDate());
-            return expiry >= today;
-        }
-
-        function getClientPlanRestriction() {
-            const member = findMatchedPlanMember();
-            if (!member) {
-                return { mode: 'none', member: null };
-            }
-            if (isPlanMemberActiveAndValid(member)) {
-                return { mode: 'plan_only', member };
-            }
-            return { mode: 'avulso_only', member };
-        }
-
-        function applyPlanRestrictionRules() {
-            const restriction = getClientPlanRestriction();
-            const banner = document.getElementById('plan-status-banner');
-
-            if (restriction.mode === 'plan_only') {
-                const expStr = restriction.member.expiresAt ? ` • Validade: ${restriction.member.expiresAt}` : '';
-                banner.className = 'plan-status-banner active-plan';
-                banner.textContent = `Plano ativo para ${restriction.member.clientName || 'Assinante'}${expStr}: apenas opções de Plano Mensal estão liberadas (serviços avulsos bloqueados).`;
-
-                appState.selectedServiceIds = appState.selectedServiceIds.filter(id => {
-                    const s = appState.services.find(item => item.id === id);
-                    return s && s.isPlan === true;
-                });
-                selectPayment('Plano Mensal (Assinante)');
-            } else if (restriction.mode === 'avulso_only') {
-                const expStr = restriction.member.expiresAt ? ` (Vencido em ${restriction.member.expiresAt})` : '';
-                banner.className = 'plan-status-banner expired-plan';
-                banner.textContent = `Plano vencido ou inativo para ${restriction.member.clientName || 'Cliente'}${expStr}: opções de plano bloqueadas, apenas serviços avulsos disponíveis.`;
-
-                appState.selectedServiceIds = appState.selectedServiceIds.filter(id => {
-                    const s = appState.services.find(item => item.id === id);
-                    return s && s.isPlan !== true;
-                });
-                if (appState.selectedPayment === 'Plano Mensal (Assinante)') {
-                    selectPayment('Pix');
-                }
-            } else {
-                banner.className = 'plan-status-banner';
-                banner.textContent = '';
-            }
-        }
-
-        function handleClientIdentityChange() {
-            const prevIds = JSON.stringify(appState.selectedServiceIds);
-            applyPlanRestrictionRules();
-            if (prevIds !== JSON.stringify(appState.selectedServiceIds)) {
-                appState.selectedStartMin = null;
-            }
-            renderCategoryTabs();
-            renderServices();
-            renderTimeSlots();
-            updateSummaries();
-        }
-
-        function updateHeaderHoursBanner() {
-            const e = appState.expediente;
-            const fmtDia = (d) => {
-                if (!e[d] || !e[d].ativo) return `${e[d]?.name || ''}: Fechado`;
-                const t1 = `${e[d].t1Inicio}–${e[d].t1Fim}`;
-                const t2 = e[d].t2Ativo ? ` e ${e[d].t2Inicio}–${e[d].t2Fim}` : '';
-                return `${e[d].name}: ${t1}${t2}`;
-            };
-            const banner = document.getElementById('header-hours-banner');
-            banner.innerHTML = `<span class="status-dot"></span><span>${fmtDia(1)} • ${fmtDia(2)} • ${fmtDia(5)} • ${fmtDia(6)} • ${fmtDia(0)}</span>`;
-        }
-
-        function calcularFinanceiroAgendamento(booking) {
-            let receitaSessao = 0;
-            let comissaoBarbeiro = 0;
-            let valorCobradoClienteNoDia = 0;
-
-            (booking.items || []).forEach(item => {
-                const sessoes = item.isPlan ? (Number(item.sessionsPerMonth) || 4) : 1;
-                const valorPorSessao = Number(item.price) / sessoes;
-                receitaSessao += valorPorSessao;
-                comissaoBarbeiro += valorPorSessao * 0.50;
-
-                if (booking.payment === 'Plano Mensal (Assinante)' && item.isPlan) {
-                    valorCobradoClienteNoDia += 0;
-                } else {
-                    valorCobradoClienteNoDia += Number(item.price);
-                }
-            });
-
-            return {
-                receitaSessao,
-                comissaoBarbeiro,
-                lucroBarbearia: receitaSessao - comissaoBarbeiro,
-                valorCobradoClienteNoDia
-            };
-        }
-
-        function renderLogo() {
-            const container = document.getElementById('brand-logo-container');
-            if (appState.customLogo) {
-                container.innerHTML = `<img src="${appState.customLogo}" alt="Logo Barbearia Mr Jone">`;
-            }
-        }
-
-        function renderBarbers() {
-            const activeBarbers = appState.barbers.filter(b => b.active !== false);
-            if (!activeBarbers.some(b => b.id === appState.selectedBarberId) && activeBarbers.length > 0) {
-                appState.selectedBarberId = activeBarbers[0].id;
-            }
-
-            const grid = document.getElementById('barbers-grid');
-            grid.innerHTML = activeBarbers.map(b => {
-                const isSelected = appState.selectedBarberId === b.id;
-                return `
-                    <div class="barber-card ${isSelected ? 'selected' : ''}" onclick="selectBarber('${b.id}')">
-                        <div class="barber-avatar">${b.initials || b.name.slice(0, 2).toUpperCase()}</div>
-                        <div class="barber-details">
-                            <div class="barber-name">${b.name}</div>
-                            <div class="barber-role">${b.role || 'Barbeiro Profissional'}</div>
-                            <div class="barber-rating">★ Selecionar e ver serviços</div>
-                        </div>
-                    </div>
-                `;
-            }).join('');
-        }
-
-        function selectBarber(barberId) {
-            appState.selectedBarberId = barberId;
-            appState.selectedStartMin = null;
-            renderBarbers();
-            renderTimeSlots();
-            updateSummaries();
-
-            clearTimeout(window._autoScrollStepTimer);
-            window._autoScrollStepTimer = setTimeout(() => {
-                const step2 = document.getElementById('step-2');
-                if (step2) {
-                    step2.scrollIntoView({ behavior: 'smooth', block: 'start' });
-                }
-            }, 220);
-        }
-
-        function renderCategoryTabs() {
-            const tabsContainer = document.getElementById('category-tabs');
-            if (!tabsContainer) return;
-
-            const restriction = getClientPlanRestriction();
-            let availableCats = [...appState.categories];
-
-            if (restriction.mode === 'plan_only') {
-                availableCats = availableCats.filter(c => c === 'Planos Mensais');
-                if (!availableCats.length) availableCats = ['Planos Mensais'];
-                appState.activeCategory = 'Planos Mensais';
-            } else if (restriction.mode === 'avulso_only') {
-                availableCats = availableCats.filter(c => c !== 'Planos Mensais');
-                if (appState.activeCategory === 'Planos Mensais') {
-                    appState.activeCategory = 'todos';
-                }
-            }
-
-            const allCats = restriction.mode === 'plan_only' ? availableCats : ['todos', ...availableCats];
-            tabsContainer.innerHTML = allCats.map(cat => {
-                const isActive = appState.activeCategory === cat;
-                const label = cat === 'todos' ? 'Todos' : (cat === 'Planos Mensais' ? 'Planos Mensais (4x/mês)' : cat);
-                return `<button type="button" class="cat-tab ${isActive ? 'active' : ''}" data-cat="${cat}" onclick="setCategoryFilter('${cat.replace(/'/g, "\\'")}')">${label}</button>`;
-            }).join('');
-        }
-
-        function setCategoryFilter(cat) {
-            appState.activeCategory = cat;
-            document.querySelectorAll('.cat-tab').forEach(btn => {
-                btn.classList.toggle('active', btn.dataset.cat === cat);
-            });
-            renderServices();
-        }
-
-        function renderServices() {
-            const grid = document.getElementById('services-grid');
-            const restriction = getClientPlanRestriction();
-
-            let list = appState.activeCategory === 'todos'
-                ? appState.services
-                : appState.services.filter(s => s.category === appState.activeCategory);
-
-            if (restriction.mode === 'plan_only') {
-                list = list.filter(s => s.isPlan === true);
-            } else if (restriction.mode === 'avulso_only') {
-                list = list.filter(s => s.isPlan !== true);
-            }
-
-            if (list.length === 0) {
-                grid.innerHTML = `<p style="color:var(--text-secondary); padding:14px 0; font-size:0.86rem;">Nenhum item disponível para o seu perfil nesta categoria.</p>`;
-                document.getElementById('selected-counter').textContent = `${appState.selectedServiceIds.length} selecionado(s)`;
-                return;
-            }
-
-            grid.innerHTML = list.map(srv => {
-                const isSelected = appState.selectedServiceIds.includes(srv.id);
-                const perSessionVal = srv.isPlan ? (srv.price / (srv.sessionsPerMonth || 4)) : srv.price;
-                return `
-                    <article class="service-card ${isSelected ? 'selected' : ''}" onclick="toggleService('${srv.id}')">
-                        <div class="service-main">
-                            <div class="service-check" aria-hidden="true">${isSelected ? '✓' : ''}</div>
-                            <div class="service-info">
-                                <div class="service-badges">
-                                    <span class="badge-cat">${srv.category}</span>
-                                    ${srv.tag ? `<span class="badge-tag">${srv.tag}</span>` : ''}
-                                    ${srv.isPlan ? `<span class="badge-plan">1x por semana (${formatBRL(perSessionVal)}/atend.)</span>` : ''}
-                                </div>
-                                <h3 class="service-name">${srv.name}</h3>
-                                <p class="service-desc">${srv.desc}</p>
-                                <div class="service-meta">
-                                    <span class="service-price">${formatBRL(srv.price)}${srv.isPlan ? '/mês' : ''}</span>
-                                    <span class="service-duration">⏱ ${formatDuration(srv.duration)}</span>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="service-action">
-                            <button type="button" class="btn-select-service">
-                                ${isSelected ? 'Selecionado ✓' : '+ Selecionar'}
-                            </button>
-                        </div>
-                    </article>
-                `;
-            }).join('');
-
-            document.getElementById('selected-counter').textContent = `${appState.selectedServiceIds.length} selecionado(s)`;
-        }
-
-        function toggleService(serviceId) {
-            const srvObj = appState.services.find(s => s.id === serviceId);
-            const restriction = getClientPlanRestriction();
-
-            if (restriction.mode === 'plan_only' && srvObj && !srvObj.isPlan) {
-                showToast('Seu plano está ativo: você só pode marcar opções do plano.');
-                return;
-            }
-            if (restriction.mode === 'avulso_only' && srvObj && srvObj.isPlan) {
-                showToast('Seu plano está vencido: você só pode marcar serviços avulsos.');
-                return;
-            }
-
-            const idx = appState.selectedServiceIds.indexOf(serviceId);
-            const isAdding = idx < 0;
-            if (isAdding) {
-                appState.selectedServiceIds.push(serviceId);
-            } else {
-                appState.selectedServiceIds.splice(idx, 1);
-            }
-            appState.selectedStartMin = null;
-            renderServices();
-            renderTimeSlots();
-            updateSummaries();
-
-            if (isAdding) {
-                clearTimeout(window._autoScrollStepTimer);
-                window._autoScrollStepTimer = setTimeout(() => {
-                    const targetEl = document.getElementById('step-3');
-                    if (targetEl) {
-                        targetEl.scrollIntoView({ behavior: 'smooth', block: 'start' });
-                    }
-                }, 400);
-            }
-        }
-
-        function getSelectedServicesObjects() {
-            return appState.services.filter(s => appState.selectedServiceIds.includes(s.id));
-        }
-
-        function getSelectedTotalDuration() {
-            const srvs = getSelectedServicesObjects();
-            if (srvs.length === 0) return 30;
-            return srvs.reduce((acc, s) => acc + Number(s.duration), 0);
-        }
-
-        function generateUpcomingDates(daysCount = 15) {
-            const weekDays = ['Dom', 'Seg', 'Ter', 'Qua', 'Qui', 'Sex', 'Sáb'];
-            const months = ['Jan', 'Fev', 'Mar', 'Abr', 'Mai', 'Jun', 'Jul', 'Ago', 'Set', 'Out', 'Nov', 'Dez'];
-            const dates = [];
-            const today = new Date();
-
-            for (let i = 0; i < daysCount; i++) {
-                const d = new Date(today);
-                d.setDate(today.getDate() + i);
-                const iso = `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, '0')}-${String(d.getDate()).padStart(2, '0')}`;
-                dates.push({
-                    iso,
-                    dayOfWeek: d.getDay(),
-                    weekday: i === 0 ? 'Hoje' : weekDays[d.getDay()],
-                    day: String(d.getDate()).padStart(2, '0'),
-                    month: months[d.getMonth()],
-                    fullLabel: `${String(d.getDate()).padStart(2, '0')}/${String(d.getMonth() + 1).padStart(2, '0')}/${d.getFullYear()} (${weekDays[d.getDay()]})`
-                });
-            }
-            return dates;
-        }
-
-        function renderDates() {
-            const dates = generateUpcomingDates(15);
-            if (!appState.selectedDateISO && dates.length > 0) {
-                appState.selectedDateISO = dates[0].iso;
-            }
-
-            const scroller = document.getElementById('dates-scroller');
-            scroller.innerHTML = dates.map(d => {
-                const isSelected = appState.selectedDateISO === d.iso;
-                const cfgDia = appState.expediente[d.dayOfWeek];
-                const fechado = !cfgDia || !cfgDia.ativo;
-                return `
-                    <div class="date-card ${isSelected ? 'selected' : ''}" style="${fechado ? 'opacity:0.45;' : ''}" onclick="selectDate('${d.iso}')">
-                        <span class="date-weekday">${d.weekday}</span>
-                        <span class="date-day">${d.day}</span>
-                        <span class="date-month">${fechado ? 'Fechado' : d.month}</span>
-                    </div>
-                `;
-            }).join('');
-        }
-
-        function selectDate(iso) {
-            appState.selectedDateISO = iso;
-            appState.selectedStartMin = null;
-            renderDates();
-            renderTimeSlots();
-            updateSummaries();
-        } catch (err) {
-                console.warn('Falha ao sincronizar com Firebase:', err);
-            }
-        }
-                 function findMatchedPlanMember() {
             const nameVal = (document.getElementById('client-name')?.value || '').trim().toLowerCase();
             const phoneNorm = normalizePhone(document.getElementById('client-phone')?.value || '');
 
@@ -3065,6 +2729,3 @@
     </script>
 </body>
 </html>
-
-           
-        
