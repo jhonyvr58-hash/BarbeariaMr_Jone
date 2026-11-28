@@ -547,9 +547,9 @@
             color: #0B0B0C;
             font-weight: 800;
             border-color: var(--gold-light);
-        }
-                /* ==========================================================================
-           PASSO 3: DATA E HORÁRIOS INTELIGENTES (COM INTERVALO INÍCIO → FIM)
+    }
+            /* ==========================================================================
+           PASSO 3: DATA E HORÁRIOS LIVRES POR DURAÇÃO REAL DOS SERVIÇOS
            ========================================================================== */
         .dates-scroller {
             display: flex;
@@ -626,6 +626,46 @@
             flex-wrap: wrap;
         }
 
+        .free-gaps-stack {
+            display: flex;
+            flex-direction: column;
+            gap: 14px;
+        }
+
+        .free-gap-card {
+            background: #0E0E11;
+            border: 1px solid var(--border-subtle);
+            border-radius: var(--radius-md);
+            padding: 12px;
+        }
+
+        .free-gap-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 8px;
+            flex-wrap: wrap;
+            margin-bottom: 10px;
+            padding-bottom: 8px;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.06);
+        }
+
+        .free-gap-title {
+            font-size: 0.84rem;
+            font-weight: 800;
+            color: var(--gold-light);
+        }
+
+        .free-gap-badge {
+            font-size: 0.72rem;
+            font-weight: 700;
+            color: #86EFAC;
+            background: rgba(34, 197, 94, 0.12);
+            border: 1px solid rgba(34, 197, 94, 0.35);
+            padding: 2px 8px;
+            border-radius: 999px;
+        }
+
         .slots-grid {
             display: grid;
             grid-template-columns: repeat(2, 1fr);
@@ -643,7 +683,7 @@
         .time-slot {
             padding: 10px 8px;
             border-radius: var(--radius-sm);
-            background: #0E0E11;
+            background: #141418;
             border: 1px solid var(--border-subtle);
             color: var(--text-primary);
             text-align: center;
@@ -656,9 +696,9 @@
         }
 
         .time-slot .slot-main { font-weight: 800; font-size: 0.9rem; }
-        .time-slot .slot-end { font-size: 0.7rem; opacity: 0.8; font-weight: 600; }
+        .time-slot .slot-end { font-size: 0.7rem; opacity: 0.82; font-weight: 600; }
 
-        .time-slot:hover:not(.occupied) {
+        .time-slot:hover {
             border-color: var(--gold-primary);
             color: var(--gold-light);
         }
@@ -670,16 +710,7 @@
             box-shadow: var(--shadow-gold);
         }
 
-        .time-slot.selected .slot-end { opacity: 0.92; font-weight: 700; }
-
-        .time-slot.occupied {
-            background: rgba(255, 255, 255, 0.02);
-            border-color: rgba(255, 255, 255, 0.04);
-            color: var(--text-muted);
-            text-decoration: line-through;
-            cursor: not-allowed;
-            opacity: 0.45;
-        }
+        .time-slot.selected .slot-end { opacity: 0.95; font-weight: 700; }
 
         /* ==========================================================================
            PASSO 4: DADOS DO CLIENTE & CONFIRMAÇÃO
@@ -1134,7 +1165,7 @@
                     <div class="step-badge">2</div>
                     <div>
                         <h2 class="section-title">Escolha os Serviços ou Plano Mensal</h2>
-                        <p class="section-subtitle">A duração é calculada automaticamente para reservar sua cadeira</p>
+                        <p class="section-subtitle">Os horários livres são filtrados pelo tempo real de cada serviço</p>
                     </div>
                 </div>
                 <span id="selected-counter" class="counter-badge">0 selecionado(s)</span>
@@ -1147,14 +1178,14 @@
             <div id="services-grid" class="services-grid"></div>
         </section>
 
-        <!-- PASSO 3: DATA E HORÁRIO INTELIGENTE -->
+        <!-- PASSO 3: DATA E HORÁRIO LIVRE CONFORME DURAÇÃO -->
         <section id="step-3" class="section-block">
             <div class="section-header">
                 <div class="step-title-group">
                     <div class="step-badge">3</div>
                     <div>
-                        <h2 class="section-title">Escolha a Data e o Horário</h2>
-                        <p class="section-subtitle">Os horários livres são calculados conforme a duração dos serviços selecionados</p>
+                        <h2 class="section-title">Escolha a Data e o Horário Livre</h2>
+                        <p class="section-subtitle">Mostra apenas os horários livres onde o tempo do serviço escolhido cabe</p>
                     </div>
                 </div>
             </div>
@@ -1163,19 +1194,18 @@
 
             <div class="slots-box">
                 <div id="duration-highlight-bar" class="duration-highlight-bar">
-                    <span>⏱ Duração total selecionada: <strong id="slot-box-duration">40 min</strong></span>
-                    <span id="slot-box-chosen">Nenhum horário selecionado</span>
+                    <span>⏱ Tempo do(s) serviço(s): <strong id="slot-box-duration">0 min</strong></span>
+                    <span id="slot-box-chosen">Selecione um serviço acima</span>
                 </div>
 
                 <div class="slots-legend">
-                    <span id="selected-date-label" style="font-weight: 700; color: var(--gold-light);">Horários disponíveis</span>
+                    <span id="selected-date-label" style="font-weight: 700; color: var(--gold-light);">Horários livres</span>
                     <div class="legend-items">
-                        <span><i class="legend-dot" style="background:#0E0E11; border:1px solid var(--border-subtle);"></i>Livre</span>
+                        <span><i class="legend-dot" style="background:#141418; border:1px solid var(--border-subtle);"></i>Livre</span>
                         <span><i class="legend-dot" style="background:var(--gold-primary);"></i>Selecionado</span>
-                        <span><i class="legend-dot" style="background:rgba(255,255,255,0.12);"></i>Ocupado</span>
                     </div>
                 </div>
-                <div id="slots-grid" class="slots-grid"></div>
+                <div id="slots-grid" class="free-gaps-stack"></div>
             </div>
         </section>
 
@@ -1487,6 +1517,7 @@
         }
 
         function formatDuration(mins) {
+            if (!mins || mins <= 0) return '0 min';
             if (mins < 60) return `${mins} min`;
             const h = Math.floor(mins / 60);
             const m = mins % 60;
@@ -1529,8 +1560,7 @@
             clearTimeout(window._toastTimer);
             window._toastTimer = setTimeout(() => t.classList.remove('show'), 3400);
         }
-
-        function loadSavedData() {
+                   function loadSavedData() {
             try {
                 const raw = localStorage.getItem(STORAGE_KEY);
                 if (!raw) return;
@@ -1750,8 +1780,8 @@
             } catch (err) {
                 console.warn('Falha ao sincronizar com Firebase:', err);
             }
-        }
-                  function findMatchedPlanMember() {
+            }
+                    function findMatchedPlanMember() {
             const nameVal = (document.getElementById('client-name')?.value || '').trim().toLowerCase();
             const phoneNorm = normalizePhone(document.getElementById('client-phone')?.value || '');
 
@@ -1841,7 +1871,7 @@
                 return `${e[d].name}: ${t1}${t2}`;
             };
             const banner = document.getElementById('header-hours-banner');
-            banner.innerHTML = `<span class="status-dot"></span><span>${fmtDia(1)} • ${fmtDia(2)} • ${fmtDia(5)} • ${fmtDia(6)} • ${fmtDia(0)}</span>`;
+            banner.innerHTML = `<span class="status-dot"></span><span>${fmtDia(1)} • ${fmtDia(2)} • ${fmtDia(3)} • ${fmtDia(4)} • ${fmtDia(5)} • ${fmtDia(6)} • ${fmtDia(0)}</span>`;
         }
 
         function calcularFinanceiroAgendamento(booking) {
@@ -2044,8 +2074,8 @@
 
         function getSelectedTotalDuration() {
             const srvs = getSelectedServicesObjects();
-            if (srvs.length === 0) return 30;
-            return srvs.reduce((acc, s) => acc + Number(s.duration), 0);
+            if (srvs.length === 0) return 0;
+            return srvs.reduce((acc, s) => acc + (Number(s.duration) || 0), 0);
         }
 
         function generateUpcomingDates(daysCount = 15) {
@@ -2123,35 +2153,10 @@
             return pauseConflict;
         }
 
-        function renderTimeSlots() {
-            const dates = generateUpcomingDates(15);
-            const currentDateObj = dates.find(d => d.iso === appState.selectedDateISO);
-            const durationMin = getSelectedTotalDuration();
-            const step = Math.max(1, durationMin); // Intervalo acompanha a duração dos serviços selecionados.
-
-            document.getElementById('slot-box-duration').textContent = formatDuration(durationMin);
-
-            if (appState.selectedStartMin !== null) {
-                document.getElementById('slot-box-chosen').innerHTML = `Das <strong>${minParaHora(appState.selectedStartMin)}</strong> até <strong>${minParaHora(appState.selectedStartMin + durationMin)}</strong>`;
-            } else {
-                document.getElementById('slot-box-chosen').textContent = 'Toque em um horário abaixo';
-            }
-
-            document.getElementById('selected-date-label').textContent = currentDateObj
-                ? `Agenda de ${currentDateObj.fullLabel}`
-                : 'Horários disponíveis';
-
-            const grid = document.getElementById('slots-grid');
-            if (!currentDateObj) {
-                grid.innerHTML = '';
-                return;
-            }
-
-            const cfgDia = appState.expediente[currentDateObj.dayOfWeek];
-            if (!cfgDia || !cfgDia.ativo) {
-                grid.innerHTML = `<p style="grid-column:1/-1; text-align:center; color:var(--text-secondary); padding:14px 0;">Barbearia fechada neste dia. Selecione outra data.</p>`;
-                return;
-            }
+        /* Calcula as lacunas livres reais (ex.: 08:00–08:40, 09:50–10:30) descontando agendamentos e pausas */
+        function computeFreeGapsForDate(dateObj, barberId) {
+            const cfgDia = appState.expediente[dateObj.dayOfWeek];
+            if (!cfgDia || !cfgDia.ativo) return [];
 
             const turnos = [];
             if (cfgDia.t1Inicio && cfgDia.t1Fim) {
@@ -2161,37 +2166,144 @@
                 turnos.push([horaParaMin(cfgDia.t2Inicio), horaParaMin(cfgDia.t2Fim)]);
             }
 
+            const barberObj = appState.barbers.find(b => b.id === barberId);
+            const barberNameLower = String(barberObj?.name || '').trim().toLowerCase();
+
+            const busyIntervals = [];
+
+            appState.bookings.forEach(b => {
+                if (b.status === 'cancelado') return;
+                if (b.dateISO !== dateObj.iso) return;
+                const sameId = b.barberId && barberId && b.barberId === barberId;
+                const sameName = barberNameLower && String(b.barberName || '').trim().toLowerCase() === barberNameLower;
+                if (!sameId && !sameName) return;
+                busyIntervals.push([Number(b.startMin), Number(b.endMin)]);
+            });
+
+            appState.blockedRanges.forEach(p => {
+                if (p.dateISO && p.dateISO !== dateObj.iso) return;
+                if (p.barberId && p.barberId !== 'todos' && p.barberId !== barberId) return;
+                busyIntervals.push([Number(p.startMin), Number(p.endMin)]);
+            });
+
             const now = new Date();
             const todayISO = `${now.getFullYear()}-${String(now.getMonth() + 1).padStart(2, '0')}-${String(now.getDate()).padStart(2, '0')}`;
             const nowMin = (now.getHours() * 60) + now.getMinutes();
 
-            const candidateSlots = [];
+            const gaps = [];
+
             turnos.forEach(([tStart, tEnd]) => {
-                for (let s = tStart; s + durationMin <= tEnd; s += step) {
-                    if (currentDateObj.iso === todayISO && s <= nowMin) continue;
-                    const e = s + durationMin;
-                    const occupied = hasIntervalConflict(currentDateObj.iso, appState.selectedBarberId, s, e);
-                    candidateSlots.push({ startMin: s, endMin: e, occupied });
-                }
+                if (tEnd <= tStart) return;
+                let segments = [[tStart, tEnd]];
+
+                busyIntervals.forEach(([bStart, bEnd]) => {
+                    const nextSegs = [];
+                    segments.forEach(([s, e]) => {
+                        if (bEnd <= s || bStart >= e) {
+                            nextSegs.push([s, e]);
+                        } else {
+                            if (bStart > s) nextSegs.push([s, bStart]);
+                            if (bEnd < e) nextSegs.push([bEnd, e]);
+                        }
+                    });
+                    segments = nextSegs;
+                });
+
+                segments.forEach(([gStart, gEnd]) => {
+                    let effectiveStart = gStart;
+                    if (dateObj.iso === todayISO && nowMin > effectiveStart) {
+                        effectiveStart = Math.ceil(nowMin / 5) * 5;
+                    }
+                    if (gEnd - effectiveStart > 0) {
+                        gaps.push({
+                            startMin: effectiveStart,
+                            endMin: gEnd,
+                            freeMinutes: gEnd - effectiveStart
+                        });
+                    }
+                });
             });
 
-            if (candidateSlots.length === 0) {
-                grid.innerHTML = `<p style="grid-column:1/-1; text-align:center; color:var(--text-secondary); padding:14px 0;">Não há horários suficientes para ${formatDuration(durationMin)} nesta data.</p>`;
+            return gaps.sort((a, b) => a.startMin - b.startMin);
+        }
+
+        function renderTimeSlots() {
+            const dates = generateUpcomingDates(15);
+            const currentDateObj = dates.find(d => d.iso === appState.selectedDateISO);
+            const durationMin = getSelectedTotalDuration();
+
+            document.getElementById('slot-box-duration').textContent = formatDuration(durationMin);
+
+            if (appState.selectedStartMin !== null && durationMin > 0) {
+                document.getElementById('slot-box-chosen').innerHTML = `Das <strong>${minParaHora(appState.selectedStartMin)}</strong> até <strong>${minParaHora(appState.selectedStartMin + durationMin)}</strong>`;
+            } else if (durationMin <= 0) {
+                document.getElementById('slot-box-chosen').textContent = 'Marque um serviço no Passo 2';
+            } else {
+                document.getElementById('slot-box-chosen').textContent = 'Toque em um horário livre abaixo';
+            }
+
+            document.getElementById('selected-date-label').textContent = currentDateObj
+                ? `Agenda de ${currentDateObj.fullLabel}`
+                : 'Horários livres';
+
+            const grid = document.getElementById('slots-grid');
+            if (!currentDateObj) {
+                grid.innerHTML = '';
                 return;
             }
 
-            grid.innerHTML = candidateSlots.map(slot => {
-                const isSelected = appState.selectedStartMin === slot.startMin && !slot.occupied;
-                const startStr = minParaHora(slot.startMin);
-                const endStr = minParaHora(slot.endMin);
+            const cfgDia = appState.expediente[currentDateObj.dayOfWeek];
+            if (!cfgDia || !cfgDia.ativo) {
+                grid.innerHTML = `<p style="text-align:center; color:var(--text-secondary); padding:14px 0;">Barbearia fechada neste dia. Selecione outra data.</p>`;
+                return;
+            }
+
+            if (durationMin <= 0) {
+                grid.innerHTML = `<p style="text-align:center; color:var(--text-secondary); padding:14px 0;">Selecione pelo menos 1 serviço ou plano acima para calcular os horários livres conforme o tempo que ele leva.</p>`;
+                return;
+            }
+
+            const allGaps = computeFreeGapsForDate(currentDateObj, appState.selectedBarberId);
+            const fittingGaps = allGaps.filter(g => g.freeMinutes >= durationMin);
+
+            if (fittingGaps.length === 0) {
+                grid.innerHTML = `<p style="text-align:center; color:var(--text-secondary); padding:14px 0;">Não há lacuna livre com ${formatDuration(durationMin)} disponíveis neste dia para o profissional selecionado.</p>`;
+                return;
+            }
+
+            const increment = 5;
+
+            grid.innerHTML = fittingGaps.map(gap => {
+                const startOptions = [];
+                for (let s = gap.startMin; s + durationMin <= gap.endMin; s += increment) {
+                    const e = s + durationMin;
+                    if (!hasIntervalConflict(currentDateObj.iso, appState.selectedBarberId, s, e)) {
+                        startOptions.push({ startMin: s, endMin: e });
+                    }
+                }
+
+                if (startOptions.length === 0) return '';
+
                 return `
-                    <button type="button"
-                        class="time-slot ${slot.occupied ? 'occupied' : ''} ${isSelected ? 'selected' : ''}"
-                        ${slot.occupied ? 'disabled' : ''}
-                        onclick="selectStartMin(${slot.startMin})">
-                        <span class="slot-main">${startStr}</span>
-                        <span class="slot-end">até ${endStr}</span>
-                    </button>
+                    <div class="free-gap-card">
+                        <div class="free-gap-header">
+                            <span class="free-gap-title">Janela livre: ${minParaHora(gap.startMin)} até ${minParaHora(gap.endMin)}</span>
+                            <span class="free-gap-badge">LIVRE (${formatDuration(gap.freeMinutes)})</span>
+                        </div>
+                        <div class="slots-grid">
+                            ${startOptions.map(slot => {
+                                const isSelected = appState.selectedStartMin === slot.startMin;
+                                return `
+                                    <button type="button"
+                                        class="time-slot ${isSelected ? 'selected' : ''}"
+                                        onclick="selectStartMin(${slot.startMin})">
+                                        <span class="slot-main">${minParaHora(slot.startMin)}</span>
+                                        <span class="slot-end">até ${minParaHora(slot.endMin)} (${durationMin}m)</span>
+                                    </button>
+                                `;
+                            }).join('')}
+                        </div>
+                    </div>
                 `;
             }).join('');
         }
@@ -2215,7 +2327,7 @@
                 }
             }, 300);
             }
-                     function selectPayment(method) {
+                    function selectPayment(method) {
             const restriction = getClientPlanRestriction();
             if (restriction.mode === 'plan_only' && method !== 'Plano Mensal (Assinante)') {
                 showToast('Cliente com plano ativo utiliza a modalidade de Assinante.');
