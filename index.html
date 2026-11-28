@@ -541,13 +541,14 @@
             transition: all 0.2s ease;
             white-space: nowrap;
         }
+
         .service-card.selected .btn-select-service {
             background: linear-gradient(135deg, var(--gold-light), var(--gold-primary));
             color: #0B0B0C;
             font-weight: 800;
-            border-color: var(--gold-light);   
+            border-color: var(--gold-light);
         }
-                 /* ==========================================================================
+                /* ==========================================================================
            PASSO 3: DATA E HORÁRIOS INTELIGENTES (COM INTERVALO INÍCIO → FIM)
            ========================================================================== */
         .dates-scroller {
@@ -836,8 +837,9 @@
             font-weight: 800;
             box-shadow: var(--shadow-gold);
             white-space: nowrap;
-    }
-             /* ==========================================================================
+        }
+
+        /* ==========================================================================
            MODAIS DE COMPROVANTE E MEUS AGENDAMENTOS
            ========================================================================== */
         .modal-backdrop {
@@ -1152,7 +1154,7 @@
                     <div class="step-badge">3</div>
                     <div>
                         <h2 class="section-title">Escolha a Data e o Horário</h2>
-                        <p class="section-subtitle">Cada botão já mostra o início e até que horas vai o atendimento</p>
+                        <p class="section-subtitle">Os horários livres são calculados conforme a duração dos serviços selecionados</p>
                     </div>
                 </div>
             </div>
@@ -1291,8 +1293,7 @@
             <div id="my-bookings-list"></div>
         </div>
     </div>
-
-    <script>
+        <script>
         const FIREBASE_DB_URL = 'https://barbeariamrjone-f3e8a-default-rtdb.firebaseio.com';
         const STORAGE_KEY = 'mr_jone_barbearia_full_v2';
         const BARBERSHOP_WHATSAPP = '5521989622789';
@@ -1451,7 +1452,6 @@
         ];
 
         let appState = {
-            slotStepMinutes: 15,
             expediente: JSON.parse(JSON.stringify(DEFAULT_EXPEDIENTE)),
             categories: [...DEFAULT_CATEGORIES],
             services: JSON.parse(JSON.stringify(INITIAL_SERVICES)),
@@ -1469,7 +1469,8 @@
             selectedPayment: 'Pix',
             isSubmitting: false
         };
-                 function horaParaMin(hhmm) {
+
+        function horaParaMin(hhmm) {
             if (!hhmm || !hhmm.includes(':')) return 0;
             const [h, m] = hhmm.split(':').map(Number);
             return (h * 60) + m;
@@ -1534,7 +1535,6 @@
                 const raw = localStorage.getItem(STORAGE_KEY);
                 if (!raw) return;
                 const parsed = JSON.parse(raw);
-                if (parsed.slotStepMinutes) appState.slotStepMinutes = Number(parsed.slotStepMinutes);
                 if (parsed.expediente) appState.expediente = { ...DEFAULT_EXPEDIENTE, ...parsed.expediente };
                 if (Array.isArray(parsed.services) && parsed.services.length) appState.services = parsed.services;
                 if (Array.isArray(parsed.categories) && parsed.categories.length) {
@@ -1552,7 +1552,6 @@
         function saveData() {
             try {
                 localStorage.setItem(STORAGE_KEY, JSON.stringify({
-                    slotStepMinutes: appState.slotStepMinutes,
                     expediente: appState.expediente,
                     categories: appState.categories,
                     services: appState.services,
@@ -1751,8 +1750,8 @@
             } catch (err) {
                 console.warn('Falha ao sincronizar com Firebase:', err);
             }
-                                                                                }
-                     function findMatchedPlanMember() {
+        }
+                  function findMatchedPlanMember() {
             const nameVal = (document.getElementById('client-name')?.value || '').trim().toLowerCase();
             const phoneNorm = normalizePhone(document.getElementById('client-phone')?.value || '');
 
@@ -2099,7 +2098,8 @@
             renderTimeSlots();
             updateSummaries();
         }
-                 function hasIntervalConflict(dateISO, barberId, startMin, endMin) {
+
+        function hasIntervalConflict(dateISO, barberId, startMin, endMin) {
             const barberObj = appState.barbers.find(b => b.id === barberId);
             const barberNameLower = String(barberObj?.name || '').trim().toLowerCase();
 
@@ -2127,7 +2127,7 @@
             const dates = generateUpcomingDates(15);
             const currentDateObj = dates.find(d => d.iso === appState.selectedDateISO);
             const durationMin = getSelectedTotalDuration();
-            const step = Number(appState.slotStepMinutes) || 15;
+            const step = Math.max(1, durationMin); // Intervalo acompanha a duração dos serviços selecionados.
 
             document.getElementById('slot-box-duration').textContent = formatDuration(durationMin);
 
@@ -2214,9 +2214,8 @@
                     }, 480);
                 }
             }, 300);
-        }
-
-        function selectPayment(method) {
+            }
+                     function selectPayment(method) {
             const restriction = getClientPlanRestriction();
             if (restriction.mode === 'plan_only' && method !== 'Plano Mensal (Assinante)') {
                 showToast('Cliente com plano ativo utiliza a modalidade de Assinante.');
@@ -2365,7 +2364,8 @@
 
             return firebaseKey;
         }
-                 async function upsertClientInFirebase(booking) {
+
+        async function upsertClientInFirebase(booking) {
             const normPhone = normalizePhone(booking.clientPhone);
             const cleanName = String(booking.clientName || '').trim();
             if (!cleanName && !normPhone) return;
